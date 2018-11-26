@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<!-- 事务管理 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<!-- 控制住数据源 -->
+		<property name="dataSource" ref="druidDataSource"></property>
+	</bean>
+	<!-- 开启基于注解的事务，声明式事务 -->
+	<aop:config>
+		<!-- 切点表达式，aop:pointcut标签配置参与事务的类，由于是在Service中进行数据库业务操作，配的应该是包含那些作为事务的方法的Service类 -->
+		<aop:pointcut id="txPoint" expression="execution(* com.kkkitsch.coolalbum.service.*.*(..))" />
+		<!-- aop:advisor标签的作用就是把上面我们所配置的事务管理两部分属性整合起来作为整个事务管理，表示在service包下，所有方法都是事务方法，以get开始的方法只读 -->
+		<aop:advisor pointcut-ref="txPoint" advice-ref="txAdvice" />
+	</aop:config>
+	<!-- 配置 事务增强，事务如何切入 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- 所有方法都是事务方法 -->
+			<tx:method name="*" />
+			<!-- 以get方法开始的所有方法 -->
+			<tx:method name="get*" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+</beans>

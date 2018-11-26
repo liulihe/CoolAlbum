@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kkkitsch.coolalbum.dao.TMessageMapper">
+  <resultMap id="BaseResultMap" type="com.kkkitsch.coolalbum.entity.TMessage">
+    <id column="m_id" jdbcType="INTEGER" property="mId" />
+    <result column="m_createtime" jdbcType="TIMESTAMP" property="mCreatetime" />
+    <result column="m_sponsor" jdbcType="VARCHAR" property="mSponsor" />
+    <result column="m_content" jdbcType="VARCHAR" property="mContent" />
+    <result column="m_like" jdbcType="INTEGER" property="mLike" />
+    <result column="m_status" jdbcType="CHAR" property="mStatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    m_id, m_createtime, m_sponsor, m_content, m_like, m_status
+  </sql>
+  <select id="selectByExample" parameterType="com.kkkitsch.coolalbum.entity.TMessageExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from message
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from message
+    where m_id = #{mId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from message
+    where m_id = #{mId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.kkkitsch.coolalbum.entity.TMessageExample">
+    delete from message
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.kkkitsch.coolalbum.entity.TMessage">
+    insert into message (m_id, m_createtime, m_sponsor, 
+      m_content, m_like, m_status
+      )
+    values (#{mId,jdbcType=INTEGER}, #{mCreatetime,jdbcType=TIMESTAMP}, #{mSponsor,jdbcType=VARCHAR}, 
+      #{mContent,jdbcType=VARCHAR}, #{mLike,jdbcType=INTEGER}, #{mStatus,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kkkitsch.coolalbum.entity.TMessage">
+    insert into message
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        m_id,
+      </if>
+      <if test="mCreatetime != null">
+        m_createtime,
+      </if>
+      <if test="mSponsor != null">
+        m_sponsor,
+      </if>
+      <if test="mContent != null">
+        m_content,
+      </if>
+      <if test="mLike != null">
+        m_like,
+      </if>
+      <if test="mStatus != null">
+        m_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        #{mId,jdbcType=INTEGER},
+      </if>
+      <if test="mCreatetime != null">
+        #{mCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mSponsor != null">
+        #{mSponsor,jdbcType=VARCHAR},
+      </if>
+      <if test="mContent != null">
+        #{mContent,jdbcType=VARCHAR},
+      </if>
+      <if test="mLike != null">
+        #{mLike,jdbcType=INTEGER},
+      </if>
+      <if test="mStatus != null">
+        #{mStatus,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.kkkitsch.coolalbum.entity.TMessageExample" resultType="java.lang.Long">
+    select count(*) from message
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update message
+    <set>
+      <if test="record.mId != null">
+        m_id = #{record.mId,jdbcType=INTEGER},
+      </if>
+      <if test="record.mCreatetime != null">
+        m_createtime = #{record.mCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.mSponsor != null">
+        m_sponsor = #{record.mSponsor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mContent != null">
+        m_content = #{record.mContent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.mLike != null">
+        m_like = #{record.mLike,jdbcType=INTEGER},
+      </if>
+      <if test="record.mStatus != null">
+        m_status = #{record.mStatus,jdbcType=CHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update message
+    set m_id = #{record.mId,jdbcType=INTEGER},
+      m_createtime = #{record.mCreatetime,jdbcType=TIMESTAMP},
+      m_sponsor = #{record.mSponsor,jdbcType=VARCHAR},
+      m_content = #{record.mContent,jdbcType=VARCHAR},
+      m_like = #{record.mLike,jdbcType=INTEGER},
+      m_status = #{record.mStatus,jdbcType=CHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kkkitsch.coolalbum.entity.TMessage">
+    update message
+    <set>
+      <if test="mCreatetime != null">
+        m_createtime = #{mCreatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mSponsor != null">
+        m_sponsor = #{mSponsor,jdbcType=VARCHAR},
+      </if>
+      <if test="mContent != null">
+        m_content = #{mContent,jdbcType=VARCHAR},
+      </if>
+      <if test="mLike != null">
+        m_like = #{mLike,jdbcType=INTEGER},
+      </if>
+      <if test="mStatus != null">
+        m_status = #{mStatus,jdbcType=CHAR},
+      </if>
+    </set>
+    where m_id = #{mId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kkkitsch.coolalbum.entity.TMessage">
+    update message
+    set m_createtime = #{mCreatetime,jdbcType=TIMESTAMP},
+      m_sponsor = #{mSponsor,jdbcType=VARCHAR},
+      m_content = #{mContent,jdbcType=VARCHAR},
+      m_like = #{mLike,jdbcType=INTEGER},
+      m_status = #{mStatus,jdbcType=CHAR}
+    where m_id = #{mId,jdbcType=INTEGER}
+  </update>
+</mapper>
