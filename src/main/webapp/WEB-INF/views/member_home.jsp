@@ -34,7 +34,7 @@
 						<li role="separator" class="divider"></li>
 						<li><a href="#">修改密码</a></li>
 						<li role="separator" class="divider"></li>
-						<li><a href="#">注销</a></li>
+						<li><a id="logout" href="#">注销</a></li>
 					</ul>
 				</div>
 			</div>
@@ -573,13 +573,18 @@
 	$("body").on("click", ".edittype", function() {
 		var pId = $(this).attr("pId");
 		var oldTypename=$(this).parent().prev().text();
-
 		$("#phototype_input").val(oldTypename);
 		$("#phototype_input").attr("forupdate","").attr("forupdate",oldTypename);
 		$("#addPhotoTypeModal").modal("show");
-		
 		$("#confirmSpan").attr("select","").attr("select","update");
-		
 	})
+	
+	/* 点击注销 */
+	$("#logout").click(function(){
+		window.location.href="${appPath}/member/logout";
+	});
+	
+	
+	
 </script>
 </html>

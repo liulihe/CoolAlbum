@@ -112,4 +112,16 @@ public class TMemberController {
 		}
 	}
 
+	/**
+	 * 注销会员
+	 * 
+	 * @param session
+	 * @return 逻辑视图名
+	 */
+	@RequestMapping("/logout")
+	public String logout(HttpSession session) {
+		// 移除session
+		session.removeAttribute(CUR_MEMBER);
+		return "redirect:/index.jsp";
+	}
 }
