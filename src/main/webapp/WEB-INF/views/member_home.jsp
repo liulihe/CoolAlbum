@@ -73,12 +73,12 @@
 							<input type="text" name="pName" class="form-control" placeholder="相册名称">
 						</div>
 						<div class="form-group desc">
-							<label>分类</label> 
+							<label>相片分类</label> 
 							<select id="phototype" name="pTypeId" class="form-control"></select>
 						</div>
 						<div class="form-group desc">
-							<label>相册描述</label> 
-							<input type="text" name="pDescription" class="form-control desc" placeholder="相册描述">
+							<label>相片描述</label> 
+							<textarea rows="5" cols="50" name="pDescription" class="form-control desc" placeholder="相册描述"></textarea>
 						</div>
 						<a id="submitPhoto" class="btn btn-success">提交</a>
 					</form>
