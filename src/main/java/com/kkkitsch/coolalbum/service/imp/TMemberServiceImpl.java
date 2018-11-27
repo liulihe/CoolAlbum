@@ -1,5 +1,6 @@
 package com.kkkitsch.coolalbum.service.imp;
 
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kkkitsch.coolalbum.common.MD5;
+import com.kkkitsch.coolalbum.common.TimeFormat;
 import com.kkkitsch.coolalbum.dao.TMemberMapper;
 import com.kkkitsch.coolalbum.entity.TMember;
 import com.kkkitsch.coolalbum.entity.TMemberExample;
@@ -80,6 +82,8 @@ public class TMemberServiceImpl implements TMemberService {
 		// 设置默认信息
 		// 设置昵称默认和用户名相同
 		member.setmNickname(member.getmAccountname());
+		member.setmCreatetime(TimeFormat.timeFormat(new Date()));
+		member.setmSignature("");
 		// 加密密码
 		member.setmPassword(MD5.md5(member.getmAccountname(), member.getmPassword()));
 
@@ -96,5 +100,19 @@ public class TMemberServiceImpl implements TMemberService {
 			return MyMsg.fail("注册失败，有可能是用户名或邮箱或手机号有冲突，请修改重试", member, null);
 		}
 		return MyMsg.fail("注册失败，发生未知错误", member, null);
+	}
+
+	/**
+	 * 更新会员信息
+	 */
+	@Override
+	public boolean updateMyInfo(TMember member) {
+		int affectNum = -1;
+		try {
+			affectNum = tMemberMapper.updateByPrimaryKeySelective(member);
+			return affectNum == 1 ? true : false;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }

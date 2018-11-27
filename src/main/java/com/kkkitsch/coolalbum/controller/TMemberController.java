@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import static com.kkkitsch.coolalbum.common.MyConstant.*;
 
@@ -124,4 +125,23 @@ public class TMemberController {
 		session.removeAttribute(CUR_MEMBER);
 		return "redirect:/index.jsp";
 	}
+
+	/**
+	 * 更新会员信息
+	 * 
+	 * @param member
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/myinfo")
+	@ResponseBody
+	public MyMsg<TMember> myInfo(TMember member, HttpSession session) {
+		member.setmId(((TMember) session.getAttribute(CUR_MEMBER)).getmId());
+		boolean flag = false;
+		if (member != null) {
+			flag = tMemberServiceImpl.updateMyInfo(member);
+		}
+		return flag ? MyMsg.success("更新成功", null, null) : MyMsg.fail("更新失败", null, null);
+	}
+
 }

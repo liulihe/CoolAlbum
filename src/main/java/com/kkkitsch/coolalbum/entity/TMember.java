@@ -13,6 +13,10 @@ public class TMember {
 
     private String mPhone;
 
+    private String mCreatetime;
+
+    private String mSignature;
+
     public Integer getmId() {
         return mId;
     }
@@ -61,12 +65,29 @@ public class TMember {
         this.mPhone = mPhone == null ? null : mPhone.trim();
     }
 
+    public String getmCreatetime() {
+        return mCreatetime;
+    }
+
+    public void setmCreatetime(String mCreatetime) {
+        this.mCreatetime = mCreatetime == null ? null : mCreatetime.trim();
+    }
+
+    public String getmSignature() {
+        return mSignature;
+    }
+
+    public void setmSignature(String mSignature) {
+        this.mSignature = mSignature == null ? null : mSignature.trim();
+    }
+
 	@Override
 	public String toString() {
 		return "TMember [mId=" + mId + ", mAccountname=" + mAccountname + ", mNickname=" + mNickname + ", mPassword="
-				+ mPassword + ", mEmail=" + mEmail + ", mPhone=" + mPhone + "]";
+				+ mPassword + ", mEmail=" + mEmail + ", mPhone=" + mPhone + ", mCreatetime=" + mCreatetime
+				+ ", mSignature=" + mSignature + "]";
 	}
-   
+    
     
     
 }

@@ -513,6 +513,146 @@ public class TMemberExample {
             addCriterion("m_phone not between", value1, value2, "mPhone");
             return (Criteria) this;
         }
+
+        public Criteria andMCreatetimeIsNull() {
+            addCriterion("m_createtime is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMCreatetimeIsNotNull() {
+            addCriterion("m_createtime is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMCreatetimeEqualTo(String value) {
+            addCriterion("m_createtime =", value, "mCreatetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andMCreatetimeNotEqualTo(String value) {
+            addCriterion("m_createtime <>", value, "mCreatetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andMCreatetimeGreaterThan(String value) {
+            addCriterion("m_createtime >", value, "mCreatetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andMCreatetimeGreaterThanOrEqualTo(String value) {
+            addCriterion("m_createtime >=", value, "mCreatetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andMCreatetimeLessThan(String value) {
+            addCriterion("m_createtime <", value, "mCreatetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andMCreatetimeLessThanOrEqualTo(String value) {
+            addCriterion("m_createtime <=", value, "mCreatetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andMCreatetimeLike(String value) {
+            addCriterion("m_createtime like", value, "mCreatetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andMCreatetimeNotLike(String value) {
+            addCriterion("m_createtime not like", value, "mCreatetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andMCreatetimeIn(List<String> values) {
+            addCriterion("m_createtime in", values, "mCreatetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andMCreatetimeNotIn(List<String> values) {
+            addCriterion("m_createtime not in", values, "mCreatetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andMCreatetimeBetween(String value1, String value2) {
+            addCriterion("m_createtime between", value1, value2, "mCreatetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andMCreatetimeNotBetween(String value1, String value2) {
+            addCriterion("m_createtime not between", value1, value2, "mCreatetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andMSignatureIsNull() {
+            addCriterion("m_signature is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMSignatureIsNotNull() {
+            addCriterion("m_signature is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMSignatureEqualTo(String value) {
+            addCriterion("m_signature =", value, "mSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andMSignatureNotEqualTo(String value) {
+            addCriterion("m_signature <>", value, "mSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andMSignatureGreaterThan(String value) {
+            addCriterion("m_signature >", value, "mSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andMSignatureGreaterThanOrEqualTo(String value) {
+            addCriterion("m_signature >=", value, "mSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andMSignatureLessThan(String value) {
+            addCriterion("m_signature <", value, "mSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andMSignatureLessThanOrEqualTo(String value) {
+            addCriterion("m_signature <=", value, "mSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andMSignatureLike(String value) {
+            addCriterion("m_signature like", value, "mSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andMSignatureNotLike(String value) {
+            addCriterion("m_signature not like", value, "mSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andMSignatureIn(List<String> values) {
+            addCriterion("m_signature in", values, "mSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andMSignatureNotIn(List<String> values) {
+            addCriterion("m_signature not in", values, "mSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andMSignatureBetween(String value1, String value2) {
+            addCriterion("m_signature between", value1, value2, "mSignature");
+            return (Criteria) this;
+        }
+
+        public Criteria andMSignatureNotBetween(String value1, String value2) {
+            addCriterion("m_signature not between", value1, value2, "mSignature");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -9,4 +9,6 @@ public interface TMemberService {
 
     public MyMsg<TMember> memberRegister(TMember member,String mRePassword);
 
+	public boolean updateMyInfo(TMember member);
+
 }

@@ -30,7 +30,7 @@
 					</button>
 	
 					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-						<li><a href="#">修改资料</a></li>
+						<li><a id="myInfo" href="#">我的资料</a></li>
 						<li role="separator" class="divider"></li>
 						<li><a href="#">修改密码</a></li>
 						<li role="separator" class="divider"></li>
@@ -205,6 +205,59 @@
 			<!-- /.modal-content -->
 		</div>
 	</div>
+	
+	
+	<!-- 我的资料modal -->
+	<div id="myInfoModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">我的资料</h4>
+				</div>
+				<div class="modal-body">
+					<form action="#" method="post" id="myInfoForm">
+						<div class="form-group">
+							<label class="control-label">账号</label>
+							<p class="form-control-static">${curMember.mNickname }</p>
+						</div>
+						<div class="form-group">
+							<label class="control-label">昵称</label>
+							<input type="text" name="mNickname" class="form-control" value="${curMember.mNickname }" placeholder="输入昵称">
+						</div>
+						<div class="form-group">
+							<label class="control-label">邮箱</label>
+							<input type="email" name="mEmail" class="form-control" value="${curMember.mEmail }" placeholder="输入邮箱">
+						</div>
+						<div class="form-group">
+							<label class="control-label">手机号</label>
+							<p class="form-control-static">${curMember.mPhone }</p>
+						</div>
+						<div class="form-group">
+							<label class="control-label">账号创建时间</label>
+							<p class="form-control-static">${curMember.mCreatetime }</p>
+						</div>
+						<div class="form-group">
+							<label class="control-label">个性签名</label>
+							<textarea name="mSignature" class="form-control" rows="3">${curMember.mSignature }</textarea>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button id="submitMyInfo" type="button" class="btn btn-primary">保存</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+
 
 </body>
 
@@ -584,7 +637,35 @@
 		window.location.href="${appPath}/member/logout";
 	});
 	
+	/* 点击我的资料 */
+	$("#myInfo").click(function(){
+		$("#myInfoModal").modal("show");
+	});
 	
+	/* 点击提交我的资料 */
+	$("#submitMyInfo").click(function(){
+		$.ajax({
+			url:"${appPath }/member/myinfo",
+			type:"POST",
+			data:$("#myInfoForm").serialize(),
+			success:function(result){
+				if(result.code==1){
+					$("#myInfoModal").modal('hide');
+					jqueryAlert({
+						'content' : '更新成功',
+						'closeTime' : 2000
+					});
+				}
+			},
+			error:function(XMLHttpRequest,textStatus){
+				jqueryAlert({
+					'content' : '更新失败',
+					'closeTime' : 2000
+				});
+			}
+		});
+		return false;
+	});
 	
 </script>
 </html>

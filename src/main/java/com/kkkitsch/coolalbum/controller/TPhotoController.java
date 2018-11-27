@@ -4,7 +4,6 @@ import static com.kkkitsch.coolalbum.common.MyConstant.UPLOAD_ERROR_MSG;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kkkitsch.coolalbum.common.MyConstant;
+import com.kkkitsch.coolalbum.common.TimeFormat;
 import com.kkkitsch.coolalbum.entity.TMember;
 import com.kkkitsch.coolalbum.entity.TPhoto;
 import com.kkkitsch.coolalbum.service.TPhotoService;
@@ -63,14 +63,11 @@ public class TPhotoController {
 		// 获取目录的真实路径
 		String realPath = session.getServletContext().getRealPath("/image");
 
-		// 时间格式
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd HH:mm:ss");
-
 		// 默认情况下，即使没有选择文件，MultipartFile数组的长度也不为空，而是存在一个空文件，你必须遍历判断其中的文件是否为空
 		for (MultipartFile cur_file : file) {
 
 			// 格式化Date对象
-			String dateFormat = sdf.format(new Date());
+			String dateFormat = TimeFormat.timeFormat(new Date());
 
 			// 防止用户名重复，重新改变文件名
 			String newFilename = "";
