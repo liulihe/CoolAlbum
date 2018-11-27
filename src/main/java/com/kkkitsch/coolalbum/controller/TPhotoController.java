@@ -52,8 +52,7 @@ public class TPhotoController {
 	 *         mvc框架将其转换为MultipartFile类型，这个与单个文件上传一样，不需要@RequestParam修饰。
 	 *         但是上传多个文件时，处理器方法需要的不是MultipartFile类型，而是MultipartFile[]数组类型，默认情况下，框架会将表单中的表单元素一个个转换为文件对象，
 	 *         但并不会将多个文件对象创建为一个数组对象。此时就需要用@RequestParam注解修饰这个数组参数，需要框架调用相应的转换器将请求参数转换为方法参数类型。
-	 *         所以上传多个文件，处理器方法的MultipartFile[]数组必须使用@RequestParam注解修饰。 
-	 *         2.未选择上传文件
+	 *         所以上传多个文件，处理器方法的MultipartFile[]数组必须使用@RequestParam注解修饰。 2.未选择上传文件
 	 *         即使没有选择任何文件，MultipartFile[]数组也不为null。不仅不为null，其length值也大于0.
 	 *         因为系统会为每个file表单元素创建一个file对象。只不过没有选择上传文件的这个file将不会被赋予真正的文件，只是一个为empty的File。所以对于没有选择任何要上传的文件
 	 *         的情况的处理，只能逐个对文件表单元素进行判断，判断文件是否为empty。
@@ -113,10 +112,7 @@ public class TPhotoController {
 			photo.setpCreatetime(new Date());
 			photo.setpLikenum(0);
 			photo.setpUrl(netUrl);
-			// 如果给图片起了名字，那就用指定的名称，否则用默认的名称
-			if ("".equals(photo.getpName().trim())) {
-				photo.setpName(cur_file.getOriginalFilename());
-			}
+			photo.setpName(newFilename);
 			photo.setpModitytime(new Date());
 			photo.setpMemberId(((TMember) session.getAttribute(MyConstant.CUR_MEMBER)).getmId());
 
@@ -200,36 +196,6 @@ public class TPhotoController {
 		} else {
 			return MyMsg.fail("删除失败", null, null);
 		}
-	}
-
-	/**
-	 * 跳转到多个图片上传页面
-	 * 
-	 * @return 逻辑视图名
-	 */
-	@RequestMapping("/mulupload")
-	public String mulUploadClick() {
-		return "mul_photo_upload";
-	}
-
-	@RequestMapping("/uploadclick")
-	@ResponseBody
-	public MyMsg<String> uploadClick(HttpServletRequest request, @RequestParam("mulFile") MultipartFile[] file) {
-		Enumeration<String> attributeNames = request.getAttributeNames();
-		while (attributeNames.hasMoreElements()) {
-			System.out.println("============");
-			System.out.println(attributeNames.nextElement());
-		}
-
-		System.out.println(file);
-		if (file != null) {
-			System.out.println(file.length);
-			for (MultipartFile multipartFile : file) {
-				System.out.println("大小：" + multipartFile.getSize());
-			}
-		}
-
-		return MyMsg.success("上传成功", "", null);
 	}
 
 }
