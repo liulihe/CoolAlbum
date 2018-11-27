@@ -11,6 +11,7 @@
 <%@include file="/WEB-INF/common/js-css-file.jsp"%>
 
 </head>
+
 <body>
 	<div class="container">
 	
@@ -45,8 +46,7 @@
 			<!-- 菜单 -->
 			<div class="col-md-2">
 				<ul class="nav nav-pills nav-stacked">
-					<li id="uploadFile" role="presentation"><a href="#">单个上传图片</a></li>
-					<li id="multiUploadFile" role="presentation"><a href="#">批量上传图片</a></li>
+					<li id="uploadFile" role="presentation"><a href="#">上传图片</a></li>
 					<li id="scanFile" role="presentation"><a href="#">浏览图片</a></li>
 					<li id="messageManage" role="presentation"><a href="#">留言管理</a></li>
 					<li id="typeManage" role="presentation"><a href="#">类型管理</a></li>
@@ -66,10 +66,10 @@
 						</c:if>
 						<div class="form-group">
 							<label>添加相片</label> 
-							<input type="file" name="upFile" class="form-control">
+							<input type="file" name="upFile" class="form-control" multiple="multiple">
 						</div>
 						<div class="form-group desc">
-							<label>相册名称</label> 
+							<label>相片名称</label> 
 							<input type="text" name="pName" class="form-control" placeholder="相册名称">
 						</div>
 						<div class="form-group desc">
@@ -84,38 +84,7 @@
 					</form>
 				</div>
 				
-				<!-- 批量上传div -->
-				<div class="col-md-5" id="multiPhotoUploadDiv">
-					批量上传吧
-					<!-- 表单 -->
-					<form id="multiPhotoForm" action="${appPath }/photo/multiUpload" method="post" enctype="multipart/form-data">
-						
-						<div class="form-group">
-							<label>添加相片</label> 
-							<input type="file" name="mulUpFile" class="form-control">
-						</div>
-						<div>
-							<a id="ifAddMore" class="btn btn-default" href="#">添加更多</a>
-						</div>
-						<div class="form-group desc">
-							<label>相册名称</label> 
-							<input type="text" name="pName" class="form-control" placeholder="相册名称">
-						</div>
-						<div class="form-group desc">
-							<label>分类</label> 
-							<select id="phototypeForMul" name="pTypeId" class="form-control"></select>
-						</div>
-						<div class="form-group desc">
-							<label>相册描述</label> 
-							<input type="text" name="pDescription" class="form-control desc" placeholder="相册描述">
-						</div>
-						<a id="mulSubmitPhoto" class="btn btn-success">提交</a>
-					</form>
-				</div>
-				
-
 				<div id="scanDiv">
-						
 				</div>
 				
 				<div id="messageDiv">消息</div>
@@ -495,15 +464,11 @@
 	$("#messageManage").click(function(){
 		$("#messageDiv").show().siblings().hide();
 	});
-	
-	/* 点击批量上传 */
-	$("#multiUploadFile").click(function(){
-		$("#multiPhotoUploadDiv").show().siblings().hide();
-	});
-	
+
 	/* 点击添加更多 */
 	$("#ifAddMore").click(function(){
 		alert("添加更多");
+		window.location.href="${appPath}/photo/mulupload";
 	});
 	
 	

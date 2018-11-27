@@ -20,12 +20,14 @@ public class TPhotoServiceImpl implements TPhotoService {
 
 	@Override
 	public MyMsg<TPhoto> uploadFile(TPhoto photo) {
-		int affectNum = photoMapper.insertSelective(photo);
-		if (affectNum == 1) {
-			return MyMsg.success("上传图片成功", photo, null);
-		} else {
+		int affectNum = -1;
+		try {
+			affectNum = photoMapper.insertSelective(photo);
+		} catch (Exception e) {
+			e.printStackTrace();
 			return MyMsg.fail("上传图片失败", photo, null);
 		}
+		return affectNum == 1 ? MyMsg.success("上传图片成功", photo, null) : MyMsg.fail("上传图片失败", photo, null);
 	}
 
 	@Override
