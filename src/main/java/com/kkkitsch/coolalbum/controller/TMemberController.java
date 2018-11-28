@@ -154,4 +154,15 @@ public class TMemberController {
 		}
 	}
 
+	/**
+	 * 发送验证码
+	 */
+	@RequestMapping("/sendvalidate")
+	@ResponseBody
+	public MyMsg<TMember> updatePassword(HttpSession session) {
+		Integer mId = ((TMember) (session.getAttribute(CUR_MEMBER))).getmId();
+		System.out.println("当前会员的id=" + mId);
+		return MyMsg.success("ok", null, null);
+	}
+
 }

@@ -33,7 +33,7 @@
 						<br>
 						<li><a id="myInfo" href="#">我的资料</a></li>
 						<li role="separator" class="divider"></li>
-						<li><a href="#">修改密码</a></li>
+						<li><a id="updatePassword" href="#">修改密码</a></li>
 						<li role="separator" class="divider"></li>
 						<li><a id="logout" href="#">注销</a></li>
 					</ul>
@@ -221,7 +221,7 @@
 				</div>
 				<div class="modal-body">
 					<form action="#" method="post" id="myInfoForm">
-						<div class="form-group">
+						<div class="form-group">d
 							<label class="control-label">账号</label>
 							<p class="form-control-static">${curMember.mAccountname }</p>
 						</div>
@@ -257,6 +257,54 @@
 		<!-- /.modal-dialog -->
 	</div>
 	<!-- /.modal -->
+
+
+
+
+	<!-- 修改密码模态框 -->
+	<div id="update_password_modal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">修改密码</h4>
+				</div>
+				<div class="modal-body">
+					<!-- 修改密码表单 -->
+					<form id="update_password_form" action="#" method="post">
+						<div class="form-group">
+							<label>旧密码</label> 
+							<input id="old_password" type="password" class="form-control" placeholder="旧密码">
+							<span class="errorInfo" style="color: red;"></span>
+						</div>
+						<div class="form-group">
+							<label>新密码</label> 
+							<input id="new_password" type="password" class="form-control" placeholder="新密码">
+							<span class="errorInfo" style="color: red;"></span>
+						</div>
+						<div class="form-group">
+							<label>确认密码</label>
+							<input id="confirm_password" type="password" class="form-control" placeholder="确认密码">
+							<span class="errorInfo" style="color: red;"></span>
+						</div>
+						<div class="form-group">
+							<label>输入验证码</label> 
+							<input id="validate_code" type="text" class="form-control" placeholder="请输入手机验证码">
+							<span class="errorInfo" style="color: red;"></span>
+							<a id="get_validate_code" class="btn btn-default" href="#">获取验证码</a>
+							<span id="time_show" style="display: none;">请在<strong id="left_time"></strong>秒内输入验证码</span>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button id="comfirm_update_password" type="button" class="btn btn-primary">修改</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 
@@ -640,6 +688,7 @@
 	
 	/* 点击我的资料 */
 	$("#myInfo").click(function(){
+		/* 填充可以修改的数据到资料模态框 */
 		$("#myNickName").val("${curMember.mNickname}");
 		$("#mySignature").val("${curMember.mSignature}");
 		$("#myEmail").val("${curMember.mEmail}");
@@ -669,6 +718,120 @@
 			}
 		});
 		return false;
+	});
+	
+	/* 点击修改密码按钮 */
+	$("#updatePassword").click(function(){
+		$("#update_password_modal").modal("show");
+	});
+	
+	/* 点击发送验证码 样式的处理真让人恶心 烦烦烦*/
+	$("#get_validate_code").click(function(){
+		
+		/* 发送请求 */
+		$.ajax({
+			url:"${appPath}/member/sendvalidate",
+			type:"GET",
+			success:function(result){
+				alert("ok");
+				console.log(result);
+			},
+			error:function(XMLHttpRequest,textStatus){
+				alert(textStatus);
+			}
+		});
+		
+		/* 时间剩余显示 */
+		$("#time_show").show();
+		/* 发送验证码禁止点击 */
+		$("#get_validate_code").attr("disabled","disabled");
+		var time=60;
+		/* 定时任务 */
+		var setInt=setInterval(function(){
+			/* 如果没有时间剩余 */
+			if(time==0){
+				/* 移除禁止点击 */
+				$("#get_validate_code").removeAttr("disabled").text("重新发送验证码");
+				/* 时间清空 */
+				$("#left_time").text("").parent().hide();
+				/* 重新设定时间 */
+				time=60;
+				/* 清除定时任务 */
+				clearInterval(setInt);
+				/* 必须要返回 false，否则执行下面设置时间代码 */
+				return false;
+			}
+			/* 每秒更新时间 */
+			$("#left_time").text(time--);
+		},1000);
+		/* 禁用默认提交 */
+		return false;
+	});
+	
+	/* 点击确认修改密码 */
+	$("#comfirm_update_password").click(function(){
+		/* 清空错误信息 */
+		$(".errorInfo").text("");
+		
+		/* 验证修改密码表单 */
+		if($("#old_password").val().length==0){
+			$("#old_password").next().text("旧密码不能为空");
+			return false;
+		}
+		
+		if($("#old_password").val().length<6){
+			$("#old_password").next().text("旧密码长度太短");
+			return false;
+		}
+		
+		if($("#new_password").val().length==0){
+			$("#new_password").next().text("新密码不能为空");
+			return false;
+		}
+		
+		
+		if($("#new_password").val().length<6){
+			$("#new_password").next().text("新密码长度太短");
+			return false;
+		}
+		
+		if($("#confirm_password").val().length==0){
+			$("#confirm_password").next().text("确认密码不能为空");
+			return false;
+		}
+	
+		if($("#confirm_password").val().length<6){
+			$("#confirm_password").next().text("确认密码长度太短");
+			return false;
+		}
+		if($("#new_password").val()!=$("#confirm_password").val()){
+			$("#confirm_password").next().text("两次密码不一致");
+			return false;
+		}
+		
+		if($("#old_password").val()==$("#new_password").val()){
+			$("#new_password").next().text("新密码和旧密码不能一致");
+			return false;
+		}
+		
+		/* 必须是复杂密码：包含英文  数组  特殊字符 */
+		var regex = new RegExp('(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{8,30}');
+		if(!regex.test($("#new_password").val())){
+			$("#new_password").next().text("密码太简单了，必须包含英文  数字 特殊字符");
+			return false;
+		}
+		
+		/* 如果验证码为空 */
+		if($("#validate_code").val().length==0){
+			$("#validate_code").next().text("验证码不能为空");
+			return false;
+		}
+		
+		var old_password=console.log($("#old_password").val());
+		var new_password=console.log($("#new_password").val());
+		var confirm_password=console.log($("#confirm_password").val());
+		var validate_code=console.log($("#validate_code").val());
+		
 	});
 	
 </script>
