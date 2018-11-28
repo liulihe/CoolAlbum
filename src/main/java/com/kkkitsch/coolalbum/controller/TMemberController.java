@@ -141,7 +141,17 @@ public class TMemberController {
 		if (member != null) {
 			flag = tMemberServiceImpl.updateMyInfo(member);
 		}
-		return flag ? MyMsg.success("更新成功", null, null) : MyMsg.fail("更新失败", null, null);
+
+		if (flag) {
+			TMember uMember = (TMember) session.getAttribute(CUR_MEMBER);
+			uMember.setmNickname(member.getmNickname());
+			uMember.setmSignature(member.getmSignature());
+			uMember.setmEmail(member.getmEmail());
+			session.setAttribute(CUR_MEMBER, uMember);
+			return MyMsg.success("更新成功", uMember, null);
+		} else {
+			return MyMsg.fail("更新失败", null, null);
+		}
 	}
 
 }

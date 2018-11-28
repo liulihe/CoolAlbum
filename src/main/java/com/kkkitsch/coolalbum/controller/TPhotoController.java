@@ -76,7 +76,10 @@ public class TPhotoController {
 			if (!cur_file.isEmpty()) {
 
 				newFilename = cur_file.getOriginalFilename().substring(0, cur_file.getOriginalFilename().length() - 4)
-						+ "_" + (dateFormat.toString().replace(" ", "_").replace(":", "_"));
+						+ "_"
+						+ (dateFormat.toString().replace(" ", "_").replace(":", "_")
+								+ cur_file.getOriginalFilename().substring(cur_file.getOriginalFilename().length() - 4,
+										cur_file.getOriginalFilename().length()));
 
 				// 如果不是图片
 				if (!cur_file.getContentType().contains("image")) {

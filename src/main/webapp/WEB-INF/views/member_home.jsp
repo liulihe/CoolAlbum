@@ -23,13 +23,14 @@
 	
 				<!-- 下拉菜单 -->
 				<div class="dropdown">
-					<button class="btn btn-success dropdown-toggle" type="button"
-						id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
-						aria-expanded="true">
-						欢迎你，${curMember.mNickname } <span class="caret"></span>
+					
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						${curMember.mNickname } 
+						<span class="caret"></span>
 					</button>
-	
+
 					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+						<br>
 						<li><a id="myInfo" href="#">我的资料</a></li>
 						<li role="separator" class="divider"></li>
 						<li><a href="#">修改密码</a></li>
@@ -55,7 +56,7 @@
 			
 			<!-- 内容 -->
 			<div class="col-md-10">
-			
+				
 				<div id="contentDiv">新的一天 新的sang</div>
 
 				<div class="col-md-5" id="uploadDiv">
@@ -222,15 +223,15 @@
 					<form action="#" method="post" id="myInfoForm">
 						<div class="form-group">
 							<label class="control-label">账号</label>
-							<p class="form-control-static">${curMember.mNickname }</p>
+							<p class="form-control-static">${curMember.mAccountname }</p>
 						</div>
 						<div class="form-group">
 							<label class="control-label">昵称</label>
-							<input type="text" name="mNickname" class="form-control" value="${curMember.mNickname }" placeholder="输入昵称">
+							<input type="text" id="myNickName" name="mNickname" class="form-control" placeholder="输入昵称">
 						</div>
 						<div class="form-group">
 							<label class="control-label">邮箱</label>
-							<input type="email" name="mEmail" class="form-control" value="${curMember.mEmail }" placeholder="输入邮箱">
+							<input type="email" id="myEmail" name="mEmail" class="form-control" placeholder="输入邮箱">
 						</div>
 						<div class="form-group">
 							<label class="control-label">手机号</label>
@@ -242,7 +243,7 @@
 						</div>
 						<div class="form-group">
 							<label class="control-label">个性签名</label>
-							<textarea name="mSignature" class="form-control" rows="3">${curMember.mSignature }</textarea>
+							<textarea id="mySignature" name="mSignature" class="form-control" rows="3"></textarea>
 						</div>
 					</form>
 				</div>
@@ -639,6 +640,9 @@
 	
 	/* 点击我的资料 */
 	$("#myInfo").click(function(){
+		$("#myNickName").val("${curMember.mNickname}");
+		$("#mySignature").val("${curMember.mSignature}");
+		$("#myEmail").val("${curMember.mEmail}");
 		$("#myInfoModal").modal("show");
 	});
 	
