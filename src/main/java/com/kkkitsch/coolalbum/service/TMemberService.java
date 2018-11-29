@@ -13,4 +13,6 @@ public interface TMemberService {
 
 	public boolean updatePassword(TMember member);
 
+	public TMember selectById(Integer mId);
+
 }

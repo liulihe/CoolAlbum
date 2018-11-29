@@ -161,7 +161,7 @@ public class TMemberController {
 	@RequestMapping("/sendvalidate")
 	@ResponseBody
 	public MyMsg<TMember> updatePassword(HttpSession session) {
-		//假装发送了一个验证码
+		// 假装发送了一个验证码
 		session.setAttribute("VALIDATE_CODE", 666666);
 		return MyMsg.success("发送验证码成功", null, null);
 	}
@@ -173,6 +173,7 @@ public class TMemberController {
 	@ResponseBody
 	public MyMsg<TMember> comfirmUpdatePassword(HttpSession session, String oldPassword, String newPassword,
 			String comfirmPassword, String validateCode) {
+
 		// 后端验证
 		if (oldPassword == null) {
 			return MyMsg.fail("旧密码不能为空", null, null);
@@ -199,24 +200,32 @@ public class TMemberController {
 			return MyMsg.fail("两次新的密码不一致", null, null);
 		}
 		// 复杂密码
-		if (!newPassword.matches(
-				"^^(?![a-zA-z]+$)(?!\\d+$)(?![!@#$%^&*_-]+$)(?![a-zA-z\\d]+$)(?![a-zA-z!@#$%^&*_-]+$)(?![\\d!@#$%^&*_-]+$)[a-zA-Z\\d!@#$%^&*_-]+$")) {
+		if (!newPassword.matches("(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,30}")) {
 			return MyMsg.fail("新密码过于简单，必须包含字母，数字，特殊字符", null, null);
 		}
 		if (validateCode == null) {
 			return MyMsg.fail("验证码不能为空", null, null);
 		}
 		// 验证码不正确
-		if (!(Integer.parseInt(validateCode)==(Integer) session.getAttribute("VALIDATE_CODE"))) {
+		if (!(Integer.parseInt(validateCode) == (Integer) session.getAttribute("VALIDATE_CODE"))) {
 			return MyMsg.fail("验证码不正确", null, null);
 		}
 
 		Integer mId = ((TMember) (session.getAttribute(CUR_MEMBER))).getmId();
+		TMember tMember = tMemberServiceImpl.selectById(mId);
 		String accountName = ((TMember) (session.getAttribute(CUR_MEMBER))).getmAccountname();
+
+		if (tMember != null) {
+			if (!MD5.md5(accountName, oldPassword).equals(tMember.getmPassword())) {
+				return MyMsg.fail("您输入的旧密码不正确", null, null);
+			}
+		}
+
 		TMember member = new TMember();
 		member.setmId(mId);
 		member.setmPassword(MD5.md5(accountName, newPassword));
 		boolean flag = tMemberServiceImpl.updatePassword(member);
+
 		// 如果修改成功
 		if (flag) {
 			// 移除域对象

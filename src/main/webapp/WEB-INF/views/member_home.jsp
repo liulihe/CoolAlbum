@@ -830,12 +830,7 @@
 		$.ajax({
 			url:"${appPath}/member/comfirmUpdatePassword",
 			type:"GET",
-			data:{
-				"oldPassword":$("#old_password").val(),
-				"newPassword":$("#new_password").val(),
-				"comfirmPassword":$("#confirm_password").val(),
-				"validateCode":$("#validate_code").val()
-			},
+			data:$("#update_password_form").serialize(),
 			success:function(result){
 				if(result.code==1){
 					$("#update_password_modal").modal("hide");
@@ -858,6 +853,5 @@
 			}
 		});
 	});
-	
 </script>
 </html>

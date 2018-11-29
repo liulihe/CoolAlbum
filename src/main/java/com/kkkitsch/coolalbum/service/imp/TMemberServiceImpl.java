@@ -127,4 +127,10 @@ public class TMemberServiceImpl implements TMemberService {
 			return false;
 		}
 	}
+
+	@Override
+	public TMember selectById(Integer mId) {
+		TMember tMember = tMemberMapper.selectByPrimaryKey(mId);
+		return tMember == null ? null : tMember;
+	}
 }
