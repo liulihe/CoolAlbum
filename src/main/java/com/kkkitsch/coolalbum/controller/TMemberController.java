@@ -11,6 +11,7 @@ import static com.kkkitsch.coolalbum.common.MyConstant.*;
 
 import javax.servlet.http.HttpSession;
 
+import com.kkkitsch.coolalbum.common.MD5;
 import com.kkkitsch.coolalbum.entity.TMember;
 import com.kkkitsch.coolalbum.service.TMemberService;
 import com.kkkitsch.coolalbum.util.MyMsg;
@@ -160,9 +161,71 @@ public class TMemberController {
 	@RequestMapping("/sendvalidate")
 	@ResponseBody
 	public MyMsg<TMember> updatePassword(HttpSession session) {
-		Integer mId = ((TMember) (session.getAttribute(CUR_MEMBER))).getmId();
-		System.out.println("当前会员的id=" + mId);
-		return MyMsg.success("ok", null, null);
+		//假装发送了一个验证码
+		session.setAttribute("VALIDATE_CODE", 666666);
+		return MyMsg.success("发送验证码成功", null, null);
 	}
 
+	/**
+	 * 确认修改密码
+	 */
+	@RequestMapping("/comfirmUpdatePassword")
+	@ResponseBody
+	public MyMsg<TMember> comfirmUpdatePassword(HttpSession session, String oldPassword, String newPassword,
+			String comfirmPassword, String validateCode) {
+		// 后端验证
+		if (oldPassword == null) {
+			return MyMsg.fail("旧密码不能为空", null, null);
+		}
+		if (oldPassword.length() < 6) {
+			return MyMsg.fail("旧密码长度太短", null, null);
+		}
+		if (newPassword == null) {
+			return MyMsg.fail("新密码不能为空", null, null);
+		}
+		if (newPassword.length() < 6) {
+			return MyMsg.fail("新密码长度太短", null, null);
+		}
+		if (comfirmPassword == null) {
+			return MyMsg.fail("确认密码不能为空", null, null);
+		}
+		if (comfirmPassword.length() < 6) {
+			return MyMsg.fail("确认密码长度太短", null, null);
+		}
+		if (oldPassword.equals(newPassword)) {
+			return MyMsg.fail("旧密码和新密码不能一样", null, null);
+		}
+		if (!newPassword.equals(comfirmPassword)) {
+			return MyMsg.fail("两次新的密码不一致", null, null);
+		}
+		// 复杂密码
+		if (!newPassword.matches(
+				"^^(?![a-zA-z]+$)(?!\\d+$)(?![!@#$%^&*_-]+$)(?![a-zA-z\\d]+$)(?![a-zA-z!@#$%^&*_-]+$)(?![\\d!@#$%^&*_-]+$)[a-zA-Z\\d!@#$%^&*_-]+$")) {
+			return MyMsg.fail("新密码过于简单，必须包含字母，数字，特殊字符", null, null);
+		}
+		if (validateCode == null) {
+			return MyMsg.fail("验证码不能为空", null, null);
+		}
+		// 验证码不正确
+		if (!(Integer.parseInt(validateCode)==(Integer) session.getAttribute("VALIDATE_CODE"))) {
+			return MyMsg.fail("验证码不正确", null, null);
+		}
+
+		Integer mId = ((TMember) (session.getAttribute(CUR_MEMBER))).getmId();
+		String accountName = ((TMember) (session.getAttribute(CUR_MEMBER))).getmAccountname();
+		TMember member = new TMember();
+		member.setmId(mId);
+		member.setmPassword(MD5.md5(accountName, newPassword));
+		boolean flag = tMemberServiceImpl.updatePassword(member);
+		// 如果修改成功
+		if (flag) {
+			// 移除域对象
+			session.removeAttribute("VALIDATE_CODE");
+			session.removeAttribute(CUR_MEMBER);
+			return MyMsg.success("更新密码成功", null, null);
+		} else {
+			// 修改失败
+			return MyMsg.fail("更新密码失败", null, null);
+		}
+	}
 }

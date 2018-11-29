@@ -11,4 +11,6 @@ public interface TMemberService {
 
 	public boolean updateMyInfo(TMember member);
 
+	public boolean updatePassword(TMember member);
+
 }

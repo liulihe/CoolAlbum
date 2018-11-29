@@ -110,9 +110,20 @@ public class TMemberServiceImpl implements TMemberService {
 		int affectNum = -1;
 		try {
 			affectNum = tMemberMapper.updateByPrimaryKeySelective(member);
-			
+
 			return affectNum == 1 ? true : false;
 		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean updatePassword(TMember member) {
+		try {
+			int affectNum = tMemberMapper.updateByPrimaryKeySelective(member);
+			return affectNum == 1 ? true : false;
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}

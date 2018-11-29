@@ -164,7 +164,6 @@
 	</div>
 	<!-- /.modal -->
 	
-	
 	<!-- 图片详情modal -->
 	<div id="photo_detail_modal"  class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
 		<div class="modal-dialog modal-lg">
@@ -206,7 +205,6 @@
 			<!-- /.modal-content -->
 		</div>
 	</div>
-	
 	
 	<!-- 我的资料modal -->
 	<div id="myInfoModal" class="modal fade">
@@ -258,9 +256,6 @@
 	</div>
 	<!-- /.modal -->
 
-
-
-
 	<!-- 修改密码模态框 -->
 	<div id="update_password_modal" class="modal fade">
 		<div class="modal-dialog">
@@ -273,25 +268,28 @@
 				</div>
 				<div class="modal-body">
 					<!-- 修改密码表单 -->
-					<form id="update_password_form" action="#" method="post">
+					<form id="update_password_form" action="${appPath}/member/comfirmUpdatePassword" method="post">
+					
+						<span id="update_password_span" style="color: red;"></span>
+					
 						<div class="form-group">
 							<label>旧密码</label> 
-							<input id="old_password" type="password" class="form-control" placeholder="旧密码">
+							<input id="old_password" name="oldPassword" type="password" class="form-control" placeholder="旧密码">
 							<span class="errorInfo" style="color: red;"></span>
 						</div>
 						<div class="form-group">
 							<label>新密码</label> 
-							<input id="new_password" type="password" class="form-control" placeholder="新密码">
+							<input id="new_password" name="newPassword" type="password" class="form-control" placeholder="新密码">
 							<span class="errorInfo" style="color: red;"></span>
 						</div>
 						<div class="form-group">
 							<label>确认密码</label>
-							<input id="confirm_password" type="password" class="form-control" placeholder="确认密码">
+							<input id="confirm_password"  name="comfirmPassword" type="password" class="form-control" placeholder="确认密码">
 							<span class="errorInfo" style="color: red;"></span>
 						</div>
 						<div class="form-group">
 							<label>输入验证码</label> 
-							<input id="validate_code" type="text" class="form-control" placeholder="请输入手机验证码">
+							<input id="validate_code"  name="validateCode" type="text" class="form-control" placeholder="请输入手机验证码">
 							<span class="errorInfo" style="color: red;"></span>
 							<a id="get_validate_code" class="btn btn-default" href="#">获取验证码</a>
 							<span id="time_show" style="display: none;">请在<strong id="left_time"></strong>秒内输入验证码</span>
@@ -305,8 +303,6 @@
 			</div>
 		</div>
 	</div>
-
-
 
 </body>
 
@@ -733,8 +729,12 @@
 			url:"${appPath}/member/sendvalidate",
 			type:"GET",
 			success:function(result){
-				alert("ok");
-				console.log(result);
+				if(result.code==1){
+					jqueryAlert({
+						'content' : '发送验证码成功',
+						'closeTime' : 2000
+					});
+				}
 			},
 			error:function(XMLHttpRequest,textStatus){
 				alert(textStatus);
@@ -827,11 +827,36 @@
 			return false;
 		}
 		
-		var old_password=console.log($("#old_password").val());
-		var new_password=console.log($("#new_password").val());
-		var confirm_password=console.log($("#confirm_password").val());
-		var validate_code=console.log($("#validate_code").val());
-		
+		$.ajax({
+			url:"${appPath}/member/comfirmUpdatePassword",
+			type:"GET",
+			data:{
+				"oldPassword":$("#old_password").val(),
+				"newPassword":$("#new_password").val(),
+				"comfirmPassword":$("#confirm_password").val(),
+				"validateCode":$("#validate_code").val()
+			},
+			success:function(result){
+				if(result.code==1){
+					$("#update_password_modal").modal("hide");
+					jqueryAlert({
+						'content' : '更新成功，请重新登录',
+						'closeTime' : 1500
+					});
+					setTimeout(function(){
+						window.location.href="http://localhost:8080/CoolAlbum/";
+					},1500);
+				}else{
+					$("#update_password_span").text(result.msg);
+				}
+			},
+			error:function(XMLHttpRequest,textStatus){
+				jqueryAlert({
+					'content' : '更新失败，发生未知错误',
+					'closeTime' : 2000
+				});
+			}
+		});
 	});
 	
 </script>
