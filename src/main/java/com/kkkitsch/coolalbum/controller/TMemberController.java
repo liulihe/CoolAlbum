@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import static com.kkkitsch.coolalbum.common.MyConstant.*;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import com.kkkitsch.coolalbum.common.MD5;
@@ -249,4 +251,20 @@ public class TMemberController {
 			return MyMsg.fail("更新密码失败", null, null);
 		}
 	}
+
+	/**
+	 * 发现好友
+	 */
+	@RequestMapping("/findfriend")
+	@ResponseBody
+	public MyMsg<TMember> findFriend(String friendAcct) {
+		System.out.println("===" + friendAcct);
+		List<TMember> list = tMemberServiceImpl.findFriend(friendAcct);
+		if (list == null) {
+			return MyMsg.fail("没有此账号", null, null);
+		} else {
+			return MyMsg.success("查找成功", list.get(0), null);
+		}
+	}
+
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.kkkitsch.coolalbum.common.MD5;
 import com.kkkitsch.coolalbum.common.TimeFormat;
 import com.kkkitsch.coolalbum.dao.TMemberMapper;
+import com.kkkitsch.coolalbum.entity.TFriend;
 import com.kkkitsch.coolalbum.entity.TMember;
 import com.kkkitsch.coolalbum.entity.TMemberExample;
 import com.kkkitsch.coolalbum.entity.TMemberExample.Criteria;
@@ -132,5 +133,26 @@ public class TMemberServiceImpl implements TMemberService {
 	public TMember selectById(Integer mId) {
 		TMember tMember = tMemberMapper.selectByPrimaryKey(mId);
 		return tMember == null ? null : tMember;
+	}
+
+	@Override
+	public List<TMember> findFriend(String friendAcct) {
+		TMemberExample example = new TMemberExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andMAccountnameEqualTo(friendAcct);
+		List<TMember> list = tMemberMapper.selectByExample(example);
+		if (list != null && list.size() == 1) {
+			return list;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public List<TMember> getFriend(List<Integer> friendIdList) {
+		TMemberExample example = new TMemberExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andMIdIn(friendIdList);
+		return tMemberMapper.selectByExample(example);
 	}
 }

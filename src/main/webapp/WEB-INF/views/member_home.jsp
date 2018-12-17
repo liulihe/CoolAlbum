@@ -45,14 +45,7 @@
 		<!-- 栅格系统开始 -->
 		<div class="row">
 			<!-- 菜单 -->
-			<div class="col-md-2">
-				<ul class="nav nav-pills nav-stacked">
-					<li id="uploadFile" role="presentation"><a href="#">上传图片</a></li>
-					<li id="scanFile" role="presentation"><a href="#">浏览图片</a></li>
-					<li id="messageManage" role="presentation"><a href="#">留言管理</a></li>
-					<li id="typeManage" role="presentation"><a href="#">类型管理</a></li>
-				</ul>
-			</div>
+			<%@include file="/WEB-INF/common/menu.jsp"%>
 			
 			<!-- 内容 -->
 			<div class="col-md-10">
@@ -85,10 +78,7 @@
 					</form>
 				</div>
 				
-				<div id="scanDiv">
-				</div>
-				
-				<div id="messageDiv">消息</div>
+				<div id="scanDiv"></div>
 				
 				<div id="typeDiv">
 					
@@ -127,6 +117,32 @@
 						</tbody>
 					</table>	
 				</div>
+				
+				<div id="friendDiv">
+					<div class="input-group col-md-4 col-md-offset-8">
+						<input type="text" class="form-control" id="searchText" placeholder="输入账号名称进行添加" /> 
+						<span class="input-group-addon" id="searchButton"> 
+							<a href="#">搜索</a>
+						</span>
+					</div>
+					<div id="searchResult" class="col-md-4 col-md-offset-8" style="display: none;">
+						<span id="resultSpan"></span>
+					</div>
+					<div id="friendList">
+						<table id="friendTable" class="table table-hover table-striped">
+							<thead>
+								<tr>
+									<td>名称</td>
+									<td>操作</td>
+								</tr>
+							</thead>
+							<tbody id="friendBody">
+							</tbody>
+						</table>	
+					</div>
+				</div>
+				
+				<div id="messageDiv">留言功能暂未实现</div>
 				
 			</div>
 		</div>
@@ -557,7 +573,80 @@
 			}
 		});
 	});
-			
+	
+	/* 查找所有好友 */
+	function getFriend(){
+		$.ajax({
+			url:"${appPath}/friend/getfriend",
+			success:function(result){
+				if(result.code==1){
+					alert(result.msg);
+				}else{
+					alert(result.msg);
+				}
+			},
+			error:function(XMLHttpRequest,textStatus){
+				alert("textStatus");
+			}
+		});
+	}
+
+	/* 点击好友管理 */
+	$("#friendManage").click(function(){
+		$("#friendDiv").show().siblings().hide();
+		getFriend();
+	});
+	
+	/* 点击添加好友 */
+	$("#searchButton").click(function(){
+		var friendAcct=$("#searchText").val();		
+		/* 如果输入是否为空 */
+		if(friendAcct.trim().length==0){
+			jqueryAlert({
+				'content' : '请输入好友账号',
+				'closeTime' : 2000
+			});
+		}else{
+			$.ajax({
+				url:"${appPath}/member/findfriend",
+				data:{
+					"friendAcct":friendAcct
+				},
+				type:"GET",
+				success:function(result){
+					if(result.code==1){
+						var addBtn=$("<a id='confirmAdd' class='btn btn-default btn-xs' href='#' role='button' shid='"+result.content.mId+"'>添加</a>");
+						$("#resultSpan").text(result.content.mAccountname+" ").append(addBtn);
+					}else{
+						$("#resultSpan").text("没有此账号");
+					}
+					$("#searchResult").show();
+				},
+				error:function(XMLHttpRequest,textStatus){
+					alert("error:"+textStatus);
+				}
+			});
+		}
+	});
+	
+	/* 点击确认添加好友 */
+	$("body").on("click","#confirmAdd",function(){
+		var friendId=$("#confirmAdd").attr("shid");
+		$.ajax({
+			url:"${appPath}/friend/confirmadd",
+			type:"GET",
+			data:{
+				"friendId":friendId
+			},
+			success:function(result){
+				$("#searchResult").hide();
+			},
+			error:function(XMLHttpRequest,textStatus){
+				alert("error");
+			}
+		});
+	});
+	
 	/* 点击留言管理 */
 	$("#messageManage").click(function(){
 		$("#messageDiv").show().siblings().hide();
