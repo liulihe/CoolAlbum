@@ -160,10 +160,18 @@ public class TMemberController {
 	 */
 	@RequestMapping("/sendvalidate")
 	@ResponseBody
-	public MyMsg<TMember> updatePassword(HttpSession session) {
+	public MyMsg<TMember> sendValidate(HttpSession session) {
 		// 假装发送了一个验证码
 		session.setAttribute("VALIDATE_CODE", 666666);
 		return MyMsg.success("发送验证码成功", null, null);
+	}
+
+	/**
+	 * 验证码失效
+	 */
+	@RequestMapping("/removevalidate")
+	public void removeValidate(HttpSession session) {
+		session.removeAttribute("VALIDATE_CODE");
 	}
 
 	/**
@@ -187,6 +195,10 @@ public class TMemberController {
 		if (newPassword.length() < 6) {
 			return MyMsg.fail("新密码长度太短", null, null);
 		}
+		// 复杂密码
+		if (!newPassword.matches("(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,30}")) {
+			return MyMsg.fail("新密码过于简单，必须包含字母，数字，特殊字符", null, null);
+		}
 		if (comfirmPassword == null) {
 			return MyMsg.fail("确认密码不能为空", null, null);
 		}
@@ -199,12 +211,11 @@ public class TMemberController {
 		if (!newPassword.equals(comfirmPassword)) {
 			return MyMsg.fail("两次新的密码不一致", null, null);
 		}
-		// 复杂密码
-		if (!newPassword.matches("(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,30}")) {
-			return MyMsg.fail("新密码过于简单，必须包含字母，数字，特殊字符", null, null);
-		}
-		if (validateCode == null) {
+		if (validateCode == null || "".equals(validateCode.trim())) {
 			return MyMsg.fail("验证码不能为空", null, null);
+		}
+		if (!validateCode.matches("[0-9]{6}")) {
+			return MyMsg.fail("验证码格式错误，只能为6位纯数字", null, null);
 		}
 		// 验证码不正确
 		if (!(Integer.parseInt(validateCode) == (Integer) session.getAttribute("VALIDATE_CODE"))) {
@@ -221,6 +232,7 @@ public class TMemberController {
 			}
 		}
 
+		// 更新密码
 		TMember member = new TMember();
 		member.setmId(mId);
 		member.setmPassword(MD5.md5(accountName, newPassword));

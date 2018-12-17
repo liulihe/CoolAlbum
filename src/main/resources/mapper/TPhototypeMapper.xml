@@ -20,7 +20,8 @@
 									and ${criterion.condition} #{criterion.value}
 								</when>
 								<when test="criterion.betweenValue">
-									and ${criterion.condition} #{criterion.value} and
+									and ${criterion.condition} #{criterion.value}
+									and
 									#{criterion.secondValue}
 								</when>
 								<when test="criterion.listValue">
@@ -52,7 +53,8 @@
 									and ${criterion.condition} #{criterion.value}
 								</when>
 								<when test="criterion.betweenValue">
-									and ${criterion.condition} #{criterion.value} and
+									and ${criterion.condition} #{criterion.value}
+									and
 									#{criterion.secondValue}
 								</when>
 								<when test="criterion.listValue">
@@ -95,7 +97,8 @@
 		where p_id = #{pId,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from phototype
+		delete from
+		phototype
 		where p_id = #{pId,jdbcType=INTEGER}
 	</delete>
 	<delete id="deleteByExample" parameterType="com.kkkitsch.coolalbum.entity.TPhototypeExample">
@@ -105,13 +108,16 @@
 		</if>
 	</delete>
 	<insert id="insert" parameterType="com.kkkitsch.coolalbum.entity.TPhototype">
-		insert into phototype (p_id, p_typename, p_member_id
+		insert into phototype (p_id,
+		p_typename, p_member_id
 		)
-		values (#{pId,jdbcType=INTEGER}, #{pTypename,jdbcType=VARCHAR},
+		values (#{pId,jdbcType=INTEGER},
+		#{pTypename,jdbcType=VARCHAR},
 		#{pMemberId,jdbcType=INTEGER}
 		)
 	</insert>
-	<insert id="insertSelective" parameterType="com.kkkitsch.coolalbum.entity.TPhototype" keyProperty="pId">
+	<insert id="insertSelective" parameterType="com.kkkitsch.coolalbum.entity.TPhototype"
+		keyProperty="pId">
 		insert into phototype
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="pId != null">
@@ -163,8 +169,10 @@
 	<update id="updateByExample" parameterType="map">
 		update phototype
 		set p_id = #{record.pId,jdbcType=INTEGER},
-		p_typename = #{record.pTypename,jdbcType=VARCHAR},
-		p_member_id = #{record.pMemberId,jdbcType=INTEGER}
+		p_typename =
+		#{record.pTypename,jdbcType=VARCHAR},
+		p_member_id =
+		#{record.pMemberId,jdbcType=INTEGER}
 		<if test="_parameter != null">
 			<include refid="Update_By_Example_Where_Clause" />
 		</if>
@@ -184,7 +192,8 @@
 	<update id="updateByPrimaryKey" parameterType="com.kkkitsch.coolalbum.entity.TPhototype">
 		update phototype
 		set p_typename = #{pTypename,jdbcType=VARCHAR},
-		p_member_id = #{pMemberId,jdbcType=INTEGER}
+		p_member_id =
+		#{pMemberId,jdbcType=INTEGER}
 		where p_id = #{pId,jdbcType=INTEGER}
 	</update>
 </mapper>

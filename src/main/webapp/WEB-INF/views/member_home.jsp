@@ -219,7 +219,7 @@
 				</div>
 				<div class="modal-body">
 					<form action="#" method="post" id="myInfoForm">
-						<div class="form-group">d
+						<div class="form-group">
 							<label class="control-label">账号</label>
 							<p class="form-control-static">${curMember.mAccountname }</p>
 						</div>
@@ -758,6 +758,8 @@
 				time=60;
 				/* 清除定时任务 */
 				clearInterval(setInt);
+				/* 让验证码失效 */
+				$.get("${appPath}/member/removevalidate");
 				/* 必须要返回 false，否则执行下面设置时间代码 */
 				return false;
 			}
@@ -799,15 +801,6 @@
 			$("#confirm_password").next().text("确认密码不能为空");
 			return false;
 		}
-	
-		if($("#confirm_password").val().length<6){
-			$("#confirm_password").next().text("确认密码长度太短");
-			return false;
-		}
-		if($("#new_password").val()!=$("#confirm_password").val()){
-			$("#confirm_password").next().text("两次密码不一致");
-			return false;
-		}
 		
 		if($("#old_password").val()==$("#new_password").val()){
 			$("#new_password").next().text("新密码和旧密码不能一致");
@@ -820,10 +813,26 @@
 			$("#new_password").next().text("密码太简单了，必须包含英文  数字 特殊字符");
 			return false;
 		}
+	
+		if($("#confirm_password").val().length<6){
+			$("#confirm_password").next().text("确认密码长度太短");
+			return false;
+		}
+		if($("#new_password").val()!=$("#confirm_password").val()){
+			$("#confirm_password").next().text("两次密码不一致");
+			return false;
+		}
 		
 		/* 如果验证码为空 */
 		if($("#validate_code").val().length==0){
 			$("#validate_code").next().text("验证码不能为空");
+			return false;
+		}
+		
+		/* 验证码格式 */
+		var regex = new RegExp('[0-9]{6}');
+		if(!regex.test($("#validate_code").val())){
+			$("#validate_code").next().text("验证码格式错误，只能为6位数字");
 			return false;
 		}
 		

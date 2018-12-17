@@ -653,6 +653,76 @@ public class TMemberExample {
             addCriterion("m_signature not between", value1, value2, "mSignature");
             return (Criteria) this;
         }
+
+        public Criteria andMStatusIsNull() {
+            addCriterion("m_status is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMStatusIsNotNull() {
+            addCriterion("m_status is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMStatusEqualTo(String value) {
+            addCriterion("m_status =", value, "mStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andMStatusNotEqualTo(String value) {
+            addCriterion("m_status <>", value, "mStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andMStatusGreaterThan(String value) {
+            addCriterion("m_status >", value, "mStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andMStatusGreaterThanOrEqualTo(String value) {
+            addCriterion("m_status >=", value, "mStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andMStatusLessThan(String value) {
+            addCriterion("m_status <", value, "mStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andMStatusLessThanOrEqualTo(String value) {
+            addCriterion("m_status <=", value, "mStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andMStatusLike(String value) {
+            addCriterion("m_status like", value, "mStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andMStatusNotLike(String value) {
+            addCriterion("m_status not like", value, "mStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andMStatusIn(List<String> values) {
+            addCriterion("m_status in", values, "mStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andMStatusNotIn(List<String> values) {
+            addCriterion("m_status not in", values, "mStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andMStatusBetween(String value1, String value2) {
+            addCriterion("m_status between", value1, value2, "mStatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andMStatusNotBetween(String value1, String value2) {
+            addCriterion("m_status not between", value1, value2, "mStatus");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

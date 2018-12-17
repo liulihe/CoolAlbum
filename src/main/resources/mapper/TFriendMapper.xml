@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.kkkitsch.coolalbum.dao.TUserMapper">
-	<resultMap id="BaseResultMap" type="com.kkkitsch.coolalbum.entity.TUser">
-		<id column="u_id" jdbcType="INTEGER" property="uId" />
-		<result column="u_accountname" jdbcType="VARCHAR" property="uAccountname" />
-		<result column="u_nickname" jdbcType="VARCHAR" property="uNickname" />
-		<result column="u_password" jdbcType="VARCHAR" property="uPassword" />
+<mapper namespace="com.kkkitsch.coolalbum.dao.TFriendMapper">
+	<resultMap id="BaseResultMap" type="com.kkkitsch.coolalbum.entity.TFriend">
+		<id column="f_id" jdbcType="INTEGER" property="fId" />
+		<result column="f_memberid" jdbcType="INTEGER" property="fMemberid" />
+		<result column="f_friendid" jdbcType="INTEGER" property="fFriendid" />
 	</resultMap>
 	<sql id="Example_Where_Clause">
 		<where>
@@ -71,16 +70,16 @@
 		</where>
 	</sql>
 	<sql id="Base_Column_List">
-		u_id, u_accountname, u_nickname, u_password
+		f_id, f_memberid, f_friendid
 	</sql>
-	<select id="selectByExample" parameterType="com.kkkitsch.coolalbum.entity.TUserExample"
+	<select id="selectByExample" parameterType="com.kkkitsch.coolalbum.entity.TFriendExample"
 		resultMap="BaseResultMap">
 		select
 		<if test="distinct">
 			distinct
 		</if>
 		<include refid="Base_Column_List" />
-		from user
+		from friend
 		<if test="_parameter != null">
 			<include refid="Example_Where_Clause" />
 		</if>
@@ -92,78 +91,69 @@
 		resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
-		from user
-		where u_id = #{uId,jdbcType=INTEGER}
+		from friend
+		where f_id = #{fId,jdbcType=INTEGER}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-		delete from user
-		where u_id = #{uId,jdbcType=INTEGER}
+		delete from friend
+		where f_id = #{fId,jdbcType=INTEGER}
 	</delete>
-	<delete id="deleteByExample" parameterType="com.kkkitsch.coolalbum.entity.TUserExample">
-		delete from user
+	<delete id="deleteByExample" parameterType="com.kkkitsch.coolalbum.entity.TFriendExample">
+		delete from friend
 		<if test="_parameter != null">
 			<include refid="Example_Where_Clause" />
 		</if>
 	</delete>
-	<insert id="insert" parameterType="com.kkkitsch.coolalbum.entity.TUser">
-		insert into user (u_id, u_accountname, u_nickname,
-		u_password)
-		values (#{uId,jdbcType=INTEGER}, #{uAccountname,jdbcType=VARCHAR},
-		#{uNickname,jdbcType=VARCHAR},
-		#{uPassword,jdbcType=VARCHAR})
+	<insert id="insert" parameterType="com.kkkitsch.coolalbum.entity.TFriend">
+		insert into friend (f_id, f_memberid, f_friendid
+		)
+		values (#{fId,jdbcType=INTEGER}, #{fMemberid,jdbcType=INTEGER},
+		#{fFriendid,jdbcType=INTEGER}
+		)
 	</insert>
-	<insert id="insertSelective" parameterType="com.kkkitsch.coolalbum.entity.TUser">
-		insert into user
+	<insert id="insertSelective" parameterType="com.kkkitsch.coolalbum.entity.TFriend">
+		insert into friend
 		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="uId != null">
-				u_id,
+			<if test="fId != null">
+				f_id,
 			</if>
-			<if test="uAccountname != null">
-				u_accountname,
+			<if test="fMemberid != null">
+				f_memberid,
 			</if>
-			<if test="uNickname != null">
-				u_nickname,
-			</if>
-			<if test="uPassword != null">
-				u_password,
+			<if test="fFriendid != null">
+				f_friendid,
 			</if>
 		</trim>
 		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="uId != null">
-				#{uId,jdbcType=INTEGER},
+			<if test="fId != null">
+				#{fId,jdbcType=INTEGER},
 			</if>
-			<if test="uAccountname != null">
-				#{uAccountname,jdbcType=VARCHAR},
+			<if test="fMemberid != null">
+				#{fMemberid,jdbcType=INTEGER},
 			</if>
-			<if test="uNickname != null">
-				#{uNickname,jdbcType=VARCHAR},
-			</if>
-			<if test="uPassword != null">
-				#{uPassword,jdbcType=VARCHAR},
+			<if test="fFriendid != null">
+				#{fFriendid,jdbcType=INTEGER},
 			</if>
 		</trim>
 	</insert>
-	<select id="countByExample" parameterType="com.kkkitsch.coolalbum.entity.TUserExample"
+	<select id="countByExample" parameterType="com.kkkitsch.coolalbum.entity.TFriendExample"
 		resultType="java.lang.Long">
-		select count(*) from user
+		select count(*) from friend
 		<if test="_parameter != null">
 			<include refid="Example_Where_Clause" />
 		</if>
 	</select>
 	<update id="updateByExampleSelective" parameterType="map">
-		update user
+		update friend
 		<set>
-			<if test="record.uId != null">
-				u_id = #{record.uId,jdbcType=INTEGER},
+			<if test="record.fId != null">
+				f_id = #{record.fId,jdbcType=INTEGER},
 			</if>
-			<if test="record.uAccountname != null">
-				u_accountname = #{record.uAccountname,jdbcType=VARCHAR},
+			<if test="record.fMemberid != null">
+				f_memberid = #{record.fMemberid,jdbcType=INTEGER},
 			</if>
-			<if test="record.uNickname != null">
-				u_nickname = #{record.uNickname,jdbcType=VARCHAR},
-			</if>
-			<if test="record.uPassword != null">
-				u_password = #{record.uPassword,jdbcType=VARCHAR},
+			<if test="record.fFriendid != null">
+				f_friendid = #{record.fFriendid,jdbcType=INTEGER},
 			</if>
 		</set>
 		<if test="_parameter != null">
@@ -171,35 +161,30 @@
 		</if>
 	</update>
 	<update id="updateByExample" parameterType="map">
-		update user
-		set u_id = #{record.uId,jdbcType=INTEGER},
-		u_accountname = #{record.uAccountname,jdbcType=VARCHAR},
-		u_nickname = #{record.uNickname,jdbcType=VARCHAR},
-		u_password = #{record.uPassword,jdbcType=VARCHAR}
+		update friend
+		set f_id = #{record.fId,jdbcType=INTEGER},
+		f_memberid = #{record.fMemberid,jdbcType=INTEGER},
+		f_friendid = #{record.fFriendid,jdbcType=INTEGER}
 		<if test="_parameter != null">
 			<include refid="Update_By_Example_Where_Clause" />
 		</if>
 	</update>
-	<update id="updateByPrimaryKeySelective" parameterType="com.kkkitsch.coolalbum.entity.TUser">
-		update user
+	<update id="updateByPrimaryKeySelective" parameterType="com.kkkitsch.coolalbum.entity.TFriend">
+		update friend
 		<set>
-			<if test="uAccountname != null">
-				u_accountname = #{uAccountname,jdbcType=VARCHAR},
+			<if test="fMemberid != null">
+				f_memberid = #{fMemberid,jdbcType=INTEGER},
 			</if>
-			<if test="uNickname != null">
-				u_nickname = #{uNickname,jdbcType=VARCHAR},
-			</if>
-			<if test="uPassword != null">
-				u_password = #{uPassword,jdbcType=VARCHAR},
+			<if test="fFriendid != null">
+				f_friendid = #{fFriendid,jdbcType=INTEGER},
 			</if>
 		</set>
-		where u_id = #{uId,jdbcType=INTEGER}
+		where f_id = #{fId,jdbcType=INTEGER}
 	</update>
-	<update id="updateByPrimaryKey" parameterType="com.kkkitsch.coolalbum.entity.TUser">
-		update user
-		set u_accountname = #{uAccountname,jdbcType=VARCHAR},
-		u_nickname = #{uNickname,jdbcType=VARCHAR},
-		u_password = #{uPassword,jdbcType=VARCHAR}
-		where u_id = #{uId,jdbcType=INTEGER}
+	<update id="updateByPrimaryKey" parameterType="com.kkkitsch.coolalbum.entity.TFriend">
+		update friend
+		set f_memberid = #{fMemberid,jdbcType=INTEGER},
+		f_friendid = #{fFriendid,jdbcType=INTEGER}
+		where f_id = #{fId,jdbcType=INTEGER}
 	</update>
 </mapper>

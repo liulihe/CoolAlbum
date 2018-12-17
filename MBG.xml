@@ -55,6 +55,7 @@
 
 		<!-- 映射 -->
 		<table tableName="member" domainObjectName="TMember"></table>
+		<table tableName="friend" domainObjectName="TFriend"></table>
 		<!-- <table tableName="photo" domainObjectName="TPhoto"></table>
 		
 		<table tableName="message" domainObjectName="TMessage"></table>

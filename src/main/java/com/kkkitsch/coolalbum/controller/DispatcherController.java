@@ -10,5 +10,4 @@ public class DispatcherController {
     public String dispatcher(){
         return "member_home";
     }
-    
 }

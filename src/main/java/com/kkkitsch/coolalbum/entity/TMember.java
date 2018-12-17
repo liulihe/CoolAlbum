@@ -17,6 +17,8 @@ public class TMember {
 
     private String mSignature;
 
+    private String mStatus;
+
     public Integer getmId() {
         return mId;
     }
@@ -81,13 +83,19 @@ public class TMember {
         this.mSignature = mSignature == null ? null : mSignature.trim();
     }
 
+    public String getmStatus() {
+        return mStatus;
+    }
+
+    public void setmStatus(String mStatus) {
+        this.mStatus = mStatus == null ? null : mStatus.trim();
+    }
+
 	@Override
 	public String toString() {
 		return "TMember [mId=" + mId + ", mAccountname=" + mAccountname + ", mNickname=" + mNickname + ", mPassword="
 				+ mPassword + ", mEmail=" + mEmail + ", mPhone=" + mPhone + ", mCreatetime=" + mCreatetime
-				+ ", mSignature=" + mSignature + "]";
+				+ ", mSignature=" + mSignature + ", mStatus=" + mStatus + "]";
 	}
-    
-    
     
 }
