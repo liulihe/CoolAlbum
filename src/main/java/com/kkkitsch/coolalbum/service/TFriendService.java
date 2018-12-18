@@ -8,8 +8,10 @@ import com.kkkitsch.coolalbum.util.MyMsg;
 
 public interface TFriendService {
 
-	public MyMsg<TMember> confirmAdd(Integer curMemId, String friendId);
+	public MyMsg<TMember> confirmAdd(Integer curMemId, String curMemAcct,String friendId,String friendAcct);
 
-	public List<TFriend> getFriend(Integer getmId);
+	public MyMsg<List<TFriend>> getFriend(Integer getmId);
+
+	public MyMsg<TFriend> blackFriend(Integer curMemId, String friendId);
 
 }

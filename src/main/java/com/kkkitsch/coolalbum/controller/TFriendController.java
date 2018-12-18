@@ -2,7 +2,6 @@ package com.kkkitsch.coolalbum.controller;
 
 import static com.kkkitsch.coolalbum.common.MyConstant.CUR_MEMBER;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -33,10 +32,11 @@ public class TFriendController {
 	 */
 	@RequestMapping("/confirmadd")
 	@ResponseBody
-	public MyMsg<TMember> confirmAdd(String friendId, HttpSession session) {
+	public MyMsg<TMember> confirmAdd(String friendId, String friendAcct, HttpSession session) {
 		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
 		Integer curMemId = member.getmId();
-		return tFriendServiceImpl.confirmAdd(curMemId, friendId);
+		String curMemAcct = member.getmAccountname();
+		return tFriendServiceImpl.confirmAdd(curMemId, curMemAcct, friendId, friendAcct);
 	}
 
 	/**
@@ -44,21 +44,19 @@ public class TFriendController {
 	 */
 	@RequestMapping("/getfriend")
 	@ResponseBody
-	public MyMsg<List<TMember>> getFriend(HttpSession session) {
+	public MyMsg<List<TFriend>> getFriend(HttpSession session) {
 		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
-		List<TFriend> friendList = tFriendServiceImpl.getFriend(member.getmId());
-		// 没有好友
-		if (friendList.isEmpty()) {
-			return MyMsg.fail("没有好友，赶紧去添加一些吧", null, null);
-		} else {
-			List<Integer> friendIdList = new ArrayList<Integer>();
-			for (TFriend friend : friendList) {
-				// 集合中保存好友id
-				friendIdList.add(friend.getfFriendid());
-			}
-			// 根据好友id查询好友信息
-			List<TMember> fIdList = tMemberService.getFriend(friendIdList);
-			return MyMsg.success("好友查询成功", fIdList, null);
-		}
+		return tFriendServiceImpl.getFriend(member.getmId());
+	}
+
+	/**
+	 * 加入黑名单
+	 */
+	@RequestMapping("/black")
+	@ResponseBody
+	public MyMsg<TFriend> black(String friendId, HttpSession session) {
+		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
+		Integer curMemId = member.getmId();
+		return tFriendServiceImpl.blackFriend(curMemId,friendId);
 	}
 }

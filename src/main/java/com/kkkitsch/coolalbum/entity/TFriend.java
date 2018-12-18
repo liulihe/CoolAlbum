@@ -5,7 +5,11 @@ public class TFriend {
 
     private Integer fMemberid;
 
+    private String fFriendacct;
+
     private Integer fFriendid;
+
+    private String fIsblack;
 
     public Integer getfId() {
         return fId;
@@ -23,6 +27,14 @@ public class TFriend {
         this.fMemberid = fMemberid;
     }
 
+    public String getfFriendacct() {
+        return fFriendacct;
+    }
+
+    public void setfFriendacct(String fFriendacct) {
+        this.fFriendacct = fFriendacct == null ? null : fFriendacct.trim();
+    }
+
     public Integer getfFriendid() {
         return fFriendid;
     }
@@ -31,9 +43,20 @@ public class TFriend {
         this.fFriendid = fFriendid;
     }
 
+    public String getfIsblack() {
+        return fIsblack;
+    }
+
+    public void setfIsblack(String fIsblack) {
+        this.fIsblack = fIsblack == null ? null : fIsblack.trim();
+    }
+
 	@Override
 	public String toString() {
-		return "TFriend [fId=" + fId + ", fMemberid=" + fMemberid + ", fFriendid=" + fFriendid + "]";
+		return "TFriend [fId=" + fId + ", fMemberid=" + fMemberid + ", fFriendacct=" + fFriendacct + ", fFriendid="
+				+ fFriendid + ", fIsblack=" + fIsblack + "]";
 	}
+    
+    
     
 }

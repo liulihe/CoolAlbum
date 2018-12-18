@@ -42,7 +42,7 @@
 		</div>
 		<!-- 顶部栅格结束 -->
 
-		<!-- 栅格系统开始 -->
+		<!-- 栅格开始 -->
 		<div class="row">
 			<!-- 菜单 -->
 			<%@include file="/WEB-INF/common/menu.jsp"%>
@@ -120,7 +120,7 @@
 				
 				<div id="friendDiv">
 					<div class="input-group col-md-4 col-md-offset-8">
-						<input type="text" class="form-control" id="searchText" placeholder="输入账号名称进行添加" /> 
+						<input type="text" class="form-control" id="searchText" placeholder="输入账号直接添加" /> 
 						<span class="input-group-addon" id="searchButton"> 
 							<a href="#">搜索</a>
 						</span>
@@ -132,7 +132,7 @@
 						<table id="friendTable" class="table table-hover table-striped">
 							<thead>
 								<tr>
-									<td>名称</td>
+									<td>好友</td>
 									<td>操作</td>
 								</tr>
 							</thead>
@@ -579,25 +579,75 @@
 		$.ajax({
 			url:"${appPath}/friend/getfriend",
 			success:function(result){
+				console.log(result);
 				if(result.code==1){
-					alert(result.msg);
+					$("#friendBody").empty();
+					$.each(result.content,function(index,element){
+						var acctTd=$("<td></td>").append(this.fFriendacct);
+						var accessBtn=$("<a data='"+this.fFriendid+"' class='btn btn-success btn-xs accessBtn' href='#' role='button'>访问</a>");
+						var deleteBtn=$("<a data='"+this.fFriendid+"' class='btn btn-danger btn-xs deleteBtn' href='#' role='button'>删除</a>");
+						if(this.fIsblack==0){
+							var blackBtn=$("<a data='"+this.fFriendid+"' class='btn btn-danger btn-xs blackBtn' href='#' role='button'>加入黑名单</a>");
+						}else{
+							var blackBtn=$("<a data='"+this.fFriendid+"' class='btn btn-danger btn-xs blackBtn' href='#' role='button'>移除黑名单</a>");
+						}
+						var opeTd=$("<td></td>").append(accessBtn).append(" ").append(deleteBtn).append(" ").append(blackBtn);
+						var tr=$("<tr></tr>").append(acctTd).append(opeTd);
+						$("#friendBody").append(tr);
+					});
 				}else{
-					alert(result.msg);
+					jqueryAlert({
+					    'content' : result.msg,
+					    'closeTime' : 1000
+					});
 				}
 			},
 			error:function(XMLHttpRequest,textStatus){
-				alert("textStatus");
+				alert(textStatus);
 			}
 		});
 	}
-
+	
+	/* 点击访问 */
+	$("body").on("click",".accessBtn",function(){
+		alert("访问");
+	});
+	
+	/* 点击删除好友 */
+	$("body").on("click",".deleteBtn",function(){
+		alert("删除");
+	});
+	
+	/* 点击黑名单 */
+	$("body").on("click",".blackBtn",function(){
+		/* ajax成功回调函数success当中使用$(this)和下面一行代码中的$(this)不是同一个东西 */
+		var blackBtn=$(this);
+		$.ajax({
+			url:"${appPath}/friend/black",
+			type:"GET",
+			data:{
+				"friendId":$(this).attr("data")
+			},
+			success:function(result){
+				if(result.content.fIsblack==0){
+					blackBtn.text("加入黑名单")
+				}else{
+					blackBtn.text("移除黑名单")
+				}
+			},
+			error:function(XMLHttpRequest,textStatus){
+				alert(textStatus);
+			}
+		});
+	});
+	
 	/* 点击好友管理 */
 	$("#friendManage").click(function(){
 		$("#friendDiv").show().siblings().hide();
 		getFriend();
 	});
 	
-	/* 点击添加好友 */
+	/* 搜索好友 */
 	$("#searchButton").click(function(){
 		var friendAcct=$("#searchText").val();		
 		/* 如果输入是否为空 */
@@ -616,9 +666,9 @@
 				success:function(result){
 					if(result.code==1){
 						var addBtn=$("<a id='confirmAdd' class='btn btn-default btn-xs' href='#' role='button' shid='"+result.content.mId+"'>添加</a>");
-						$("#resultSpan").text(result.content.mAccountname+" ").append(addBtn);
+						$("#resultSpan").text(result.content.mAccountname+" ").attr("acct",result.content.mAccountname).append(addBtn);
 					}else{
-						$("#resultSpan").text("没有此账号");
+						$("#resultSpan").text(result.msg);
 					}
 					$("#searchResult").show();
 				},
@@ -629,14 +679,16 @@
 		}
 	});
 	
-	/* 点击确认添加好友 */
+	/* 确认添加好友 */
 	$("body").on("click","#confirmAdd",function(){
 		var friendId=$("#confirmAdd").attr("shid");
+		var friendAcct=$("#resultSpan").attr("acct");
 		$.ajax({
 			url:"${appPath}/friend/confirmadd",
 			type:"GET",
 			data:{
-				"friendId":friendId
+				"friendId":friendId,
+				"friendAcct":friendAcct
 			},
 			success:function(result){
 				$("#searchResult").hide();
@@ -837,14 +889,14 @@
 		/* 时间剩余显示 */
 		$("#time_show").show();
 		/* 发送验证码禁止点击 */
-		$("#get_validate_code").attr("disabled","disabled");
+		$("#get_validate_code").hide();
 		var time=60;
 		/* 定时任务 */
 		var setInt=setInterval(function(){
 			/* 如果没有时间剩余 */
 			if(time==0){
 				/* 移除禁止点击 */
-				$("#get_validate_code").removeAttr("disabled").text("重新发送验证码");
+				$("#get_validate_code").text("重新发送验证码").show();
 				/* 时间清空 */
 				$("#left_time").text("").parent().hide();
 				/* 重新设定时间 */
