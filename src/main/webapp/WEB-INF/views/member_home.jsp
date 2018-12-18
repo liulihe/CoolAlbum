@@ -640,6 +640,10 @@
 			},
 			success:function(result){
 				$("#searchResult").hide();
+				jqueryAlert({
+					'content' : result.msg,
+					'closeTime' : 2000
+				});
 			},
 			error:function(XMLHttpRequest,textStatus){
 				alert("error");

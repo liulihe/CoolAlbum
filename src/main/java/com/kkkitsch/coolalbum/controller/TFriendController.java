@@ -36,12 +36,7 @@ public class TFriendController {
 	public MyMsg<TMember> confirmAdd(String friendId, HttpSession session) {
 		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
 		Integer curMemId = member.getmId();
-		boolean flag = tFriendServiceImpl.confirmAdd(curMemId, friendId);
-		if (flag) {
-			return MyMsg.success("添加成功", null, null);
-		} else {
-			return MyMsg.fail("添加好友失败", null, null);
-		}
+		return tFriendServiceImpl.confirmAdd(curMemId, friendId);
 	}
 
 	/**
@@ -66,5 +61,4 @@ public class TFriendController {
 			return MyMsg.success("好友查询成功", fIdList, null);
 		}
 	}
-
 }
