@@ -57,6 +57,28 @@ public class TFriendController {
 	public MyMsg<TFriend> black(String friendId, HttpSession session) {
 		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
 		Integer curMemId = member.getmId();
-		return tFriendServiceImpl.blackFriend(curMemId,friendId);
+		return tFriendServiceImpl.blackFriend(curMemId, friendId);
+	}
+
+	/**
+	 * 删除好友
+	 */
+	@RequestMapping("/deletefriend")
+	@ResponseBody
+	public MyMsg<TFriend> deleteFriend(String friendId, HttpSession session) {
+		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
+		Integer curMemId = member.getmId();
+		return tFriendServiceImpl.deleteFriend(curMemId, friendId);
+	}
+
+	/**
+	 * 备注好友
+	 */
+	@RequestMapping("/namedfriend")
+	@ResponseBody
+	public MyMsg<TFriend> namedFriend(String name, String friendId, HttpSession session) {
+		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
+		Integer curMemId = member.getmId();
+		return tFriendServiceImpl.namedFriend(curMemId, friendId,name);
 	}
 }

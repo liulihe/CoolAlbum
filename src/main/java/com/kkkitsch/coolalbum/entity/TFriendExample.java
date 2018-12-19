@@ -354,6 +354,76 @@ public class TFriendExample {
             return (Criteria) this;
         }
 
+        public Criteria andFNamedfriendIsNull() {
+            addCriterion("f_namedfriend is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFNamedfriendIsNotNull() {
+            addCriterion("f_namedfriend is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andFNamedfriendEqualTo(String value) {
+            addCriterion("f_namedfriend =", value, "fNamedfriend");
+            return (Criteria) this;
+        }
+
+        public Criteria andFNamedfriendNotEqualTo(String value) {
+            addCriterion("f_namedfriend <>", value, "fNamedfriend");
+            return (Criteria) this;
+        }
+
+        public Criteria andFNamedfriendGreaterThan(String value) {
+            addCriterion("f_namedfriend >", value, "fNamedfriend");
+            return (Criteria) this;
+        }
+
+        public Criteria andFNamedfriendGreaterThanOrEqualTo(String value) {
+            addCriterion("f_namedfriend >=", value, "fNamedfriend");
+            return (Criteria) this;
+        }
+
+        public Criteria andFNamedfriendLessThan(String value) {
+            addCriterion("f_namedfriend <", value, "fNamedfriend");
+            return (Criteria) this;
+        }
+
+        public Criteria andFNamedfriendLessThanOrEqualTo(String value) {
+            addCriterion("f_namedfriend <=", value, "fNamedfriend");
+            return (Criteria) this;
+        }
+
+        public Criteria andFNamedfriendLike(String value) {
+            addCriterion("f_namedfriend like", value, "fNamedfriend");
+            return (Criteria) this;
+        }
+
+        public Criteria andFNamedfriendNotLike(String value) {
+            addCriterion("f_namedfriend not like", value, "fNamedfriend");
+            return (Criteria) this;
+        }
+
+        public Criteria andFNamedfriendIn(List<String> values) {
+            addCriterion("f_namedfriend in", values, "fNamedfriend");
+            return (Criteria) this;
+        }
+
+        public Criteria andFNamedfriendNotIn(List<String> values) {
+            addCriterion("f_namedfriend not in", values, "fNamedfriend");
+            return (Criteria) this;
+        }
+
+        public Criteria andFNamedfriendBetween(String value1, String value2) {
+            addCriterion("f_namedfriend between", value1, value2, "fNamedfriend");
+            return (Criteria) this;
+        }
+
+        public Criteria andFNamedfriendNotBetween(String value1, String value2) {
+            addCriterion("f_namedfriend not between", value1, value2, "fNamedfriend");
+            return (Criteria) this;
+        }
+
         public Criteria andFIsblackIsNull() {
             addCriterion("f_isblack is null");
             return (Criteria) this;

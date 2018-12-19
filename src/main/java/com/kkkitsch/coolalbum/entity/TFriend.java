@@ -9,6 +9,8 @@ public class TFriend {
 
     private Integer fFriendid;
 
+    private String fNamedfriend;
+
     private String fIsblack;
 
     public Integer getfId() {
@@ -43,6 +45,14 @@ public class TFriend {
         this.fFriendid = fFriendid;
     }
 
+    public String getfNamedfriend() {
+        return fNamedfriend;
+    }
+
+    public void setfNamedfriend(String fNamedfriend) {
+        this.fNamedfriend = fNamedfriend == null ? null : fNamedfriend.trim();
+    }
+
     public String getfIsblack() {
         return fIsblack;
     }
@@ -54,7 +64,7 @@ public class TFriend {
 	@Override
 	public String toString() {
 		return "TFriend [fId=" + fId + ", fMemberid=" + fMemberid + ", fFriendacct=" + fFriendacct + ", fFriendid="
-				+ fFriendid + ", fIsblack=" + fIsblack + "]";
+				+ fFriendid + ", fNamedfriend=" + fNamedfriend + ", fIsblack=" + fIsblack + "]";
 	}
     
     

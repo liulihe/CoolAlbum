@@ -319,6 +319,28 @@
 			</div>
 		</div>
 	</div>
+	
+	<!-- 设置别备注 -->
+	<div id="namedFriendModal" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">备注</h4>
+				</div>
+				<div class="modal-body">
+					<input id="namedFriendInput" type="text" class="form-control" placeholder="最多十字中文字符">
+					<span style="color: red;"></span>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button id="confirm_named_friend" type="button" class="btn btn-primary">修改</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </body>
 
@@ -466,14 +488,10 @@
 				if(result.code==1){
 					/* 给变量一份 */
 					photo_msg=result;
-					
 					/* 填充图片信息 */
 					fill_photo(result);
 				}else{
-					jqueryAlert({
-					    'content' : '一个图片也没有',
-					    'closeTime' : 2000
-					});
+					jqueryAlert({'content' : '一个图片也没有','closeTime' : 2000});
 				}
 			},
 			error:function(XMLHttpRequest,textStatus){
@@ -491,24 +509,10 @@
 			type:"GET",
 			data:"pId="+pId,
 			success:function(result){
-				console.log(result);
-				if(result.code==1){
-					jqueryAlert({
-					    'content' : '点赞成功',
-					    'closeTime' : 1000
-					});
-				}else{
-					jqueryAlert({
-					    'content' : '点赞失败，可能已经点过赞了！',
-					    'closeTime' : 1000
-					});
-				}
+				jqueryAlert({'content' : result.msg,'closeTime' : 1000});
 			},
 			error:function(XMLHttpRequest,textStatus){
-				jqueryAlert({
-				    'content' : '发生未知错误！',
-				    'closeTime' : 1000
-				});
+				alert('发生未知错误！');
 			}
 		});
 	});
@@ -556,16 +560,9 @@
 				if(result.code==1){
 					/* 移除图片 */
 					curObj.parents(".col-md-3").remove()
-					
-					jqueryAlert({
-					    'content' : '删除成功！',
-					    'closeTime' : 1000
-					});
+					jqueryAlert({'content' : '删除成功！','closeTime' : 1000});
 				}else{
-					jqueryAlert({
-					    'content' : '删除失败！',
-					    'closeTime' : 1000
-					});
+					jqueryAlert({'content' : '删除失败！','closeTime' : 1000});
 				}
 			},
 			error:function(XMLHttpRequest,textStatus){
@@ -583,23 +580,25 @@
 				if(result.code==1){
 					$("#friendBody").empty();
 					$.each(result.content,function(index,element){
-						var acctTd=$("<td></td>").append(this.fFriendacct);
+						if(this.fNamedfriend.length==0){
+							var acctTd=$("<td></td>").append(this.fFriendacct);
+						}else{
+							var acctTd=$("<td></td>").append(this.fNamedfriend);
+						}
 						var accessBtn=$("<a data='"+this.fFriendid+"' class='btn btn-success btn-xs accessBtn' href='#' role='button'>访问</a>");
+						var namedBtn=$("<a data='"+this.fFriendid+"' class='btn btn-success btn-xs namedBtn' href='#' role='button'>备注</a>");
 						var deleteBtn=$("<a data='"+this.fFriendid+"' class='btn btn-danger btn-xs deleteBtn' href='#' role='button'>删除</a>");
 						if(this.fIsblack==0){
 							var blackBtn=$("<a data='"+this.fFriendid+"' class='btn btn-danger btn-xs blackBtn' href='#' role='button'>加入黑名单</a>");
 						}else{
 							var blackBtn=$("<a data='"+this.fFriendid+"' class='btn btn-danger btn-xs blackBtn' href='#' role='button'>移除黑名单</a>");
 						}
-						var opeTd=$("<td></td>").append(accessBtn).append(" ").append(deleteBtn).append(" ").append(blackBtn);
+						var opeTd=$("<td></td>").append(accessBtn).append(" ").append(namedBtn).append(" ").append(deleteBtn).append(" ").append(blackBtn);
 						var tr=$("<tr></tr>").append(acctTd).append(opeTd);
 						$("#friendBody").append(tr);
 					});
 				}else{
-					jqueryAlert({
-					    'content' : result.msg,
-					    'closeTime' : 1000
-					});
+					jqueryAlert({'content' : result.msg,'closeTime' : 1000});
 				}
 			},
 			error:function(XMLHttpRequest,textStatus){
@@ -610,12 +609,62 @@
 	
 	/* 点击访问 */
 	$("body").on("click",".accessBtn",function(){
-		alert("访问");
+		alert("访问功能暂未实现");
 	});
+	
+	/* 点击设置备注 */
+	var curNameOpeBtn;
+	$("body").on("click",".namedBtn",function(){
+		curNameOpeBtn=$(this);
+		$("#namedFriendModal").modal("show");
+	});
+	
+	/* 备注输入框事件 */
+	$("#namedFriendInput").focus(function(){
+		/* 清空错误消息 */
+		$(this).text("").next().text("");
+	});
+	
+	/* 备注确认 */
+	$("#confirm_named_friend").click(function(){
+		var friendId=curNameOpeBtn.attr("data");
+		var curOpe=$("#namedFriendInput");
+		$.ajax({
+			url:"${appPath}/friend/namedfriend",
+			type:"POST",
+			data:{"name":curOpe.val(),"friendId":friendId},
+			success:function(result){
+				if(result.code==1){
+					$("#namedFriendModal").modal("hide");
+				}else{
+					jqueryAlert({'content' : result.msg, 'closeTime' : 1000});
+				}
+			}
+		});
+	});
+	
 	
 	/* 点击删除好友 */
 	$("body").on("click",".deleteBtn",function(){
-		alert("删除");
+		var curOpe=$(this);
+		$.ajax({
+			url:"${appPath}/friend/deletefriend",
+			type:"GET",
+			data:{"friendId":curOpe.attr("data")},
+			success:function(result){
+				if(result.code==1){
+					curOpe.parents("tr").remove();
+				}else{
+					jqueryAlert({
+					    'content' : result.msg,
+					    'closeTime' : 1000
+					});
+				}
+			},
+			error:function(XMLHttpRequest,textStatus){
+				alert("ok");
+			}
+		});
 	});
 	
 	/* 点击黑名单 */

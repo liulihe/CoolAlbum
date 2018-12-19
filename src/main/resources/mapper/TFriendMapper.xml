@@ -6,6 +6,7 @@
     <result column="f_memberid" jdbcType="INTEGER" property="fMemberid" />
     <result column="f_friendacct" jdbcType="VARCHAR" property="fFriendacct" />
     <result column="f_friendid" jdbcType="INTEGER" property="fFriendid" />
+    <result column="f_namedfriend" jdbcType="VARCHAR" property="fNamedfriend" />
     <result column="f_isblack" jdbcType="CHAR" property="fIsblack" />
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    f_id, f_memberid, f_friendacct, f_friendid, f_isblack
+    f_id, f_memberid, f_friendacct, f_friendid, f_namedfriend, f_isblack
   </sql>
   <select id="selectByExample" parameterType="com.kkkitsch.coolalbum.entity.TFriendExample" resultMap="BaseResultMap">
     select
@@ -101,9 +102,11 @@
   </delete>
   <insert id="insert" parameterType="com.kkkitsch.coolalbum.entity.TFriend">
     insert into friend (f_id, f_memberid, f_friendacct, 
-      f_friendid, f_isblack)
+      f_friendid, f_namedfriend, f_isblack
+      )
     values (#{fId,jdbcType=INTEGER}, #{fMemberid,jdbcType=INTEGER}, #{fFriendacct,jdbcType=VARCHAR}, 
-      #{fFriendid,jdbcType=INTEGER}, #{fIsblack,jdbcType=CHAR})
+      #{fFriendid,jdbcType=INTEGER}, #{fNamedfriend,jdbcType=VARCHAR}, #{fIsblack,jdbcType=CHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.kkkitsch.coolalbum.entity.TFriend" keyProperty="fId">
     insert into friend
@@ -119,6 +122,9 @@
       </if>
       <if test="fFriendid != null">
         f_friendid,
+      </if>
+      <if test="fNamedfriend != null">
+        f_namedfriend,
       </if>
       <if test="fIsblack != null">
         f_isblack,
@@ -136,6 +142,9 @@
       </if>
       <if test="fFriendid != null">
         #{fFriendid,jdbcType=INTEGER},
+      </if>
+      <if test="fNamedfriend != null">
+        #{fNamedfriend,jdbcType=VARCHAR},
       </if>
       <if test="fIsblack != null">
         #{fIsblack,jdbcType=CHAR},
@@ -163,6 +172,9 @@
       <if test="record.fFriendid != null">
         f_friendid = #{record.fFriendid,jdbcType=INTEGER},
       </if>
+      <if test="record.fNamedfriend != null">
+        f_namedfriend = #{record.fNamedfriend,jdbcType=VARCHAR},
+      </if>
       <if test="record.fIsblack != null">
         f_isblack = #{record.fIsblack,jdbcType=CHAR},
       </if>
@@ -177,6 +189,7 @@
       f_memberid = #{record.fMemberid,jdbcType=INTEGER},
       f_friendacct = #{record.fFriendacct,jdbcType=VARCHAR},
       f_friendid = #{record.fFriendid,jdbcType=INTEGER},
+      f_namedfriend = #{record.fNamedfriend,jdbcType=VARCHAR},
       f_isblack = #{record.fIsblack,jdbcType=CHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -194,6 +207,9 @@
       <if test="fFriendid != null">
         f_friendid = #{fFriendid,jdbcType=INTEGER},
       </if>
+      <if test="fNamedfriend != null">
+        f_namedfriend = #{fNamedfriend,jdbcType=VARCHAR},
+      </if>
       <if test="fIsblack != null">
         f_isblack = #{fIsblack,jdbcType=CHAR},
       </if>
@@ -205,6 +221,7 @@
     set f_memberid = #{fMemberid,jdbcType=INTEGER},
       f_friendacct = #{fFriendacct,jdbcType=VARCHAR},
       f_friendid = #{fFriendid,jdbcType=INTEGER},
+      f_namedfriend = #{fNamedfriend,jdbcType=VARCHAR},
       f_isblack = #{fIsblack,jdbcType=CHAR}
     where f_id = #{fId,jdbcType=INTEGER}
   </update>

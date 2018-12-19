@@ -14,4 +14,8 @@ public interface TFriendService {
 
 	public MyMsg<TFriend> blackFriend(Integer curMemId, String friendId);
 
+	public MyMsg<TFriend> deleteFriend(Integer curMemId, String friendId);
+
+	public MyMsg<TFriend> namedFriend(Integer curMemId, String friendId, String name);
+
 }
