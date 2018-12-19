@@ -7,20 +7,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>我的个人中心</title>
-
 <%@include file="/WEB-INF/common/js-css-file.jsp"%>
-
 </head>
-
 <body>
 	<div class="container">
-	
 		<!-- 栅格开始  -->
 		<div class="row">
-	
 			<!--栅格占用2 偏移10 -->
 			<div class="col-md-2">
-	
 				<!-- 下拉菜单 -->
 				<div class="dropdown">
 					
@@ -422,10 +416,7 @@
 						console.log("result作为公共资源啦");
 					}else{
 						/* 出错了 */
-						jqueryAlert({
-						    'content' : '错误',
-						    'closeTime' : 2000
-						});
+						jqueryAlert({'content' : result.msg,'closeTime' : 2000});
 					}
 				}else{
 					/* 查询无结果 */
@@ -434,10 +425,7 @@
 				}
 			},
 			error:function(XMLHttpRequest, textStatus){
-				jqueryAlert({
-				    'content' : '获取图片类型失败，请重试',
-				    'closeTime' : 2000
-				});
+				alert('获取图片类型失败，请重试');
 			}
 		});
 	}
@@ -448,12 +436,10 @@
 		$("#uploadDiv").show().siblings().hide();
 	});
 	
-	
 	/* 填充图片 */
 	function fill_photo(result){
 		/* 清空 */
 		$("#scanDiv").empty();
-		
 		/* 追加填充 */
 		var rowDiv=$("<div class='row'></div>");
 		$.each(result.content,function(index){
@@ -502,7 +488,6 @@
 	
 	/* 图片点赞点击 */
 	$("body").on("click",".iflike",function(){
-		
 		var pId=$(this).attr("pId");		
 		$.ajax({
 			url:"${appPath}/photo/clicklike",
@@ -655,10 +640,7 @@
 				if(result.code==1){
 					curOpe.parents("tr").remove();
 				}else{
-					jqueryAlert({
-					    'content' : result.msg,
-					    'closeTime' : 1000
-					});
+					jqueryAlert({'content' : result.msg,'closeTime' : 1000});
 				}
 			},
 			error:function(XMLHttpRequest,textStatus){
@@ -701,10 +683,7 @@
 		var friendAcct=$("#searchText").val();		
 		/* 如果输入是否为空 */
 		if(friendAcct.trim().length==0){
-			jqueryAlert({
-				'content' : '请输入好友账号',
-				'closeTime' : 2000
-			});
+			jqueryAlert({'content' : '请输入好友账号','closeTime' : 2000});
 		}else{
 			$.ajax({
 				url:"${appPath}/member/findfriend",
@@ -741,10 +720,7 @@
 			},
 			success:function(result){
 				$("#searchResult").hide();
-				jqueryAlert({
-					'content' : result.msg,
-					'closeTime' : 2000
-				});
+				jqueryAlert({'content' : result.msg,'closeTime' : 2000});
 			},
 			error:function(XMLHttpRequest,textStatus){
 				alert("error");
@@ -763,7 +739,6 @@
 		window.location.href="${appPath}/photo/mulupload";
 	});
 	
-	
 	/* 点击类型管理 */
 	$("#typeManage").click(function(){
 		getPhotoType("typeOpe");
@@ -780,22 +755,16 @@
 	$("#addPhototype").click(function(){
 		$("#phototype_input").val("");
 		$("#addPhotoTypeModal").modal("show");
-		
 		$("#confirmSpan").attr("select","").attr("select","add");
 	});
 	
-	
 	/* 确认添加方法 */
 	function confirmAddtype(){
-		
 		var phototype_input=$("#phototype_input").val();
-		
 		/* 进行添加还是修改 */
 		var addOrUpdate=$("#confirmSpan").attr("select");
-		
 		/* 如果是 修改的话，此项有值，为修改前的名称 */
 		var forUpdate=$("#phototype_input").attr("forUpdate");
-		
 		$.ajax({
 			url:"${appPath}/phototype/addtype",
 			type:"GET",
@@ -805,7 +774,6 @@
 				"forUpdate":forUpdate
 			},
 			success:function(result){
-				console.log(result);
 				if(result.code==1){
 					/* 成功添加图片类型，才关闭模态框 */
 					$("#addPhotoTypeModal").modal('hide');
@@ -846,17 +814,11 @@
 					/* 刷新图片类型展示 */
 					getPhotoType("typeOpe");
 				} else {
-					jqueryAlert({
-						'content' : '删除失败，请重试',
-						'closeTime' : 2000
-					});
+					jqueryAlert({'content' : result.msg,'closeTime' : 2000});
 				}
 			},
 			error : function(XMLHttpRequest, textStatus) {
-				jqueryAlert({
-					'content' : '删除失败，请重试',
-					'closeTime' : 2000
-				});
+				alert('删除失败，请重试');
 			}
 		});
 	});
@@ -894,17 +856,11 @@
 			success:function(result){
 				if(result.code==1){
 					$("#myInfoModal").modal('hide');
-					jqueryAlert({
-						'content' : '更新成功',
-						'closeTime' : 2000
-					});
+					jqueryAlert({'content' : result.msg,'closeTime' : 2000});
 				}
 			},
 			error:function(XMLHttpRequest,textStatus){
-				jqueryAlert({
-					'content' : '更新失败',
-					'closeTime' : 2000
-				});
+				alert('更新失败');
 			}
 		});
 		return false;
@@ -924,10 +880,7 @@
 			type:"GET",
 			success:function(result){
 				if(result.code==1){
-					jqueryAlert({
-						'content' : '发送验证码成功',
-						'closeTime' : 2000
-					});
+					jqueryAlert({'content' : '发送验证码成功','closeTime' : 2000});
 				}
 			},
 			error:function(XMLHttpRequest,textStatus){
@@ -985,7 +938,6 @@
 			return false;
 		}
 		
-		
 		if($("#new_password").val().length<6){
 			$("#new_password").next().text("新密码长度太短");
 			return false;
@@ -1037,10 +989,7 @@
 			success:function(result){
 				if(result.code==1){
 					$("#update_password_modal").modal("hide");
-					jqueryAlert({
-						'content' : '更新成功，请重新登录',
-						'closeTime' : 1500
-					});
+					jqueryAlert({'content' : result.msg,'closeTime' : 1500});
 					setTimeout(function(){
 						window.location.href="http://localhost:8080/CoolAlbum/";
 					},1500);
@@ -1049,10 +998,7 @@
 				}
 			},
 			error:function(XMLHttpRequest,textStatus){
-				jqueryAlert({
-					'content' : '更新失败，发生未知错误',
-					'closeTime' : 2000
-				});
+				alert('更新失败，发生未知错误');
 			}
 		});
 	});
