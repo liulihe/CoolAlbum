@@ -21,8 +21,7 @@
 				<select id="phototypeid" name="phototypeid" class="form-control">
 					<option value="0">所有图片</option>
 				</select>
-			</div>
-			
+			</div> 
 			<a id="photoselect" class="btn btn-default" href="#" role="button">筛选</a>
 		</div>
 	</div>
