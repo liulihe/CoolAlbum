@@ -12,19 +12,18 @@
 
 	<div class="container">
 		<div class="row">
+		
 			<div class="col-md-3">
-				<select class="form-control">
-					<option>每页显示10张图片</option>
-					<option>每页显示20张图片</option>
-					<option>每页显示50张图片</option>
-					<option>每页显示100张图片</option>
+				<input id="photosize" type="text" class="form-control" placeholder="显示多少张图片">
+			</div>
+			
+			<div class="col-md-3">
+				<select id="phototypeid" name="phototypeid" class="form-control">
+					<option value="0">所有图片</option>
 				</select>
 			</div>
-			<div class="col-md-3">
-				<select class="form-control">
-					<option>所有图片</option>
-				</select>
-			</div>
+			
+			<a id="photoselect" class="btn btn-default" href="#" role="button">筛选</a>
 		</div>
 	</div>
 
@@ -32,7 +31,10 @@
 
 	<div class="container">
 		<div id="scanDiv"></div>
+		<div id="numnav">页面导航栏暂未实现</div>
 	</div>
+
+	<hr>
 
 	<script>
 		/* 填充图片 */
@@ -58,7 +60,32 @@
 			$("#scanDiv").append(rowDiv);
 		}
 		
-		fill_photo(JSON.parse('${accessMsg}'));
+		/* 填充图片类型 */
+		function fill_phototype(result){
+			$.each(result,function(index){
+				$("#phototypeid").append("<option value='"+this.pId+"'>"+this.pTypename+"</option>");
+			});
+		}
+		
+		if('${photoMsg}'=="nothing"){
+			$("#scanDiv").text("没有照片");
+		}else{
+			fill_photo(JSON.parse('${photoMsg}'));
+		}
+	
+		if ('${phototype}' == "nothing") {
+		} else {
+			fill_phototype(JSON.parse('${phototype}'));
+		}
+
+		/* 点击图片筛选 */
+		$("#photoselect").click(function() {
+			var pagesize = $("#photosize").val();
+			var phototypeid = $("#phototypeid").val();
+			window.location.href = "${appPath}/friend/access?ps="
+					+ pagesize + "&phototypeid=" + phototypeid
+					+ "&friendId=" + '${friendId}';
+		});
 	</script>
 </body>
 </html>

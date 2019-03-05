@@ -9,16 +9,21 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.kkkitsch.coolalbum.entity.TFriend;
 import com.kkkitsch.coolalbum.entity.TMember;
 import com.kkkitsch.coolalbum.entity.TPhoto;
+import com.kkkitsch.coolalbum.entity.TPhototype;
 import com.kkkitsch.coolalbum.service.TFriendService;
 import com.kkkitsch.coolalbum.service.TMemberService;
 import com.kkkitsch.coolalbum.service.TPhotoService;
+import com.kkkitsch.coolalbum.service.TPhototypeService;
 import com.kkkitsch.coolalbum.util.MyMsg;
 
 @Controller
@@ -33,6 +38,9 @@ public class TFriendController {
 
 	@Autowired
 	TPhotoService photoServiceImpl;
+
+	@Autowired
+	TPhototypeService phototypeServiceImpl;
 
 	/**
 	 * 添加好友
@@ -107,16 +115,40 @@ public class TFriendController {
 	}
 
 	@RequestMapping("access")
-	public ModelAndView accessFriend(String friendId) {
-		List<TPhoto> photo = photoServiceImpl.getAllPhoto(Integer.parseInt(friendId));
+	public ModelAndView accessFriend(@RequestParam(value = "pn", defaultValue = "1") int pn,
+			@RequestParam(value = "ps", defaultValue = "10") int ps, String friendId,
+			@RequestParam(value = "phototypeid", defaultValue = "0") String ptid) {
+		// 在查询之前引入分页插件，设置查询页码，每页大小
+		PageHelper.startPage(pn, ps);
+		List<TPhoto> photos = null;
+		if (ptid.equals("0")) {
+			photos = photoServiceImpl.getAllPhoto(Integer.parseInt(friendId));
+		} else {
+			photos = photoServiceImpl.getSelectPhoto(Integer.parseInt(friendId),ptid);
+		}
+
+		// 使用PageInfo包装查询的结果，最终只需将PageInfo交给要显示的页面，
+		PageInfo<TPhoto> pageInfo = new PageInfo<TPhoto>(photos, 5);
 
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("friendphoto");
-
-		if (photo.isEmpty()) {
-			mv.addObject("accessMsg", "对方没有照片");
+		mv.addObject("friendId", friendId);
+		
+		if (photos.isEmpty()) {
+			//没有图片
+			mv.addObject("photoMsg", "nothing");
 		} else {
-			mv.addObject("accessMsg", JSON.toJSONString(photo));
+			//有图片 填充图片信息
+			mv.addObject("photoMsg", JSON.toJSONString(photos));
+			mv.addObject("pageInfoMsg", pageInfo);
+		}
+
+		//获取图片类型
+		List<TPhototype> phototype = phototypeServiceImpl.getPhototype(Integer.parseInt(friendId));
+		if (phototype.isEmpty()) {
+			mv.addObject("phototype", "nothing");
+		}else{
+			mv.addObject("phototype", JSON.toJSONString(phototype));
 		}
 		return mv;
 	}

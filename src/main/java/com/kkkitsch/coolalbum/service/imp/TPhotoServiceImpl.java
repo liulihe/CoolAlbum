@@ -44,6 +44,22 @@ public class TPhotoServiceImpl implements TPhotoService {
 		}
 		return photoList;
 	}
+	
+	@Override
+	public List<TPhoto> getSelectPhoto(Integer mId,String ptid) {
+		TPhotoExample example = new TPhotoExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andPMemberIdEqualTo(mId);
+		criteria.andPTypeIdEqualTo(Integer.parseInt(ptid));
+		List<TPhoto> photoList = null;
+		try {
+			// 查询所有图片信息
+			photoList = photoMapper.selectByExample(example);
+		} catch (Exception e) {
+			return null;
+		}
+		return photoList;
+	}
 
 	/**
 	 * 更新点赞数
@@ -111,4 +127,6 @@ public class TPhotoServiceImpl implements TPhotoService {
 
 		return affectNum == 1 ? true : false;
 	}
+
+	
 }
