@@ -9,8 +9,10 @@ import com.kkkitsch.coolalbum.dao.TFriendMapper;
 import com.kkkitsch.coolalbum.entity.TFriend;
 import com.kkkitsch.coolalbum.entity.TFriendExample;
 import com.kkkitsch.coolalbum.entity.TMember;
+import com.kkkitsch.coolalbum.entity.TPhoto;
 import com.kkkitsch.coolalbum.entity.TFriendExample.Criteria;
 import com.kkkitsch.coolalbum.service.TFriendService;
+import com.kkkitsch.coolalbum.service.TPhotoService;
 import com.kkkitsch.coolalbum.util.MyMsg;
 
 @Service
@@ -18,6 +20,9 @@ public class TFriendServiceImpl implements TFriendService {
 
 	@Autowired
 	TFriendMapper tFriendMapper;
+	
+	@Autowired
+	TPhotoService photoServiceImpl;
 
 	/**
 	 * 添加好友
@@ -49,11 +54,11 @@ public class TFriendServiceImpl implements TFriendService {
 				tFriendMapper.insertSelective(friend);
 
 				// 好友有我
-				friend.setfId(null);
-				friend.setfFriendacct(curMemAcct);
-				friend.setfMemberid(Integer.parseInt(friendId));
-				friend.setfFriendid(curMemId);
-				tFriendMapper.insertSelective(friend);
+//				friend.setfId(null);
+//				friend.setfFriendacct(curMemAcct);
+//				friend.setfMemberid(Integer.parseInt(friendId));
+//				friend.setfFriendid(curMemId);
+//				tFriendMapper.insertSelective(friend);
 				return MyMsg.success("添加好友成功", null, null);
 			} catch (Exception e) {
 				return MyMsg.fail("添加失败，发生未知错误", null, null);
@@ -151,4 +156,24 @@ public class TFriendServiceImpl implements TFriendService {
 			return MyMsg.fail("备注失败", null, null);
 		}
 	}
+
+	@Override
+	public boolean accessValidate(Integer curMemId, String friendId) {
+		TFriendExample example = new TFriendExample();
+		Criteria criteria = example.createCriteria();
+		criteria.andFFriendidEqualTo(curMemId);
+		criteria.andFMemberidEqualTo(Integer.parseInt(friendId));
+		List<TFriend> getFriend = tFriendMapper.selectByExample(example);
+		if (getFriend.isEmpty()) {
+			//如果好友列表没有你
+			return false;
+		} else if (getFriend.get(0).getfIsblack().equals("1")) {
+			//如果好友将你加入黑名单
+			return false;
+		}else{
+			//可以访问
+			return true;
+		}
+	}
+
 }

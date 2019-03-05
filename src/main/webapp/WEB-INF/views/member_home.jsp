@@ -44,7 +44,11 @@
 			<!-- 内容 -->
 			<div class="col-md-10">
 				
-				<div id="contentDiv">新的一天 新的sang</div>
+				<div id="contentDiv">
+					新的一天 新的sang
+					<!-- 调用天气插件 -->
+					<%@include file="/WEB-INF/common/weather.jsp"%>
+				</div>
 
 				<div class="col-md-5" id="uploadDiv">
 					<!-- 表单 -->
@@ -357,6 +361,15 @@
 		}
 	});
 	
+	/* 页面加载完成 */
+	$.ajax({
+		url:"${appPath}/historytoday",
+		type:"GET",
+		success:function(result){
+			console.log(result);
+		}
+	});
+	
 	/* 填充到上传图片表单 */
 	function fillToUploadForm(result){
 		/* 每次填充前先清空 */
@@ -445,16 +458,13 @@
 		$.each(result.content,function(index){
 			var imgUrl="${appPath}/"+this.pUrl;
 			var img=$("<img src='"+imgUrl+"' style='height: 200px;width: 200px;'></img>");
-			var span=$("<span></span>").text(this.pName);
 			var a=$("<a href='#' class='thumbnail'></a>").append(img);
-			
 			/* 图片操作按钮 */
 			var like=$("<a  href='#' pId='"+this.pId+"'class='btn btn-default iflike'>点赞</a>");
 			var detail=$("<a href='#' pId='"+this.pId+"' class='btn btn-default photoDetail' role='button'>详情</a>");
 			var singleDelete=$("<a href='#' pId='"+this.pId+"' class='btn btn-default singleDelete' role='button'>删除</a>");
 			var opeBtn=$("<p></p>").append(like).append(" ").append(detail).append(" ").append(singleDelete);
-			
-			var div=$("<div class='col-md-3'></div>").append(span).append(a).append(opeBtn);
+			var div=$("<div class='col-md-3'></div>").append(a).append(opeBtn);
 			rowDiv.append(div);
 		});
 		$("#scanDiv").append(rowDiv);
@@ -594,7 +604,19 @@
 	
 	/* 点击访问 */
 	$("body").on("click",".accessBtn",function(){
-		alert("访问功能暂未实现");
+		var friendId=$(this).attr("data");
+		$.ajax({
+			url:"${appPath}/friend/trytoaccess",
+			type:"GET",
+			data:{"friendId":friendId},
+			success:function(result){
+				if(result.code!=1){
+					alert(result.msg);
+				}else{
+					window.location.href="${appPath}/friend/access?friendId="+friendId;
+				}
+			}
+		});
 	});
 	
 	/* 点击设置备注 */
