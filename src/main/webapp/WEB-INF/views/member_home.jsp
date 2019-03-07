@@ -681,6 +681,7 @@
 			$(".pagination").append(previouspage);
 		}
 
+		
 		/* 遍历导航 */
 		$.each(result.navigatepageNums,function(){
 			/* 判断是否为当前页，如果是，按钮就高亮显示 */
