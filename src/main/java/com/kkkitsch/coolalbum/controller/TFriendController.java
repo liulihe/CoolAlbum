@@ -2,7 +2,9 @@ package com.kkkitsch.coolalbum.controller;
 
 import static com.kkkitsch.coolalbum.common.MyConstant.CUR_MEMBER;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -115,7 +117,8 @@ public class TFriendController {
 	}
 
 	@RequestMapping("access")
-	public ModelAndView accessFriend(@RequestParam(value = "pn", defaultValue = "1") int pn,
+	@ResponseBody
+	public MyMsg accessFriend(@RequestParam(value = "pn", defaultValue = "1") int pn,
 			@RequestParam(value = "ps", defaultValue = "10") int ps, String friendId,
 			@RequestParam(value = "phototypeid", defaultValue = "0") String ptid) {
 		// 在查询之前引入分页插件，设置查询页码，每页大小
@@ -124,32 +127,31 @@ public class TFriendController {
 		if (ptid.equals("0")) {
 			photos = photoServiceImpl.getAllPhoto(Integer.parseInt(friendId));
 		} else {
-			photos = photoServiceImpl.getSelectPhoto(Integer.parseInt(friendId),ptid);
+			photos = photoServiceImpl.getSelectPhoto(Integer.parseInt(friendId), ptid);
 		}
 
 		// 使用PageInfo包装查询的结果，最终只需将PageInfo交给要显示的页面，
 		PageInfo<TPhoto> pageInfo = new PageInfo<TPhoto>(photos, 5);
+		MyMsg<Object> myMsg = new MyMsg<Object>();
+		Map<String, Object> msgMap = new HashMap<String, Object>();
 
-		ModelAndView mv = new ModelAndView();
-		mv.setViewName("friendphoto");
-		mv.addObject("friendId", friendId);
-		
+		msgMap.put("friendId", friendId);
 		if (photos.isEmpty()) {
-			//没有图片
-			mv.addObject("photoMsg", "nothing");
+			// 没有图片
+			msgMap.put("pageInfoMsg", "nothing");
 		} else {
-			//有图片 填充图片信息
-			mv.addObject("photoMsg", JSON.toJSONString(photos));
-			mv.addObject("pageInfoMsg", pageInfo);
+			// 有图片 填充图片信息
+			msgMap.put("pageInfoMsg", pageInfo);
 		}
 
-		//获取图片类型
+		// 获取图片类型
 		List<TPhototype> phototype = phototypeServiceImpl.getPhototype(Integer.parseInt(friendId));
 		if (phototype.isEmpty()) {
-			mv.addObject("phototype", "nothing");
-		}else{
-			mv.addObject("phototype", JSON.toJSONString(phototype));
+			msgMap.put("phototype", "nothing");
+		} else {
+			msgMap.put("phototype", phototype);
 		}
-		return mv;
+		myMsg.setExt(msgMap);
+		return myMsg;
 	}
 }

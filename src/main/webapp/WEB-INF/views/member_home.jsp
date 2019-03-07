@@ -50,7 +50,7 @@
 					<%@include file="/WEB-INF/common/weather.jsp"%>
 				</div>
 
-				<div class="col-md-5" id="uploadDiv">
+				<div id="uploadDiv"class="col-md-5" >
 					<!-- 表单 -->
 					<form id="submitPhotoForm" action="${appPath }/photo/upload" method="post" enctype="multipart/form-data">
 						<c:if test="${not empty uploadErrorMsg }">
@@ -77,6 +77,39 @@
 				</div>
 				
 				<div id="scanDiv"></div>
+				
+				<div id="friendPhotoDiv">
+					
+					<!-- 图片筛选 -->
+					<div id="fpSelect">
+						<div class="row">
+							<div class="col-md-3">
+								<input id="photosize" type="text" class="form-control" placeholder="显示多少张图片">
+							</div>
+							
+							<div class="col-md-3">
+								<select id="phototypeid" name="phototypeid" class="form-control">
+									<option value="0">所有图片</option>
+								</select>
+							</div> 
+							<a id="photoselect" class="btn btn-default" href="#" role="button">筛选</a>
+						</div>
+					</div>
+					<hr>
+					
+					<!-- 图片展示 -->
+					<div id="fpDiv"></div>
+					
+					<!-- 分页 -->
+					<div id="fpnavnum">
+						<div>
+							<nav aria-label="Page navigation">
+							<ul class="pagination">
+							</ul>
+							</nav>
+						</div>
+					</div>
+				</div>
 				
 				<div id="typeDiv">
 					
@@ -571,7 +604,6 @@
 		$.ajax({
 			url:"${appPath}/friend/getfriend",
 			success:function(result){
-				console.log(result);
 				if(result.code==1){
 					$("#friendBody").empty();
 					$.each(result.content,function(index,element){
@@ -602,9 +634,106 @@
 		});
 	}
 	
+	
+	/* 填充图片 */
+	function fill_friendphoto(result){
+		/* 清空 */
+		$("#fpDiv").empty();
+		/* 追加填充 */
+		var rowDiv=$("<div class='row'></div>");
+		$.each(result,function(index){
+			var imgUrl="${appPath}/"+this.pUrl;
+			var img=$("<img src='"+imgUrl+"' style='height: 200px;width: 200px;'></img>");
+			var a=$("<a href='#' class='thumbnail'></a>").append(img);
+			
+			/* 图片操作按钮 */
+			var likespan=$("<span class='glyphicon glyphicon-thumbs-up' aria-hidden='true'></span>");
+			var like=$("<button type='button' pId='"+this.pId+"' class='btn btn-default iflike' aria-label='Left Align'></button>");
+			var detailspan=$("<span class='glyphicon glyphicon-option-horizontal' aria-hidden='true'></span>");
+			var detail=$("<a href='#' pId='"+this.pId+"' class='btn btn-default photoDetail' role='button'></a>");
+			var opeBtn=$("<p></p>").append(like.append(likespan)).append(" ").append(detail.append(detailspan));
+			var div=$("<div class='col-md-3'></div>").append(a).append(opeBtn);
+			rowDiv.append(div);
+		});
+		$("#fpDiv").append(rowDiv);
+	}
+	
+	/* 填充图片类型 */
+	function fill_friendphototype(result){
+		$.each(result,function(index){
+			$("#phototypeid").append("<option value='"+this.pId+"'>"+this.pTypename+"</option>");
+		});
+	}
+
+	/* 填充分页 */
+	function fill_pagenum(result){
+		/* 清空 */
+		$(".pagination").empty();
+		
+		/* 首页 */
+		var homepage=$("<li class='navnum'><a href='${appPath}/friend/access?pn=1' aria-label='Previous'>首页</a></li>");
+		$(".pagination").append(homepage);
+		
+		/* 如果有上一页 */
+		if(result.hasPreviousPage){
+			var previouspagenum=result.pageNum-1;
+			var previouspage=$("<li class='navnum'><a href='${appPath}/friend/access?pn="+previouspagenum+"' aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a></li>");
+			$(".pagination").append(previouspage);
+		}
+
+		/* 遍历导航 */
+		$.each(result.navigatepageNums,function(){
+			/* 判断是否为当前页，如果是，按钮就高亮显示 */
+			if(this==result.pageNum){
+				var curpage=$("<li class='active navnum'><a href='${appPath}/friend/access?pn="+this+"'>"+this+"</a></li>");
+			}else{
+				var curpage=$("<li class='navnum'><a href='${appPath}/friend/access?pn="+this+"'>"+this+"</a></li>");
+			}
+			$(".pagination").append(curpage);
+		});
+		
+		/* 如果有下一页 */
+		if(result.hasNextPage){
+			var nextpagenum=result.pageNum+1;
+			var nextpage=$("<li class='navnum'><a href='${appPath}/friend/access?pn="+nextpagenum+"' aria-label='Previous'><span aria-hidden='true'>&raquo;</span></a></li>");
+			$(".pagination").append(nextpage);
+		}
+		
+		/* 末页 */
+		var endpage=$("<li class='navnum'><a href='${appPath}/friend/access?pn="+result.pages+"' aria-label='Previous'>末页 </a></li>");
+		$(".pagination").append(endpage);
+	}
+	
+	function accessFriendPhoto(friendId){
+		$("#friendPhotoDiv").show().siblings().hide();
+		$.ajax({
+			url:"${appPath}/friend/access",
+			type:"GET",
+			data:{"friendId":friendId},
+			success:function(result){
+				/* 填充图片类型 */
+				if(result.ext.phototype=="nothing"){
+				}else{
+					fill_friendphototype(result.ext.phototype);
+				}
+				
+				/* 填充图片 */
+				if (result.ext.pageInfoMsg == "nothing") {
+					$("#fpDiv").text("没有照片");
+				} else {
+					fill_friendphoto(result.ext.pageInfoMsg.list);
+				}
+				
+				/* 填充分页 */
+				fill_pagenum(result.ext.pageInfoMsg);
+			}
+		});
+	}
+	
 	/* 点击访问 */
+	var friendId="";
 	$("body").on("click",".accessBtn",function(){
-		var friendId=$(this).attr("data");
+		friendId=$(this).attr("data");
 		$.ajax({
 			url:"${appPath}/friend/trytoaccess",
 			type:"GET",
@@ -613,10 +742,50 @@
 				if(result.code!=1){
 					alert(result.msg);
 				}else{
-					window.location.href="${appPath}/friend/access?friendId="+friendId;
+					accessFriendPhoto(friendId);
 				}
 			}
 		});
+	});
+	
+	
+	/* 点击图片筛选 */
+	$("#photoselect").click(function() {
+		$.ajax({
+			url:"${appPath}/friend/access",
+			type:"GET",
+			data:{
+				"friendId":friendId,
+				"ps":$("#photosize").val(),
+				"phototypeid":$("#phototypeid").val(),
+				"friendId":friendId
+			},
+			success:function(result){
+				/* 只填充图片 不填充类型 */
+				fill_friendphoto(result.ext.pageInfoMsg.list);
+			}
+		});
+	});
+	
+	/* 点击导航页 */
+	$("body").on("click",".navnum",function(){
+		$.ajax({
+			url:$(this).children("a").attr("href"),
+			type:"GET",
+			data:{
+				"friendId":friendId,
+				"ps":$("#photosize").val(),
+				"phototypeid":$("#phototypeid").val(),
+				"friendId":friendId
+			},
+			success:function(result){
+				/* 填充图片 */
+				fill_friendphoto(result.ext.pageInfoMsg.list);
+				/* 填充分页 */
+				fill_pagenum(result.ext.pageInfoMsg);
+			}
+		});
+		return false;
 	});
 	
 	/* 点击设置备注 */
