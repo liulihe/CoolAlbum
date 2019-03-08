@@ -118,4 +118,9 @@ public class TPhotoServiceImpl implements TPhotoService {
 		return affectNum == 1 ? true : false;
 	}
 
+	@Override
+	public TPhoto getDelicatedPhoto(String pId) {
+		return photoMapper.selectByPrimaryKey(Integer.parseInt(pId));
+	}
+
 }

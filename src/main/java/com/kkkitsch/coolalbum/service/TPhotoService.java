@@ -16,5 +16,7 @@ public interface TPhotoService {
 	boolean singleDelete(String pId);
 	
 	List<TPhoto> getSelectPhoto(Integer mId,String ptid);
+
+	TPhoto getDelicatedPhoto(String pId);
 	
 }

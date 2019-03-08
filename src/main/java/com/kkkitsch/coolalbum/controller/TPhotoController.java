@@ -34,13 +34,10 @@ public class TPhotoController {
 	/**
 	 * 上传图片
 	 * 
-	 * @param file
-	 *            需要上传的文件
-	 * @param photo
-	 *            实体映射
+	 * @param file 需要上传的文件
+	 * @param photo 实体映射
 	 * @param session
-	 * @param model
-	 *            模型数据
+	 * @param model 模型数据
 	 * @return 逻辑视图名
 	 * 
 	 * @notice 1.处理器的形参
@@ -153,6 +150,24 @@ public class TPhotoController {
 			return MyMsg.fail("查询无果", null, null);
 		}
 	}
+	
+	/**
+	 * @param session
+	 * @return 图片封装信息
+	 * 获取指定图片
+	 */
+	@RequestMapping("/getDelicatedPhoto")
+	@ResponseBody
+	public MyMsg<TPhoto> getDelicatedPhoto(HttpSession session,String pId) {
+		
+		TPhoto photo = photoServiceImpl.getDelicatedPhoto(pId);
+		if (photo!=null) {
+			return MyMsg.success("查询成功", photo, null);
+		} else {
+			return MyMsg.fail("查询无果", null, null);
+		}
+	}
+	
 
 	/**
 	 * 点击点赞

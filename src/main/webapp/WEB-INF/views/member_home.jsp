@@ -434,9 +434,7 @@
 		});
 	}
 	
-	/* 图片类型 */
 	var photo_type;
-	
 	/* 查询出所有图片类型 */
 	function getPhotoType(selection){
 		/* 从数据库中查询出所有图片类型，填充到图片分类option */
@@ -448,19 +446,16 @@
 			success:function(result){
 				/* 如果查询有结果 */
 				if(result.content.length>=1){
+					/* 作为一个公共的 */
+					photo_type=result.content;
+					
 					if(selection=="fill"){
 						/* 如果是上传 */
 						fillToUploadForm(result);
 					}else if(selection=="typeOpe"){
 						/* 如果是编辑 */
 						fillToPhototypeOpe(result);
-					}else if(selection=="pd_detail"){
-						/* 如果是查看图片详情*/
-						photo_type=result;
-						console.log("result作为公共资源啦");
 					}else{
-						/* 出错了 */
-						jqueryAlert({'content' : result.msg,'closeTime' : 2000});
 					}
 				}else{
 					/* 查询无结果 */
@@ -484,6 +479,8 @@
 	function fill_photo(result){
 		/* 清空 */
 		$("#scanDiv").empty();
+		/* 获取图片类型 */
+		getPhotoType("other");
 		/* 追加填充 */
 		var rowDiv=$("<div class='row'></div>");
 		$.each(result.content,function(index){
@@ -514,9 +511,6 @@
 		$("#scanDiv").append(rowDiv);
 	}
 	
-	/* 查询后得到的图片信息，方便以后使用，作为变量 */
-	var photo_msg;
-	
 	/* 点击浏览按钮 */
 	$("#scanFile").click(function(){
 		$("#scanDiv").show().siblings().hide();
@@ -526,8 +520,6 @@
 			success:function(result){
 				/* 成功 */
 				if(result.code==1){
-					/* 给变量一份 */
-					photo_msg=result;
 					/* 填充图片信息 */
 					fill_photo(result);
 				}else{
@@ -570,31 +562,29 @@
 	
 	/* 图片详情点击 */
 	$("body").on("click",".photoDetail",function(){
-		/* 查出所有图片的类型 */
-		getPhotoType("pd_detail");
-		
-		/* 得到当前图片id */
-		var pId=$(this).attr("pId");
 		$("#photo_detail_modal").modal("show");
-		/* 遍历找到当前图片信息填充到模态框 */
-		$.each(photo_msg.content,function(index,photo_msg){
-			if(pId==this.pId){
-				/* 清空填充 */
-				$("#pd_img").prop("src","").prop("src","${appPath}/"+this.pUrl);
-				$("#pd_name").text("").text(this.pName);
-				
-				/* 如果不为空，遍历所有类型 */
-				if(photo_type!=undefined){
-					$.each(photo_type.content,function(index,element_photo_type){
-						/* 如果某一个类型和当前图片的类型一致 */
-						if(element_photo_type.pId==photo_msg.pTypeId){
-							/* 填充此类型到当前图片的详情信息 */
-							$("#pd_type").text("").text(element_photo_type.pTypename);
-						}
-					});
+		$.ajax({
+			url:"${appPath}/photo/getDelicatedPhoto",
+			data:{"pId":$(this).attr("pId")},
+			success:function(result){
+				if(result.code==1){
+					/* 清空填充 */
+					$("#pd_img").prop("src","").prop("src","${appPath}/"+result.content.pUrl);
+					$("#pd_name").text("").text(result.content.pName);
+					$("#pd_createtime").text("").text(getdate(result.content.pCreatetime));
+					$("#pd_detail").text("").text(result.content.pDescription);
+					
+					/* 如果不为空，遍历所有类型 */
+					if(photo_type!=undefined){
+						$.each(photo_type,function(index,element_photo_type){
+							/* 如果某一个类型和当前图片的类型一致 */
+							if(element_photo_type.pId==result.content.pTypeId){
+								/* 填充此类型到当前图片的详情信息 */
+								$("#pd_type").text("").text(element_photo_type.pTypename);
+							}
+						});
+					}
 				}
-				$("#pd_createtime").text("").text(getdate(this.pCreatetime));
-				$("#pd_detail").text("").text(this.pDescription);
 			}
 		});
 	});
@@ -660,16 +650,11 @@
 	
 	/* 填充好友的图片 */
 	function fill_friendphoto(result){
-		
-		
 		/* 清空 */
 		$("#fpDiv").empty();
 		/* 追加填充 */
 		var rowDiv=$("<div class='row'></div>");
-			console.log(result);
 		$.each(result,function(index){
-			
-			
 			var imgUrl="${appPath}/"+this.pUrl;
 			var img=$("<img src='"+imgUrl+"' style='height: 200px;width: 200px;'></img>");
 			var a=$("<a href='#' class='thumbnail'></a>").append(img);
@@ -683,7 +668,7 @@
 				like.removeClass("btn-default").addClass("btn-success");
 			}
 			
-			var detailspan=$("<span class='glyphicon glyphicon-option-horizontal' aria-hidden='true'></span>");
+			var detailspan=$("<span class='glyphicon glyphicon-picture' aria-hidden='true'></span>");
 			var detail=$("<a href='#' pId='"+this.pId+"' class='btn btn-default photoDetail' role='button'></a>");
 			var opeBtn=$("<p></p>").append(like.append(likespan)).append(" ").append(detail.append(detailspan));
 			var div=$("<div class='col-md-3'></div>").append(a).append(opeBtn);
@@ -694,6 +679,7 @@
 	
 	/* 填充好友的图片类型 */
 	function fill_friendphototype(result){
+		photo_type=result;
 		$.each(result,function(index){
 			$("#phototypeid").append("<option value='"+this.pId+"'>"+this.pTypename+"</option>");
 		});
