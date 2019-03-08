@@ -61,7 +61,7 @@ public class MyMsg<T> {
     }
 
     /**
-     * 快速的调用成功方法
+     * 快速的调用失败方法
      */
     public static <T> MyMsg<T> fail(String msg, T content, Map<String, Object> ext) {
         MyMsg<T> myMsg = new MyMsg<T>();

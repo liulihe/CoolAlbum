@@ -163,24 +163,14 @@ public class TPhotoController {
 
 		// 获取当前用户id
 		Integer mId = ((TMember) session.getAttribute(MyConstant.CUR_MEMBER)).getmId();
-		photo.setpMemberId(mId);
-
 		System.out.println("图片信息：" + photo);
 
 		// 更新点赞数
-		// 如果不为空
-		if (photo.getpMemberId() != null) {
-			boolean flag = photoServiceImpl.updateClickNum(photo);
-			// 点赞成功
-			if (flag) {
-				return MyMsg.success("点赞成功", null, null);
-			} else {
-				// 点赞成功
-				return MyMsg.fail("点赞失败", null, null);
-			}
+		boolean flag = photoServiceImpl.updateClickNum(photo,mId);
+		if (flag) {
+			return MyMsg.success("点赞成功", null, null);
 		} else {
-			// 未登录
-			return MyMsg.fail("没有登录，请登录后操作", null, null);
+			return MyMsg.fail("点赞失败", null, null);
 		}
 	}
 

@@ -19,17 +19,17 @@
 				<div class="dropdown">
 					
 					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-						${curMember.mNickname } 
+						<span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${curMember.mNickname } 
 						<span class="caret"></span>
 					</button>
 
 					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 						<br>
-						<li><a id="myInfo" href="#">我的资料</a></li>
+						<li><a id="myInfo" href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> 我的资料</a></li>
 						<li role="separator" class="divider"></li>
-						<li><a id="updatePassword" href="#">修改密码</a></li>
+						<li><a id="updatePassword" href="#"> <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> 修改密码</a></li>
 						<li role="separator" class="divider"></li>
-						<li><a id="logout" href="#">注销</a></li>
+						<li><a id="logout" href="#"> <span class="glyphicon glyphicon-off" aria-hidden="true"></span> 注销</a></li>
 					</ul>
 				</div>
 			</div>
@@ -116,8 +116,12 @@
 					<!-- 按钮 -->
 					<div class="row">
 						<div class="col-md-3 col-md-offset-9">
-							<button id="addPhototype" type="button" class="btn btn-info">添加类型</button>
-							<button id="partDeletetype" type="button" class="btn btn-warning">选择删除</button>
+							<button id="addPhototype" type="button" class="btn btn-info">
+								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 添加类型
+							</button>
+							<button id="partDeletetype" type="button" class="btn btn-warning">
+								<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> 批量删除
+							</button>
 						</div>
 					</div>
 					
@@ -139,7 +143,6 @@
 						<thead>
 							<tr>
 								<td><input type="checkbox" class="checkAll"></td>
-								<td>id</td>
 								<td>名称</td>
 								<td>操作</td>
 							</tr>
@@ -222,31 +225,25 @@
 					<h4 class="modal-title">详情</h4>
 				</div>
 				<div class="modal-body">
-					<div class="row">
-						<div>
-							<div class="col-md-8">
-								<img id="pd_img" src="" class="img-responsive" alt="Responsive image">
-							</div>
-							<div class="col-md-4">
-								<div class="form-group">
-									<label>图片名称</label> 
-									<p id="pd_name"></p>
-								</div>
-								<div class="form-group">
-									<label>所属分类</label> 
-									<p id="pd_type"></p>
-								</div>
-								<div class="form-group">
-									<label>创建时间</label> 
-									<p id="pd_createtime"></p>
-								</div>
-								<div class="form-group">
-									<label>描述</label> 
-									<p id="pd_detail"></p>
-								</div>
-							</div>
-						</div>
+					<img id="pd_img" src="" class="img-responsive" alt="Responsive image">
+					<hr>
+					<div class="form-group">
+						<label>图片名称</label> 
+						<p id="pd_name"></p>
 					</div>
+					<div class="form-group">
+						<label>所属分类</label> 
+						<p id="pd_type"></p>
+					</div>
+					<div class="form-group">
+						<label>创建时间</label> 
+						<p id="pd_createtime"></p>
+					</div>
+					<div class="form-group">
+						<label>描述</label><br>
+						<textarea id="pd_detail" class="form-group" rows="3" cols="50" style="border: 0">
+						</textarea>						
+					</div>	
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -422,16 +419,17 @@
 		$.each(result.content,function(){
 			var tr=$("<tr></tr>");
 			var tdCheck=$("<td></td>").append($("<input type='checkbox' class='singleCheck'>"));
-			var tdPid=$("<td></td>").append(this.pId);
 			var tdPTypename=$("<td></td>").append(this.pTypename);
 			
 			/* 操作 按钮 */
-			var editBtn=$("<button type='button' pId='"+this.pId+"' class='btn btn-primary btn-sm edittype'>编辑</button>");
-			var delBtn=$("<button type='button' pId='"+this.pId+"' class='btn btn-danger btn-sm deletetype'>删除</button>");
-			var tdOpeBtn=$("<td></td>").append(editBtn).append(" ").append(delBtn);
+			var editBtnSpan=$("<span class='glyphicon glyphicon-pencil' aria-hidden='true'></span>");
+			var editBtn=$("<button type='button' pId='"+this.pId+"' class='btn btn-primary btn-sm edittype'></button>");
+			var delBtnSpan=$("<span class='glyphicon glyphicon-remove' aria-hidden='true'></span>");
+			var delBtn=$("<button type='button' pId='"+this.pId+"' class='btn btn-danger btn-sm deletetype'></button>");
+			var tdOpeBtn=$("<td></td>").append(editBtn.append(editBtnSpan)).append(" ").append(delBtn.append(delBtnSpan));
 			
 			/* 填充  */
-			tr.append(tdCheck).append(tdPid).append(tdPTypename).append(tdOpeBtn);
+			tr.append(tdCheck).append(tdPTypename).append(tdOpeBtn);
 			$("#typdBody").append(tr);
 		});
 	}
@@ -489,14 +487,27 @@
 		/* 追加填充 */
 		var rowDiv=$("<div class='row'></div>");
 		$.each(result.content,function(index){
+			
 			var imgUrl="${appPath}/"+this.pUrl;
 			var img=$("<img src='"+imgUrl+"' style='height: 200px;width: 200px;'></img>");
 			var a=$("<a href='#' class='thumbnail'></a>").append(img);
 			/* 图片操作按钮 */
-			var like=$("<a  href='#' pId='"+this.pId+"'class='btn btn-default iflike'>点赞</a>");
-			var detail=$("<a href='#' pId='"+this.pId+"' class='btn btn-default photoDetail' role='button'>详情</a>");
-			var singleDelete=$("<a href='#' pId='"+this.pId+"' class='btn btn-default singleDelete' role='button'>删除</a>");
-			var opeBtn=$("<p></p>").append(like).append(" ").append(detail).append(" ").append(singleDelete);
+			
+			var likespan=$("<span class='glyphicon glyphicon-thumbs-up' aria-hidden='true'></span>");
+			var like=$("<button type='button' pId='"+this.pId+"' class='iflike btn btn-default' aria-label='Left Align'></button>");
+			
+			/* 要注意pClicklikeMemberid为null的情况，以及判断为null时，null不要加双引号 */
+			if(this.pClicklikeMemberid!=null&&this.pClicklikeMemberid.includes("${curMember.mId}")){
+				like.removeClass("btn-default").addClass("btn-success");
+			}
+			
+			var detailSpan=$("<span class='glyphicon glyphicon-picture' aria-hidden='true'></span>");
+			var detail=$("<button type='button' pId='"+this.pId+"' class='photoDetail btn btn-default' aria-label='Left Align'></button>");
+			
+			var singleDeleteSpan=$("<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>");
+			var singleDelete=$("<button type='button' pId='"+this.pId+"' class='singleDelete btn btn-default' aria-label='Left Align'></button>");
+			
+			var opeBtn=$("<p></p>").append(like.append(likespan)).append(" ").append(detail.append(detailSpan)).append(" ").append(singleDelete.append(singleDeleteSpan));
 			var div=$("<div class='col-md-3'></div>").append(a).append(opeBtn);
 			rowDiv.append(div);
 		});
@@ -531,12 +542,15 @@
 	
 	/* 图片点赞点击 */
 	$("body").on("click",".iflike",function(){
-		var pId=$(this).attr("pId");		
+		var likeButton=$(this);
 		$.ajax({
 			url:"${appPath}/photo/clicklike",
 			type:"GET",
-			data:"pId="+pId,
+			data:"pId="+$(this).attr("pId"),
 			success:function(result){
+				if(result.code==1){
+					likeButton.removeClass("btn-default").addClass("btn-success");;
+				}
 				jqueryAlert({'content' : result.msg,'closeTime' : 1000});
 			},
 			error:function(XMLHttpRequest,textStatus){
@@ -544,6 +558,15 @@
 			}
 		});
 	});
+	
+	/* 时间转换 */
+	function getdate(date) {
+        var now = new Date(date),
+            y = now.getFullYear(),
+            m = now.getMonth() + 1,
+            d = now.getDate();
+        return y + "-" + (m < 10 ? "0" + m : m) + "-" + (d < 10 ? "0" + d : d) + " " + now.toTimeString().substr(0, 8);
+    }
 	
 	/* 图片详情点击 */
 	$("body").on("click",".photoDetail",function(){
@@ -570,7 +593,7 @@
 						}
 					});
 				}
-				$("#pd_createtime").text("").text(new Date(this.pCreatetime));
+				$("#pd_createtime").text("").text(getdate(this.pCreatetime));
 				$("#pd_detail").text("").text(this.pDescription);
 			}
 		});
@@ -635,20 +658,31 @@
 	}
 	
 	
-	/* 填充图片 */
+	/* 填充好友的图片 */
 	function fill_friendphoto(result){
+		
+		
 		/* 清空 */
 		$("#fpDiv").empty();
 		/* 追加填充 */
 		var rowDiv=$("<div class='row'></div>");
+			console.log(result);
 		$.each(result,function(index){
+			
+			
 			var imgUrl="${appPath}/"+this.pUrl;
 			var img=$("<img src='"+imgUrl+"' style='height: 200px;width: 200px;'></img>");
 			var a=$("<a href='#' class='thumbnail'></a>").append(img);
 			
 			/* 图片操作按钮 */
 			var likespan=$("<span class='glyphicon glyphicon-thumbs-up' aria-hidden='true'></span>");
-			var like=$("<button type='button' pId='"+this.pId+"' class='btn btn-default iflike' aria-label='Left Align'></button>");
+			var like=$("<button type='button' pId='"+this.pId+"' class='iflike btn btn-default' aria-label='Left Align'></button>");
+			
+			/* 要注意pClicklikeMemberid为null的情况，以及判断为null时，null不要加双引号 */
+			if(this.pClicklikeMemberid!=null&&this.pClicklikeMemberid.includes("${curMember.mId}")){
+				like.removeClass("btn-default").addClass("btn-success");
+			}
+			
 			var detailspan=$("<span class='glyphicon glyphicon-option-horizontal' aria-hidden='true'></span>");
 			var detail=$("<a href='#' pId='"+this.pId+"' class='btn btn-default photoDetail' role='button'></a>");
 			var opeBtn=$("<p></p>").append(like.append(likespan)).append(" ").append(detail.append(detailspan));
@@ -658,7 +692,7 @@
 		$("#fpDiv").append(rowDiv);
 	}
 	
-	/* 填充图片类型 */
+	/* 填充好友的图片类型 */
 	function fill_friendphototype(result){
 		$.each(result,function(index){
 			$("#phototypeid").append("<option value='"+this.pId+"'>"+this.pTypename+"</option>");
@@ -762,8 +796,10 @@
 				"friendId":friendId
 			},
 			success:function(result){
-				/* 只填充图片 不填充类型 */
+				/* 填充图片 */
 				fill_friendphoto(result.ext.pageInfoMsg.list);
+				/* 填充分页 */
+				fill_pagenum(result.ext.pageInfoMsg);
 			}
 		});
 	});

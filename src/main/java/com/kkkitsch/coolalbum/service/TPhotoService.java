@@ -11,7 +11,7 @@ public interface TPhotoService {
 
 	List<TPhoto> getAllPhoto(Integer mId);
 	
-	boolean updateClickNum(TPhoto photo);
+	boolean updateClickNum(TPhoto photo,Integer mId);
 
 	boolean singleDelete(String pId);
 	
