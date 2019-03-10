@@ -12,7 +12,6 @@
 		<result column="p_clicklike_memberid" jdbcType="VARCHAR"
 			property="pClicklikeMemberid" />
 		<result column="p_type_id" jdbcType="INTEGER" property="pTypeId" />
-		<result column="p_message_id" jdbcType="INTEGER" property="pMessageId" />
 		<result column="p_member_id" jdbcType="INTEGER" property="pMemberId" />
 	</resultMap>
 	<sql id="Example_Where_Clause">
@@ -81,7 +80,7 @@
 	<sql id="Base_Column_List">
 		p_id, p_name, p_createtime, p_moditytime, p_url, p_description, p_likenum,
 		p_clicklike_memberid,
-		p_type_id, p_message_id, p_member_id
+		p_type_id, p_member_id
 	</sql>
 	<select id="selectByExample" parameterType="com.kkkitsch.coolalbum.entity.TPhotoExample"
 		resultMap="BaseResultMap">
@@ -119,16 +118,15 @@
 		insert into photo (p_id, p_name, p_createtime,
 		p_moditytime, p_url, p_description,
 		p_likenum, p_clicklike_memberid, p_type_id,
-		p_message_id, p_member_id)
+		p_member_id)
 		values (#{pId,jdbcType=INTEGER}, #{pName,jdbcType=VARCHAR},
 		#{pCreatetime,jdbcType=TIMESTAMP},
 		#{pModitytime,jdbcType=TIMESTAMP}, #{pUrl,jdbcType=VARCHAR}, #{pDescription,jdbcType=VARCHAR},
 		#{pLikenum,jdbcType=INTEGER}, #{pClicklikeMemberid,jdbcType=VARCHAR},
 		#{pTypeId,jdbcType=INTEGER},
-		#{pMessageId,jdbcType=INTEGER}, #{pMemberId,jdbcType=INTEGER})
+		#{pMemberId,jdbcType=INTEGER})
 	</insert>
-	<insert id="insertSelective" parameterType="com.kkkitsch.coolalbum.entity.TPhoto"
-		keyProperty="pId">
+	<insert id="insertSelective" parameterType="com.kkkitsch.coolalbum.entity.TPhoto" keyProperty="pId">
 		insert into photo
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="pId != null">
@@ -157,9 +155,6 @@
 			</if>
 			<if test="pTypeId != null">
 				p_type_id,
-			</if>
-			<if test="pMessageId != null">
-				p_message_id,
 			</if>
 			<if test="pMemberId != null">
 				p_member_id,
@@ -192,9 +187,6 @@
 			</if>
 			<if test="pTypeId != null">
 				#{pTypeId,jdbcType=INTEGER},
-			</if>
-			<if test="pMessageId != null">
-				#{pMessageId,jdbcType=INTEGER},
 			</if>
 			<if test="pMemberId != null">
 				#{pMemberId,jdbcType=INTEGER},
@@ -238,9 +230,6 @@
 			<if test="record.pTypeId != null">
 				p_type_id = #{record.pTypeId,jdbcType=INTEGER},
 			</if>
-			<if test="record.pMessageId != null">
-				p_message_id = #{record.pMessageId,jdbcType=INTEGER},
-			</if>
 			<if test="record.pMemberId != null">
 				p_member_id = #{record.pMemberId,jdbcType=INTEGER},
 			</if>
@@ -260,7 +249,6 @@
 		p_likenum = #{record.pLikenum,jdbcType=INTEGER},
 		p_clicklike_memberid = #{record.pClicklikeMemberid,jdbcType=VARCHAR},
 		p_type_id = #{record.pTypeId,jdbcType=INTEGER},
-		p_message_id = #{record.pMessageId,jdbcType=INTEGER},
 		p_member_id = #{record.pMemberId,jdbcType=INTEGER}
 		<if test="_parameter != null">
 			<include refid="Update_By_Example_Where_Clause" />
@@ -293,9 +281,6 @@
 			<if test="pTypeId != null">
 				p_type_id = #{pTypeId,jdbcType=INTEGER},
 			</if>
-			<if test="pMessageId != null">
-				p_message_id = #{pMessageId,jdbcType=INTEGER},
-			</if>
 			<if test="pMemberId != null">
 				p_member_id = #{pMemberId,jdbcType=INTEGER},
 			</if>
@@ -312,7 +297,6 @@
 		p_likenum = #{pLikenum,jdbcType=INTEGER},
 		p_clicklike_memberid = #{pClicklikeMemberid,jdbcType=VARCHAR},
 		p_type_id = #{pTypeId,jdbcType=INTEGER},
-		p_message_id = #{pMessageId,jdbcType=INTEGER},
 		p_member_id = #{pMemberId,jdbcType=INTEGER}
 		where p_id = #{pId,jdbcType=INTEGER}
 	</update>

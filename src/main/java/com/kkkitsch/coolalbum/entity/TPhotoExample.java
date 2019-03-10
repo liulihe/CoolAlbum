@@ -685,66 +685,6 @@ public class TPhotoExample {
             return (Criteria) this;
         }
 
-        public Criteria andPMessageIdIsNull() {
-            addCriterion("p_message_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPMessageIdIsNotNull() {
-            addCriterion("p_message_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andPMessageIdEqualTo(Integer value) {
-            addCriterion("p_message_id =", value, "pMessageId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPMessageIdNotEqualTo(Integer value) {
-            addCriterion("p_message_id <>", value, "pMessageId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPMessageIdGreaterThan(Integer value) {
-            addCriterion("p_message_id >", value, "pMessageId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPMessageIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("p_message_id >=", value, "pMessageId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPMessageIdLessThan(Integer value) {
-            addCriterion("p_message_id <", value, "pMessageId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPMessageIdLessThanOrEqualTo(Integer value) {
-            addCriterion("p_message_id <=", value, "pMessageId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPMessageIdIn(List<Integer> values) {
-            addCriterion("p_message_id in", values, "pMessageId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPMessageIdNotIn(List<Integer> values) {
-            addCriterion("p_message_id not in", values, "pMessageId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPMessageIdBetween(Integer value1, Integer value2) {
-            addCriterion("p_message_id between", value1, value2, "pMessageId");
-            return (Criteria) this;
-        }
-
-        public Criteria andPMessageIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("p_message_id not between", value1, value2, "pMessageId");
-            return (Criteria) this;
-        }
-
         public Criteria andPMemberIdIsNull() {
             addCriterion("p_member_id is null");
             return (Criteria) this;

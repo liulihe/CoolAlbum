@@ -26,7 +26,8 @@
 									and ${criterion.condition} #{criterion.value}
 								</when>
 								<when test="criterion.betweenValue">
-									and ${criterion.condition} #{criterion.value} and
+									and ${criterion.condition} #{criterion.value}
+									and
 									#{criterion.secondValue}
 								</when>
 								<when test="criterion.listValue">
@@ -58,7 +59,8 @@
 									and ${criterion.condition} #{criterion.value}
 								</when>
 								<when test="criterion.betweenValue">
-									and ${criterion.condition} #{criterion.value} and
+									and ${criterion.condition} #{criterion.value}
+									and
 									#{criterion.secondValue}
 								</when>
 								<when test="criterion.listValue">
@@ -76,7 +78,8 @@
 		</where>
 	</sql>
 	<sql id="Base_Column_List">
-		m_id, m_accountname, m_nickname, m_password, m_email, m_phone,
+		m_id, m_accountname, m_nickname, m_password, m_email,
+		m_phone,
 		m_createtime, m_signature,
 		m_status
 	</sql>
@@ -113,14 +116,19 @@
 		</if>
 	</delete>
 	<insert id="insert" parameterType="com.kkkitsch.coolalbum.entity.TMember">
-		insert into member (m_id, m_accountname, m_nickname,
+		insert into member (m_id,
+		m_accountname, m_nickname,
 		m_password, m_email, m_phone,
-		m_createtime, m_signature, m_status
+		m_createtime,
+		m_signature, m_status
 		)
-		values (#{mId,jdbcType=INTEGER}, #{mAccountname,jdbcType=VARCHAR},
+		values (#{mId,jdbcType=INTEGER},
+		#{mAccountname,jdbcType=VARCHAR},
 		#{mNickname,jdbcType=VARCHAR},
-		#{mPassword,jdbcType=VARCHAR}, #{mEmail,jdbcType=VARCHAR}, #{mPhone,jdbcType=VARCHAR},
-		#{mCreatetime,jdbcType=VARCHAR}, #{mSignature,jdbcType=VARCHAR},
+		#{mPassword,jdbcType=VARCHAR}, #{mEmail,jdbcType=VARCHAR},
+		#{mPhone,jdbcType=VARCHAR},
+		#{mCreatetime,jdbcType=VARCHAR},
+		#{mSignature,jdbcType=VARCHAR},
 		#{mStatus,jdbcType=CHAR}
 		)
 	</insert>
@@ -231,14 +239,22 @@
 	<update id="updateByExample" parameterType="map">
 		update member
 		set m_id = #{record.mId,jdbcType=INTEGER},
-		m_accountname = #{record.mAccountname,jdbcType=VARCHAR},
-		m_nickname = #{record.mNickname,jdbcType=VARCHAR},
-		m_password = #{record.mPassword,jdbcType=VARCHAR},
-		m_email = #{record.mEmail,jdbcType=VARCHAR},
-		m_phone = #{record.mPhone,jdbcType=VARCHAR},
-		m_createtime = #{record.mCreatetime,jdbcType=VARCHAR},
-		m_signature = #{record.mSignature,jdbcType=VARCHAR},
-		m_status = #{record.mStatus,jdbcType=CHAR}
+		m_accountname =
+		#{record.mAccountname,jdbcType=VARCHAR},
+		m_nickname =
+		#{record.mNickname,jdbcType=VARCHAR},
+		m_password =
+		#{record.mPassword,jdbcType=VARCHAR},
+		m_email =
+		#{record.mEmail,jdbcType=VARCHAR},
+		m_phone =
+		#{record.mPhone,jdbcType=VARCHAR},
+		m_createtime =
+		#{record.mCreatetime,jdbcType=VARCHAR},
+		m_signature =
+		#{record.mSignature,jdbcType=VARCHAR},
+		m_status =
+		#{record.mStatus,jdbcType=CHAR}
 		<if test="_parameter != null">
 			<include refid="Update_By_Example_Where_Clause" />
 		</if>
@@ -275,13 +291,18 @@
 	</update>
 	<update id="updateByPrimaryKey" parameterType="com.kkkitsch.coolalbum.entity.TMember">
 		update member
-		set m_accountname = #{mAccountname,jdbcType=VARCHAR},
-		m_nickname = #{mNickname,jdbcType=VARCHAR},
-		m_password = #{mPassword,jdbcType=VARCHAR},
+		set
+		m_accountname = #{mAccountname,jdbcType=VARCHAR},
+		m_nickname =
+		#{mNickname,jdbcType=VARCHAR},
+		m_password =
+		#{mPassword,jdbcType=VARCHAR},
 		m_email = #{mEmail,jdbcType=VARCHAR},
 		m_phone = #{mPhone,jdbcType=VARCHAR},
-		m_createtime = #{mCreatetime,jdbcType=VARCHAR},
-		m_signature = #{mSignature,jdbcType=VARCHAR},
+		m_createtime =
+		#{mCreatetime,jdbcType=VARCHAR},
+		m_signature =
+		#{mSignature,jdbcType=VARCHAR},
 		m_status = #{mStatus,jdbcType=CHAR}
 		where m_id = #{mId,jdbcType=INTEGER}
 	</update>

@@ -11,9 +11,7 @@ public class TMessage {
 
     private String mContent;
 
-    private Integer mLike;
-
-    private String mStatus;
+    private Integer mReplyId;
 
     public Integer getmId() {
         return mId;
@@ -47,27 +45,19 @@ public class TMessage {
         this.mContent = mContent == null ? null : mContent.trim();
     }
 
-    public Integer getmLike() {
-        return mLike;
+    public Integer getmReplyId() {
+        return mReplyId;
     }
 
-    public void setmLike(Integer mLike) {
-        this.mLike = mLike;
+    public void setmReplyId(Integer mReplyId) {
+        this.mReplyId = mReplyId;
     }
 
-    public String getmStatus() {
-        return mStatus;
-    }
-
-    public void setmStatus(String mStatus) {
-        this.mStatus = mStatus == null ? null : mStatus.trim();
-    }
-
-    @Override
-    public String toString() {
-        return "TMessage [mId=" + mId + ", mCreatetime=" + mCreatetime + ", mSponsor=" + mSponsor + ", mContent="
-                + mContent + ", mLike=" + mLike + ", mStatus=" + mStatus + "]";
-    }
+	@Override
+	public String toString() {
+		return "TMessage [mId=" + mId + ", mCreatetime=" + mCreatetime + ", mSponsor=" + mSponsor + ", mContent="
+				+ mContent + ", mReplyId=" + mReplyId + "]";
+	}
     
     
 }

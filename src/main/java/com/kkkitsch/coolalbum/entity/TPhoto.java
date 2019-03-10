@@ -21,8 +21,6 @@ public class TPhoto {
 
     private Integer pTypeId;
 
-    private Integer pMessageId;
-
     private Integer pMemberId;
 
     public Integer getpId() {
@@ -97,14 +95,6 @@ public class TPhoto {
         this.pTypeId = pTypeId;
     }
 
-    public Integer getpMessageId() {
-        return pMessageId;
-    }
-
-    public void setpMessageId(Integer pMessageId) {
-        this.pMessageId = pMessageId;
-    }
-
     public Integer getpMemberId() {
         return pMemberId;
     }
@@ -117,9 +107,7 @@ public class TPhoto {
 	public String toString() {
 		return "TPhoto [pId=" + pId + ", pName=" + pName + ", pCreatetime=" + pCreatetime + ", pModitytime="
 				+ pModitytime + ", pUrl=" + pUrl + ", pDescription=" + pDescription + ", pLikenum=" + pLikenum
-				+ ", pClicklikeMemberid=" + pClicklikeMemberid + ", pTypeId=" + pTypeId + ", pMessageId=" + pMessageId
-				+ ", pMemberId=" + pMemberId + "]";
+				+ ", pClicklikeMemberid=" + pClicklikeMemberid + ", pTypeId=" + pTypeId + ", pMemberId=" + pMemberId
+				+ "]";
 	}
-    
-    
 }

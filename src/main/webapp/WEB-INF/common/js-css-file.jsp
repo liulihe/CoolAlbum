@@ -6,3 +6,4 @@
 <script src="${appPath}/plugin/bootstrap/bootstrap-3.3.7-dist/js/bootstrap.js"></script>
 <script src="${appPath}/plugin/alert/js/alert.min.js"></script>
 <script src="${appPath}/plugin/jqueryValidation/jquery.validate.min.js"></script>
+<script src="${appPath}/plugin/wangEditor/wangEditor.min.js"></script>

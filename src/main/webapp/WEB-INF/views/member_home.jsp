@@ -100,6 +100,7 @@
 					<!-- 图片展示 -->
 					<div id="fpDiv"></div>
 					
+					<hr>
 					<!-- 分页 -->
 					<div id="fpnavnum">
 						<div>
@@ -108,6 +109,18 @@
 							</ul>
 							</nav>
 						</div>
+					</div>
+					
+					<hr>
+					<!-- 留言 -->
+					<div id="fpmessageDiv">
+						<div id="messageDiv" style="display: none;">
+							<div id="multitext">
+							</div><br>
+							<button id="messageSubmit" type="button" class="btn btn-primary">提交留言</button>
+						</div>
+						<button id="leaveMessage" type="button" class="btn btn-primary">给ta留言</button>
+						<hr>
 					</div>
 				</div>
 				
@@ -625,15 +638,23 @@
 						}else{
 							var acctTd=$("<td></td>").append(this.fNamedfriend);
 						}
-						var accessBtn=$("<a data='"+this.fFriendid+"' class='btn btn-success btn-xs accessBtn' href='#' role='button'>访问</a>");
-						var namedBtn=$("<a data='"+this.fFriendid+"' class='btn btn-success btn-xs namedBtn' href='#' role='button'>备注</a>");
-						var deleteBtn=$("<a data='"+this.fFriendid+"' class='btn btn-danger btn-xs deleteBtn' href='#' role='button'>删除</a>");
+						var accessBtnSpan=$("<span class='glyphicon glyphicon-menu-right' aria-hidden='true'></span>");
+						var accessBtn=$("<a data='"+this.fFriendid+"' class='btn btn-primary btn-xs accessBtn' href='#' role='button'></a>");
+						 
+						var namedBtnSpan=$("<span class='glyphicon glyphicon-saved' aria-hidden='true'></span>");
+						var namedBtn=$("<a data='"+this.fFriendid+"' class='btn btn-success btn-xs namedBtn' href='#' role='button'></a>");
+						
+						var deleteBtnSpan=$("<span class='glyphicon glyphicon-remove' aria-hidden='true'></span>");
+						var deleteBtn=$("<a data='"+this.fFriendid+"' class='btn btn-danger btn-xs deleteBtn' href='#' role='button'></a>");
 						if(this.fIsblack==0){
-							var blackBtn=$("<a data='"+this.fFriendid+"' class='btn btn-danger btn-xs blackBtn' href='#' role='button'>加入黑名单</a>");
+							
+							var blackBtnSpan=$("<span class='glyphicon glyphicon-plus-sign' aria-hidden='true'></span>");
+							var blackBtn=$("<a data='"+this.fFriendid+"' class='btn btn-warning btn-xs blackBtn' href='#' role='button'></a>");
 						}else{
-							var blackBtn=$("<a data='"+this.fFriendid+"' class='btn btn-danger btn-xs blackBtn' href='#' role='button'>移除黑名单</a>");
+							var blackBtnSpan=$("<span class='glyphicon glyphicon-minus-sign' aria-hidden='true'></span>");
+							var blackBtn=$("<a data='"+this.fFriendid+"' class='btn btn-warning btn-xs blackBtn' href='#' role='button'></a>");
 						}
-						var opeTd=$("<td></td>").append(accessBtn).append(" ").append(namedBtn).append(" ").append(deleteBtn).append(" ").append(blackBtn);
+						var opeTd=$("<td></td>").append(accessBtn.append(accessBtnSpan)).append(" ").append(namedBtn.append(namedBtnSpan)).append(" ").append(deleteBtn.append(deleteBtnSpan)).append(" ").append(blackBtn.append(blackBtnSpan));
 						var tr=$("<tr></tr>").append(acctTd).append(opeTd);
 						$("#friendBody").append(tr);
 					});
@@ -675,11 +696,15 @@
 			rowDiv.append(div);
 		});
 		$("#fpDiv").append(rowDiv);
+		
+		/*  */
+		
 	}
 	
 	/* 填充好友的图片类型 */
 	function fill_friendphototype(result){
 		photo_type=result;
+		$("#phototypeid").children("option:gt(0)").empty();
 		$.each(result,function(index){
 			$("#phototypeid").append("<option value='"+this.pId+"'>"+this.pTypename+"</option>");
 		});
@@ -875,9 +900,9 @@
 			},
 			success:function(result){
 				if(result.content.fIsblack==0){
-					blackBtn.text("加入黑名单")
+					blackBtn.children("span").removeClass("glyphicon glyphicon-minus-sign").addClass("glyphicon glyphicon-plus-sign");
 				}else{
-					blackBtn.text("移除黑名单")
+					blackBtn.children("span").removeClass("glyphicon glyphicon-plus-sign").addClass("glyphicon glyphicon-minus-sign");
 				}
 			},
 			error:function(XMLHttpRequest,textStatus){
@@ -1216,5 +1241,17 @@
 			}
 		});
 	});
+	
+	
+	$("#leaveMessage").click(function(){
+		$(this).hide();
+		var E = window.wangEditor;
+	    var editor = new E('#multitext');
+	    editor.create();
+	    $("#messageSubmit").attr("friendId",friendId);
+		$("#messageDiv").show();
+	});
+	
+	
 </script>
 </html>

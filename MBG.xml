@@ -54,9 +54,10 @@
 		</javaClientGenerator>
 
 		<!-- 映射 -->
-		
-		<table tableName="friend" domainObjectName="TFriend"></table>
-		<!-- <table tableName="photo" domainObjectName="TPhoto"></table>
+		<table tableName="photo" domainObjectName="TPhoto"></table>
+		<table tableName="message" domainObjectName="TMessage"></table>
+		<!-- <table tableName="friend" domainObjectName="TFriend"></table>
+		<table tableName="photo" domainObjectName="TPhoto"></table>
 		<table tableName="member" domainObjectName="TMember"></table>
 		<table tableName="message" domainObjectName="TMessage"></table>
 		

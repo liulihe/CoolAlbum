@@ -365,133 +365,63 @@ public class TMessageExample {
             return (Criteria) this;
         }
 
-        public Criteria andMLikeIsNull() {
-            addCriterion("m_like is null");
+        public Criteria andMReplyIdIsNull() {
+            addCriterion("m_reply_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andMLikeIsNotNull() {
-            addCriterion("m_like is not null");
+        public Criteria andMReplyIdIsNotNull() {
+            addCriterion("m_reply_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMLikeEqualTo(Integer value) {
-            addCriterion("m_like =", value, "mLike");
+        public Criteria andMReplyIdEqualTo(Integer value) {
+            addCriterion("m_reply_id =", value, "mReplyId");
             return (Criteria) this;
         }
 
-        public Criteria andMLikeNotEqualTo(Integer value) {
-            addCriterion("m_like <>", value, "mLike");
+        public Criteria andMReplyIdNotEqualTo(Integer value) {
+            addCriterion("m_reply_id <>", value, "mReplyId");
             return (Criteria) this;
         }
 
-        public Criteria andMLikeGreaterThan(Integer value) {
-            addCriterion("m_like >", value, "mLike");
+        public Criteria andMReplyIdGreaterThan(Integer value) {
+            addCriterion("m_reply_id >", value, "mReplyId");
             return (Criteria) this;
         }
 
-        public Criteria andMLikeGreaterThanOrEqualTo(Integer value) {
-            addCriterion("m_like >=", value, "mLike");
+        public Criteria andMReplyIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("m_reply_id >=", value, "mReplyId");
             return (Criteria) this;
         }
 
-        public Criteria andMLikeLessThan(Integer value) {
-            addCriterion("m_like <", value, "mLike");
+        public Criteria andMReplyIdLessThan(Integer value) {
+            addCriterion("m_reply_id <", value, "mReplyId");
             return (Criteria) this;
         }
 
-        public Criteria andMLikeLessThanOrEqualTo(Integer value) {
-            addCriterion("m_like <=", value, "mLike");
+        public Criteria andMReplyIdLessThanOrEqualTo(Integer value) {
+            addCriterion("m_reply_id <=", value, "mReplyId");
             return (Criteria) this;
         }
 
-        public Criteria andMLikeIn(List<Integer> values) {
-            addCriterion("m_like in", values, "mLike");
+        public Criteria andMReplyIdIn(List<Integer> values) {
+            addCriterion("m_reply_id in", values, "mReplyId");
             return (Criteria) this;
         }
 
-        public Criteria andMLikeNotIn(List<Integer> values) {
-            addCriterion("m_like not in", values, "mLike");
+        public Criteria andMReplyIdNotIn(List<Integer> values) {
+            addCriterion("m_reply_id not in", values, "mReplyId");
             return (Criteria) this;
         }
 
-        public Criteria andMLikeBetween(Integer value1, Integer value2) {
-            addCriterion("m_like between", value1, value2, "mLike");
+        public Criteria andMReplyIdBetween(Integer value1, Integer value2) {
+            addCriterion("m_reply_id between", value1, value2, "mReplyId");
             return (Criteria) this;
         }
 
-        public Criteria andMLikeNotBetween(Integer value1, Integer value2) {
-            addCriterion("m_like not between", value1, value2, "mLike");
-            return (Criteria) this;
-        }
-
-        public Criteria andMStatusIsNull() {
-            addCriterion("m_status is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMStatusIsNotNull() {
-            addCriterion("m_status is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMStatusEqualTo(String value) {
-            addCriterion("m_status =", value, "mStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andMStatusNotEqualTo(String value) {
-            addCriterion("m_status <>", value, "mStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andMStatusGreaterThan(String value) {
-            addCriterion("m_status >", value, "mStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andMStatusGreaterThanOrEqualTo(String value) {
-            addCriterion("m_status >=", value, "mStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andMStatusLessThan(String value) {
-            addCriterion("m_status <", value, "mStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andMStatusLessThanOrEqualTo(String value) {
-            addCriterion("m_status <=", value, "mStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andMStatusLike(String value) {
-            addCriterion("m_status like", value, "mStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andMStatusNotLike(String value) {
-            addCriterion("m_status not like", value, "mStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andMStatusIn(List<String> values) {
-            addCriterion("m_status in", values, "mStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andMStatusNotIn(List<String> values) {
-            addCriterion("m_status not in", values, "mStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andMStatusBetween(String value1, String value2) {
-            addCriterion("m_status between", value1, value2, "mStatus");
-            return (Criteria) this;
-        }
-
-        public Criteria andMStatusNotBetween(String value1, String value2) {
-            addCriterion("m_status not between", value1, value2, "mStatus");
+        public Criteria andMReplyIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("m_reply_id not between", value1, value2, "mReplyId");
             return (Criteria) this;
         }
     }
