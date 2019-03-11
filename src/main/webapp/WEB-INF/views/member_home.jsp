@@ -189,14 +189,15 @@
 					</div>
 				</div>
 				
-				<div id="messageDiv">留言功能暂未实现</div>
+				<div id="mymessageDiv">
+					
+				</div>
 				
 			</div>
 		</div>
 		<!-- 栅格结束 -->
 		
 	</div>
-
 
 	<!-- 添加图片类型模态框 -->
 	<div id="addPhotoTypeModal" class="modal fade" tabindex="-1" role="dialog">
@@ -969,7 +970,26 @@
 	
 	/* 点击留言管理 */
 	$("#messageManage").click(function(){
-		$("#messageDiv").show().siblings().hide();
+		$("#mymessageDiv").show().siblings().hide();
+		$.ajax({
+			url:"${appPath}/message/getmymessage",
+			type:"get",
+			success:function(result){
+				$.each(result.content,function(){
+					console.log(this);
+					var messagediv=$("<div></div>");
+					var friendacct=$("<strong>"+this.mSponsor+"</strong>");
+					var message=$("<p>"+this.mContent+"</p>");
+					var createtime=$("<p>"+getdate(this.mCreatetime)+"</p>");
+					var ope=$("<a href='#' >回复 </a><a href='#' mId='"+this.mId+"' class='messagedelete'>删除</a>");
+					var hr=$("<hr></hr>");
+					$("#mymessageDiv").append(messagediv.append(friendacct).append("给你留言：").append("<br>").append(message).append(createtime).append(ope).append(hr));
+				});
+			},
+			error:function(XMLHttpRequest, textStatus){
+				alert(textStatus);
+			}
+		});
 	});
 
 	/* 点击添加更多 */
@@ -1243,13 +1263,44 @@
 	});
 	
 	
+	/* 点击给好友留言 */
+	var E = window.wangEditor;
+	var editor = new E('#multitext');
+	editor.create();
 	$("#leaveMessage").click(function(){
 		$(this).hide();
-		var E = window.wangEditor;
-	    var editor = new E('#multitext');
-	    editor.create();
 	    $("#messageSubmit").attr("friendId",friendId);
 		$("#messageDiv").show();
+	});
+	
+	/* 点击提交留言 */
+	$("#messageSubmit").click(function(){
+		$.ajax({
+			url:"${appPath}/message/givenmessage",type:"POST",
+			data:{"friendId":$(this).attr("friendId"),"message":editor.txt.html()},
+			success:function(result){
+				if(result.code==1){
+					jqueryAlert({'content' : '留言成功','closeTime' : 1500});
+					editor.txt.html("");
+				}else{
+					jqueryAlert({'content' : '留言失败','closeTime' : 1500});
+				}
+			},
+			error:function(XMLHttpRequest,textStatus){alert('留言失败');}
+		});
+	});
+	
+	$("body").on("click", ".messagedelete", function() {
+		var cur=$(this);
+		$.ajax({
+			url:"${appPath}/message/deletemessage",
+			data:{"mId":$(this).attr("mId")},
+			success:function(result){
+				if(result.code==1){
+					cur.parent().empty();
+				}
+			}
+		});
 	});
 	
 	

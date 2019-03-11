@@ -115,113 +115,123 @@ public class TMessageExample {
             return (Criteria) this;
         }
 
-        public Criteria andMIdEqualTo(Integer value) {
+        public Criteria andMIdEqualTo(String value) {
             addCriterion("m_id =", value, "mId");
             return (Criteria) this;
         }
 
-        public Criteria andMIdNotEqualTo(Integer value) {
+        public Criteria andMIdNotEqualTo(String value) {
             addCriterion("m_id <>", value, "mId");
             return (Criteria) this;
         }
 
-        public Criteria andMIdGreaterThan(Integer value) {
+        public Criteria andMIdGreaterThan(String value) {
             addCriterion("m_id >", value, "mId");
             return (Criteria) this;
         }
 
-        public Criteria andMIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andMIdGreaterThanOrEqualTo(String value) {
             addCriterion("m_id >=", value, "mId");
             return (Criteria) this;
         }
 
-        public Criteria andMIdLessThan(Integer value) {
+        public Criteria andMIdLessThan(String value) {
             addCriterion("m_id <", value, "mId");
             return (Criteria) this;
         }
 
-        public Criteria andMIdLessThanOrEqualTo(Integer value) {
+        public Criteria andMIdLessThanOrEqualTo(String value) {
             addCriterion("m_id <=", value, "mId");
             return (Criteria) this;
         }
 
-        public Criteria andMIdIn(List<Integer> values) {
+        public Criteria andMIdLike(String value) {
+            addCriterion("m_id like", value, "mId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMIdNotLike(String value) {
+            addCriterion("m_id not like", value, "mId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMIdIn(List<String> values) {
             addCriterion("m_id in", values, "mId");
             return (Criteria) this;
         }
 
-        public Criteria andMIdNotIn(List<Integer> values) {
+        public Criteria andMIdNotIn(List<String> values) {
             addCriterion("m_id not in", values, "mId");
             return (Criteria) this;
         }
 
-        public Criteria andMIdBetween(Integer value1, Integer value2) {
+        public Criteria andMIdBetween(String value1, String value2) {
             addCriterion("m_id between", value1, value2, "mId");
             return (Criteria) this;
         }
 
-        public Criteria andMIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andMIdNotBetween(String value1, String value2) {
             addCriterion("m_id not between", value1, value2, "mId");
             return (Criteria) this;
         }
 
-        public Criteria andMCreatetimeIsNull() {
-            addCriterion("m_createtime is null");
+        public Criteria andMMessageReceiverIdIsNull() {
+            addCriterion("m_message_receiver_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andMCreatetimeIsNotNull() {
-            addCriterion("m_createtime is not null");
+        public Criteria andMMessageReceiverIdIsNotNull() {
+            addCriterion("m_message_receiver_id is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMCreatetimeEqualTo(Date value) {
-            addCriterion("m_createtime =", value, "mCreatetime");
+        public Criteria andMMessageReceiverIdEqualTo(Integer value) {
+            addCriterion("m_message_receiver_id =", value, "mMessageReceiverId");
             return (Criteria) this;
         }
 
-        public Criteria andMCreatetimeNotEqualTo(Date value) {
-            addCriterion("m_createtime <>", value, "mCreatetime");
+        public Criteria andMMessageReceiverIdNotEqualTo(Integer value) {
+            addCriterion("m_message_receiver_id <>", value, "mMessageReceiverId");
             return (Criteria) this;
         }
 
-        public Criteria andMCreatetimeGreaterThan(Date value) {
-            addCriterion("m_createtime >", value, "mCreatetime");
+        public Criteria andMMessageReceiverIdGreaterThan(Integer value) {
+            addCriterion("m_message_receiver_id >", value, "mMessageReceiverId");
             return (Criteria) this;
         }
 
-        public Criteria andMCreatetimeGreaterThanOrEqualTo(Date value) {
-            addCriterion("m_createtime >=", value, "mCreatetime");
+        public Criteria andMMessageReceiverIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("m_message_receiver_id >=", value, "mMessageReceiverId");
             return (Criteria) this;
         }
 
-        public Criteria andMCreatetimeLessThan(Date value) {
-            addCriterion("m_createtime <", value, "mCreatetime");
+        public Criteria andMMessageReceiverIdLessThan(Integer value) {
+            addCriterion("m_message_receiver_id <", value, "mMessageReceiverId");
             return (Criteria) this;
         }
 
-        public Criteria andMCreatetimeLessThanOrEqualTo(Date value) {
-            addCriterion("m_createtime <=", value, "mCreatetime");
+        public Criteria andMMessageReceiverIdLessThanOrEqualTo(Integer value) {
+            addCriterion("m_message_receiver_id <=", value, "mMessageReceiverId");
             return (Criteria) this;
         }
 
-        public Criteria andMCreatetimeIn(List<Date> values) {
-            addCriterion("m_createtime in", values, "mCreatetime");
+        public Criteria andMMessageReceiverIdIn(List<Integer> values) {
+            addCriterion("m_message_receiver_id in", values, "mMessageReceiverId");
             return (Criteria) this;
         }
 
-        public Criteria andMCreatetimeNotIn(List<Date> values) {
-            addCriterion("m_createtime not in", values, "mCreatetime");
+        public Criteria andMMessageReceiverIdNotIn(List<Integer> values) {
+            addCriterion("m_message_receiver_id not in", values, "mMessageReceiverId");
             return (Criteria) this;
         }
 
-        public Criteria andMCreatetimeBetween(Date value1, Date value2) {
-            addCriterion("m_createtime between", value1, value2, "mCreatetime");
+        public Criteria andMMessageReceiverIdBetween(Integer value1, Integer value2) {
+            addCriterion("m_message_receiver_id between", value1, value2, "mMessageReceiverId");
             return (Criteria) this;
         }
 
-        public Criteria andMCreatetimeNotBetween(Date value1, Date value2) {
-            addCriterion("m_createtime not between", value1, value2, "mCreatetime");
+        public Criteria andMMessageReceiverIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("m_message_receiver_id not between", value1, value2, "mMessageReceiverId");
             return (Criteria) this;
         }
 
@@ -365,63 +375,123 @@ public class TMessageExample {
             return (Criteria) this;
         }
 
-        public Criteria andMReplyIdIsNull() {
-            addCriterion("m_reply_id is null");
+        public Criteria andMCreatetimeIsNull() {
+            addCriterion("m_createtime is null");
             return (Criteria) this;
         }
 
-        public Criteria andMReplyIdIsNotNull() {
-            addCriterion("m_reply_id is not null");
+        public Criteria andMCreatetimeIsNotNull() {
+            addCriterion("m_createtime is not null");
             return (Criteria) this;
         }
 
-        public Criteria andMReplyIdEqualTo(Integer value) {
-            addCriterion("m_reply_id =", value, "mReplyId");
+        public Criteria andMCreatetimeEqualTo(Date value) {
+            addCriterion("m_createtime =", value, "mCreatetime");
             return (Criteria) this;
         }
 
-        public Criteria andMReplyIdNotEqualTo(Integer value) {
-            addCriterion("m_reply_id <>", value, "mReplyId");
+        public Criteria andMCreatetimeNotEqualTo(Date value) {
+            addCriterion("m_createtime <>", value, "mCreatetime");
             return (Criteria) this;
         }
 
-        public Criteria andMReplyIdGreaterThan(Integer value) {
-            addCriterion("m_reply_id >", value, "mReplyId");
+        public Criteria andMCreatetimeGreaterThan(Date value) {
+            addCriterion("m_createtime >", value, "mCreatetime");
             return (Criteria) this;
         }
 
-        public Criteria andMReplyIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("m_reply_id >=", value, "mReplyId");
+        public Criteria andMCreatetimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("m_createtime >=", value, "mCreatetime");
             return (Criteria) this;
         }
 
-        public Criteria andMReplyIdLessThan(Integer value) {
-            addCriterion("m_reply_id <", value, "mReplyId");
+        public Criteria andMCreatetimeLessThan(Date value) {
+            addCriterion("m_createtime <", value, "mCreatetime");
             return (Criteria) this;
         }
 
-        public Criteria andMReplyIdLessThanOrEqualTo(Integer value) {
-            addCriterion("m_reply_id <=", value, "mReplyId");
+        public Criteria andMCreatetimeLessThanOrEqualTo(Date value) {
+            addCriterion("m_createtime <=", value, "mCreatetime");
             return (Criteria) this;
         }
 
-        public Criteria andMReplyIdIn(List<Integer> values) {
-            addCriterion("m_reply_id in", values, "mReplyId");
+        public Criteria andMCreatetimeIn(List<Date> values) {
+            addCriterion("m_createtime in", values, "mCreatetime");
             return (Criteria) this;
         }
 
-        public Criteria andMReplyIdNotIn(List<Integer> values) {
-            addCriterion("m_reply_id not in", values, "mReplyId");
+        public Criteria andMCreatetimeNotIn(List<Date> values) {
+            addCriterion("m_createtime not in", values, "mCreatetime");
             return (Criteria) this;
         }
 
-        public Criteria andMReplyIdBetween(Integer value1, Integer value2) {
-            addCriterion("m_reply_id between", value1, value2, "mReplyId");
+        public Criteria andMCreatetimeBetween(Date value1, Date value2) {
+            addCriterion("m_createtime between", value1, value2, "mCreatetime");
             return (Criteria) this;
         }
 
-        public Criteria andMReplyIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("m_reply_id not between", value1, value2, "mReplyId");
+        public Criteria andMCreatetimeNotBetween(Date value1, Date value2) {
+            addCriterion("m_createtime not between", value1, value2, "mCreatetime");
+            return (Criteria) this;
+        }
+
+        public Criteria andMIfhasReplyIdIsNull() {
+            addCriterion("m_ifhas_reply_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMIfhasReplyIdIsNotNull() {
+            addCriterion("m_ifhas_reply_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMIfhasReplyIdEqualTo(Integer value) {
+            addCriterion("m_ifhas_reply_id =", value, "mIfhasReplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMIfhasReplyIdNotEqualTo(Integer value) {
+            addCriterion("m_ifhas_reply_id <>", value, "mIfhasReplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMIfhasReplyIdGreaterThan(Integer value) {
+            addCriterion("m_ifhas_reply_id >", value, "mIfhasReplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMIfhasReplyIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("m_ifhas_reply_id >=", value, "mIfhasReplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMIfhasReplyIdLessThan(Integer value) {
+            addCriterion("m_ifhas_reply_id <", value, "mIfhasReplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMIfhasReplyIdLessThanOrEqualTo(Integer value) {
+            addCriterion("m_ifhas_reply_id <=", value, "mIfhasReplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMIfhasReplyIdIn(List<Integer> values) {
+            addCriterion("m_ifhas_reply_id in", values, "mIfhasReplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMIfhasReplyIdNotIn(List<Integer> values) {
+            addCriterion("m_ifhas_reply_id not in", values, "mIfhasReplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMIfhasReplyIdBetween(Integer value1, Integer value2) {
+            addCriterion("m_ifhas_reply_id between", value1, value2, "mIfhasReplyId");
+            return (Criteria) this;
+        }
+
+        public Criteria andMIfhasReplyIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("m_ifhas_reply_id not between", value1, value2, "mIfhasReplyId");
             return (Criteria) this;
         }
     }

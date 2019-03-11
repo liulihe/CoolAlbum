@@ -3,30 +3,32 @@ package com.kkkitsch.coolalbum.entity;
 import java.util.Date;
 
 public class TMessage {
-    private Integer mId;
+    private String mId;
 
-    private Date mCreatetime;
+    private Integer mMessageReceiverId;
 
     private String mSponsor;
 
     private String mContent;
 
-    private Integer mReplyId;
+    private Date mCreatetime;
 
-    public Integer getmId() {
+    private Integer mIfhasReplyId;
+
+    public String getmId() {
         return mId;
     }
 
-    public void setmId(Integer mId) {
-        this.mId = mId;
+    public void setmId(String mId) {
+        this.mId = mId == null ? null : mId.trim();
     }
 
-    public Date getmCreatetime() {
-        return mCreatetime;
+    public Integer getmMessageReceiverId() {
+        return mMessageReceiverId;
     }
 
-    public void setmCreatetime(Date mCreatetime) {
-        this.mCreatetime = mCreatetime;
+    public void setmMessageReceiverId(Integer mMessageReceiverId) {
+        this.mMessageReceiverId = mMessageReceiverId;
     }
 
     public String getmSponsor() {
@@ -45,19 +47,26 @@ public class TMessage {
         this.mContent = mContent == null ? null : mContent.trim();
     }
 
-    public Integer getmReplyId() {
-        return mReplyId;
+    public Date getmCreatetime() {
+        return mCreatetime;
     }
 
-    public void setmReplyId(Integer mReplyId) {
-        this.mReplyId = mReplyId;
+    public void setmCreatetime(Date mCreatetime) {
+        this.mCreatetime = mCreatetime;
+    }
+
+    public Integer getmIfhasReplyId() {
+        return mIfhasReplyId;
+    }
+
+    public void setmIfhasReplyId(Integer mIfhasReplyId) {
+        this.mIfhasReplyId = mIfhasReplyId;
     }
 
 	@Override
 	public String toString() {
-		return "TMessage [mId=" + mId + ", mCreatetime=" + mCreatetime + ", mSponsor=" + mSponsor + ", mContent="
-				+ mContent + ", mReplyId=" + mReplyId + "]";
+		return "TMessage [mId=" + mId + ", mMessageReceiverId=" + mMessageReceiverId + ", mSponsor=" + mSponsor
+				+ ", mContent=" + mContent + ", mCreatetime=" + mCreatetime + ", mIfhasReplyId=" + mIfhasReplyId + "]";
 	}
-    
     
 }

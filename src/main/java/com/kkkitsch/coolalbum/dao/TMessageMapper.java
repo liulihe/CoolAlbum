@@ -10,7 +10,7 @@ public interface TMessageMapper {
 
     int deleteByExample(TMessageExample example);
 
-    int deleteByPrimaryKey(Integer mId);
+    int deleteByPrimaryKey(String mId);
 
     int insert(TMessage record);
 
@@ -18,7 +18,7 @@ public interface TMessageMapper {
 
     List<TMessage> selectByExample(TMessageExample example);
 
-    TMessage selectByPrimaryKey(Integer mId);
+    TMessage selectByPrimaryKey(String mId);
 
     int updateByExampleSelective(@Param("record") TMessage record, @Param("example") TMessageExample example);
 
