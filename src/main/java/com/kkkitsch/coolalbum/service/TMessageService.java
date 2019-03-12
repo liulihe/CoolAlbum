@@ -13,4 +13,6 @@ public interface TMessageService {
 
 	MyMsg<String> messageDelete(String mId);
 
+	MyMsg<String> messageReply(String mMessageReceiverId, String accountname);
+
 }

@@ -26,7 +26,7 @@ public class TMessageServiceImpl implements TMessageService {
 			return MyMsg.fail("留言不能为空", null, null);
 		} else {
 			TMessage record = new TMessage();
-			record.setmId(UUID.randomUUID().toString().substring(0,12));
+			record.setmId(UUID.randomUUID().toString().substring(0, 15));
 			record.setmSponsor(accountname);
 			record.setmMessageReceiverId(friendId);
 			record.setmContent(message);
@@ -53,7 +53,19 @@ public class TMessageServiceImpl implements TMessageService {
 	@Override
 	public MyMsg<String> messageDelete(String mId) {
 		int affectNum = messageMapper.deleteByPrimaryKey(mId);
-		return affectNum==1?MyMsg.success("删除成功", null, null):MyMsg.fail("删除失败", null, null);
+		return affectNum == 1 ? MyMsg.success("删除成功", null, null) : MyMsg.fail("删除失败", null, null);
+	}
+
+	@Override
+	public MyMsg<String> messageReply(String mMessageReceiverId, String accountname) {
+		TMessage record = new TMessage();
+		record.setmId(UUID.randomUUID().toString().substring(0, 15));
+		record.setmCreatetime(new Date());
+		record.setmSponsor(accountname);
+		record.setmContent("fake message");
+		record.setmIfhasReplyId(Integer.parseInt(mMessageReceiverId));
+		int affectNum = messageMapper.insertSelective(record);
+		return affectNum == 1 ? MyMsg.success("回复成功", null, null) : MyMsg.fail("回复失败", null, null);
 	}
 
 }

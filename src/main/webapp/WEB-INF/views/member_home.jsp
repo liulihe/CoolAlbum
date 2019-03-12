@@ -8,6 +8,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>我的个人中心</title>
 <%@include file="/WEB-INF/common/js-css-file.jsp"%>
+<style type="text/css">
+body {background-color: #C7EDCC;}
+</style>
 </head>
 <body>
 	<div class="container">
@@ -18,12 +21,12 @@
 				<!-- 下拉菜单 -->
 				<div class="dropdown">
 					
-					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					<button style="background-color:#C7EDCC; border: 0" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 						<span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${curMember.mNickname } 
 						<span class="caret"></span>
 					</button>
 
-					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+					<ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="background-color:#C7EDCC;">
 						<br>
 						<li><a id="myInfo" href="#"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> 我的资料</a></li>
 						<li role="separator" class="divider"></li>
@@ -143,7 +146,7 @@
 					<!-- 警告框 -->
 					<div class="row">
 						<div class="col-md-10">
-							<div class="alert alert-warning alert-danger" role="alert">
+							<div class="alert alert-success" role="alert">
 								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 								</button>
@@ -255,7 +258,7 @@
 					</div>
 					<div class="form-group">
 						<label>描述</label><br>
-						<textarea id="pd_detail" class="form-group" rows="3" cols="50" style="border: 0">
+						<textarea  id="pd_detail" class="form-group" rows="3" cols="50" style="border: 0">
 						</textarea>						
 					</div>	
 				</div>
@@ -656,7 +659,7 @@
 							var blackBtn=$("<a data='"+this.fFriendid+"' class='btn btn-warning btn-xs blackBtn' href='#' role='button'></a>");
 						}
 						var opeTd=$("<td></td>").append(accessBtn.append(accessBtnSpan)).append(" ").append(namedBtn.append(namedBtnSpan)).append(" ").append(deleteBtn.append(deleteBtnSpan)).append(" ").append(blackBtn.append(blackBtnSpan));
-						var tr=$("<tr></tr>").append(acctTd).append(opeTd);
+						var tr=$("<tr style='background-color: #C7EDCC;'></tr>").append(acctTd).append(opeTd);
 						$("#friendBody").append(tr);
 					});
 				}else{
@@ -980,8 +983,8 @@
 					var messagediv=$("<div></div>");
 					var friendacct=$("<strong>"+this.mSponsor+"</strong>");
 					var message=$("<p>"+this.mContent+"</p>");
-					var createtime=$("<p>"+getdate(this.mCreatetime)+"</p>");
-					var ope=$("<a href='#' >回复 </a><a href='#' mId='"+this.mId+"' class='messagedelete'>删除</a>");
+					var createtime=$("<p align='right'>"+getdate(this.mCreatetime)+"</p>");
+					var ope=$("<a href='#' mId='"+this.mId+"' class='messagedelete'  style='color: red;'>删除</a>");
 					var hr=$("<hr></hr>");
 					$("#mymessageDiv").append(messagediv.append(friendacct).append("给你留言：").append("<br>").append(message).append(createtime).append(ope).append(hr));
 				});
@@ -1302,7 +1305,6 @@
 			}
 		});
 	});
-	
 	
 </script>
 </html>

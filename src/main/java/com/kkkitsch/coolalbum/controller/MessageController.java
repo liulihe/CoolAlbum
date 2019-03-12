@@ -44,5 +44,13 @@ public class MessageController {
 	public MyMsg<String> messageDelete(String mId) {
 		return messageService.messageDelete(mId);
 	}
+	
+	@RequestMapping("messagereply")
+	@ResponseBody
+	public MyMsg<String> messageReply(String mMessageReceiverId,HttpSession session) {
+		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
+		String accountname = member.getmAccountname();
+		return messageService.messageReply(mMessageReceiverId,accountname);
+	}
 
 }

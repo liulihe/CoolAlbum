@@ -126,12 +126,12 @@ public class TFriendServiceImpl implements TFriendService {
 			tFriendMapper.deleteByExample(example);
 			System.out.println("执行1");
 			// 好友删我
-			TFriendExample example1 = new TFriendExample();
-			Criteria criteria1 = example.createCriteria();
-			criteria1.andFFriendidEqualTo(curMemId);
-			criteria1.andFMemberidEqualTo(Integer.parseInt(friendId));
-			tFriendMapper.deleteByExample(example1);
-			System.out.println("执行2");
+			// TFriendExample example1 = new TFriendExample();
+			// Criteria criteria1 = example.createCriteria();
+			// criteria1.andFFriendidEqualTo(curMemId);
+			// criteria1.andFMemberidEqualTo(Integer.parseInt(friendId));
+			// tFriendMapper.deleteByExample(example1);
+			// System.out.println("执行2");
 			return MyMsg.success("删除成功", null, null);
 		} catch (NumberFormatException e) {
 			return MyMsg.fail("删除失败", null, null);
