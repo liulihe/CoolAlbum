@@ -7,7 +7,6 @@
     <result column="m_sponsor" jdbcType="VARCHAR" property="mSponsor" />
     <result column="m_content" jdbcType="VARCHAR" property="mContent" />
     <result column="m_createtime" jdbcType="TIMESTAMP" property="mCreatetime" />
-    <result column="m_ifhas_reply_id" jdbcType="INTEGER" property="mIfhasReplyId" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -68,7 +67,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    m_id, m_message_receiver_id, m_sponsor, m_content, m_createtime, m_ifhas_reply_id
+    m_id, m_message_receiver_id, m_sponsor, m_content, m_createtime
   </sql>
   <select id="selectByExample" parameterType="com.kkkitsch.coolalbum.entity.TMessageExample" resultMap="BaseResultMap">
     select
@@ -102,11 +101,9 @@
   </delete>
   <insert id="insert" parameterType="com.kkkitsch.coolalbum.entity.TMessage">
     insert into message (m_id, m_message_receiver_id, m_sponsor, 
-      m_content, m_createtime, m_ifhas_reply_id
-      )
+      m_content, m_createtime)
     values (#{mId,jdbcType=VARCHAR}, #{mMessageReceiverId,jdbcType=INTEGER}, #{mSponsor,jdbcType=VARCHAR}, 
-      #{mContent,jdbcType=VARCHAR}, #{mCreatetime,jdbcType=TIMESTAMP}, #{mIfhasReplyId,jdbcType=INTEGER}
-      )
+      #{mContent,jdbcType=VARCHAR}, #{mCreatetime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.kkkitsch.coolalbum.entity.TMessage">
     insert into message
@@ -126,9 +123,6 @@
       <if test="mCreatetime != null">
         m_createtime,
       </if>
-      <if test="mIfhasReplyId != null">
-        m_ifhas_reply_id,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="mId != null">
@@ -145,9 +139,6 @@
       </if>
       <if test="mCreatetime != null">
         #{mCreatetime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="mIfhasReplyId != null">
-        #{mIfhasReplyId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -175,9 +166,6 @@
       <if test="record.mCreatetime != null">
         m_createtime = #{record.mCreatetime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.mIfhasReplyId != null">
-        m_ifhas_reply_id = #{record.mIfhasReplyId,jdbcType=INTEGER},
-      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -189,8 +177,7 @@
       m_message_receiver_id = #{record.mMessageReceiverId,jdbcType=INTEGER},
       m_sponsor = #{record.mSponsor,jdbcType=VARCHAR},
       m_content = #{record.mContent,jdbcType=VARCHAR},
-      m_createtime = #{record.mCreatetime,jdbcType=TIMESTAMP},
-      m_ifhas_reply_id = #{record.mIfhasReplyId,jdbcType=INTEGER}
+      m_createtime = #{record.mCreatetime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -210,9 +197,6 @@
       <if test="mCreatetime != null">
         m_createtime = #{mCreatetime,jdbcType=TIMESTAMP},
       </if>
-      <if test="mIfhasReplyId != null">
-        m_ifhas_reply_id = #{mIfhasReplyId,jdbcType=INTEGER},
-      </if>
     </set>
     where m_id = #{mId,jdbcType=VARCHAR}
   </update>
@@ -221,8 +205,7 @@
     set m_message_receiver_id = #{mMessageReceiverId,jdbcType=INTEGER},
       m_sponsor = #{mSponsor,jdbcType=VARCHAR},
       m_content = #{mContent,jdbcType=VARCHAR},
-      m_createtime = #{mCreatetime,jdbcType=TIMESTAMP},
-      m_ifhas_reply_id = #{mIfhasReplyId,jdbcType=INTEGER}
+      m_createtime = #{mCreatetime,jdbcType=TIMESTAMP}
     where m_id = #{mId,jdbcType=VARCHAR}
   </update>
 </mapper>

@@ -28,7 +28,8 @@
 									and ${criterion.condition} #{criterion.value}
 								</when>
 								<when test="criterion.betweenValue">
-									and ${criterion.condition} #{criterion.value} and
+									and ${criterion.condition} #{criterion.value}
+									and
 									#{criterion.secondValue}
 								</when>
 								<when test="criterion.listValue">
@@ -60,7 +61,8 @@
 									and ${criterion.condition} #{criterion.value}
 								</when>
 								<when test="criterion.betweenValue">
-									and ${criterion.condition} #{criterion.value} and
+									and ${criterion.condition} #{criterion.value}
+									and
 									#{criterion.secondValue}
 								</when>
 								<when test="criterion.listValue">
@@ -78,7 +80,8 @@
 		</where>
 	</sql>
 	<sql id="Base_Column_List">
-		p_id, p_name, p_createtime, p_moditytime, p_url, p_description, p_likenum,
+		p_id, p_name, p_createtime, p_moditytime, p_url,
+		p_description, p_likenum,
 		p_clicklike_memberid,
 		p_type_id, p_member_id
 	</sql>
@@ -115,18 +118,23 @@
 		</if>
 	</delete>
 	<insert id="insert" parameterType="com.kkkitsch.coolalbum.entity.TPhoto">
-		insert into photo (p_id, p_name, p_createtime,
+		insert into photo (p_id,
+		p_name, p_createtime,
 		p_moditytime, p_url, p_description,
-		p_likenum, p_clicklike_memberid, p_type_id,
+		p_likenum,
+		p_clicklike_memberid, p_type_id,
 		p_member_id)
-		values (#{pId,jdbcType=INTEGER}, #{pName,jdbcType=VARCHAR},
+		values
+		(#{pId,jdbcType=INTEGER}, #{pName,jdbcType=VARCHAR},
 		#{pCreatetime,jdbcType=TIMESTAMP},
-		#{pModitytime,jdbcType=TIMESTAMP}, #{pUrl,jdbcType=VARCHAR}, #{pDescription,jdbcType=VARCHAR},
+		#{pModitytime,jdbcType=TIMESTAMP},
+		#{pUrl,jdbcType=VARCHAR}, #{pDescription,jdbcType=VARCHAR},
 		#{pLikenum,jdbcType=INTEGER}, #{pClicklikeMemberid,jdbcType=VARCHAR},
 		#{pTypeId,jdbcType=INTEGER},
 		#{pMemberId,jdbcType=INTEGER})
 	</insert>
-	<insert id="insertSelective" parameterType="com.kkkitsch.coolalbum.entity.TPhoto" keyProperty="pId">
+	<insert id="insertSelective" parameterType="com.kkkitsch.coolalbum.entity.TPhoto"
+		keyProperty="pId">
 		insert into photo
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="pId != null">
@@ -225,7 +233,8 @@
 				p_likenum = #{record.pLikenum,jdbcType=INTEGER},
 			</if>
 			<if test="record.pClicklikeMemberid != null">
-				p_clicklike_memberid = #{record.pClicklikeMemberid,jdbcType=VARCHAR},
+				p_clicklike_memberid =
+				#{record.pClicklikeMemberid,jdbcType=VARCHAR},
 			</if>
 			<if test="record.pTypeId != null">
 				p_type_id = #{record.pTypeId,jdbcType=INTEGER},
@@ -241,15 +250,24 @@
 	<update id="updateByExample" parameterType="map">
 		update photo
 		set p_id = #{record.pId,jdbcType=INTEGER},
-		p_name = #{record.pName,jdbcType=VARCHAR},
-		p_createtime = #{record.pCreatetime,jdbcType=TIMESTAMP},
-		p_moditytime = #{record.pModitytime,jdbcType=TIMESTAMP},
-		p_url = #{record.pUrl,jdbcType=VARCHAR},
-		p_description = #{record.pDescription,jdbcType=VARCHAR},
-		p_likenum = #{record.pLikenum,jdbcType=INTEGER},
-		p_clicklike_memberid = #{record.pClicklikeMemberid,jdbcType=VARCHAR},
-		p_type_id = #{record.pTypeId,jdbcType=INTEGER},
-		p_member_id = #{record.pMemberId,jdbcType=INTEGER}
+		p_name =
+		#{record.pName,jdbcType=VARCHAR},
+		p_createtime =
+		#{record.pCreatetime,jdbcType=TIMESTAMP},
+		p_moditytime =
+		#{record.pModitytime,jdbcType=TIMESTAMP},
+		p_url =
+		#{record.pUrl,jdbcType=VARCHAR},
+		p_description =
+		#{record.pDescription,jdbcType=VARCHAR},
+		p_likenum =
+		#{record.pLikenum,jdbcType=INTEGER},
+		p_clicklike_memberid =
+		#{record.pClicklikeMemberid,jdbcType=VARCHAR},
+		p_type_id =
+		#{record.pTypeId,jdbcType=INTEGER},
+		p_member_id =
+		#{record.pMemberId,jdbcType=INTEGER}
 		<if test="_parameter != null">
 			<include refid="Update_By_Example_Where_Clause" />
 		</if>
@@ -276,7 +294,8 @@
 				p_likenum = #{pLikenum,jdbcType=INTEGER},
 			</if>
 			<if test="pClicklikeMemberid != null">
-				p_clicklike_memberid = #{pClicklikeMemberid,jdbcType=VARCHAR},
+				p_clicklike_memberid =
+				#{pClicklikeMemberid,jdbcType=VARCHAR},
 			</if>
 			<if test="pTypeId != null">
 				p_type_id = #{pTypeId,jdbcType=INTEGER},
@@ -289,15 +308,22 @@
 	</update>
 	<update id="updateByPrimaryKey" parameterType="com.kkkitsch.coolalbum.entity.TPhoto">
 		update photo
-		set p_name = #{pName,jdbcType=VARCHAR},
-		p_createtime = #{pCreatetime,jdbcType=TIMESTAMP},
-		p_moditytime = #{pModitytime,jdbcType=TIMESTAMP},
+		set
+		p_name = #{pName,jdbcType=VARCHAR},
+		p_createtime =
+		#{pCreatetime,jdbcType=TIMESTAMP},
+		p_moditytime =
+		#{pModitytime,jdbcType=TIMESTAMP},
 		p_url = #{pUrl,jdbcType=VARCHAR},
 		p_description = #{pDescription,jdbcType=VARCHAR},
-		p_likenum = #{pLikenum,jdbcType=INTEGER},
-		p_clicklike_memberid = #{pClicklikeMemberid,jdbcType=VARCHAR},
-		p_type_id = #{pTypeId,jdbcType=INTEGER},
-		p_member_id = #{pMemberId,jdbcType=INTEGER}
+		p_likenum =
+		#{pLikenum,jdbcType=INTEGER},
+		p_clicklike_memberid =
+		#{pClicklikeMemberid,jdbcType=VARCHAR},
+		p_type_id =
+		#{pTypeId,jdbcType=INTEGER},
+		p_member_id =
+		#{pMemberId,jdbcType=INTEGER}
 		where p_id = #{pId,jdbcType=INTEGER}
 	</update>
 </mapper>

@@ -1,228 +1,238 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kkkitsch.coolalbum.dao.TFriendMapper">
-  <resultMap id="BaseResultMap" type="com.kkkitsch.coolalbum.entity.TFriend">
-    <id column="f_id" jdbcType="INTEGER" property="fId" />
-    <result column="f_memberid" jdbcType="INTEGER" property="fMemberid" />
-    <result column="f_friendacct" jdbcType="VARCHAR" property="fFriendacct" />
-    <result column="f_friendid" jdbcType="INTEGER" property="fFriendid" />
-    <result column="f_namedfriend" jdbcType="VARCHAR" property="fNamedfriend" />
-    <result column="f_isblack" jdbcType="CHAR" property="fIsblack" />
-  </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
-    f_id, f_memberid, f_friendacct, f_friendid, f_namedfriend, f_isblack
-  </sql>
-  <select id="selectByExample" parameterType="com.kkkitsch.coolalbum.entity.TFriendExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from friend
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from friend
-    where f_id = #{fId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from friend
-    where f_id = #{fId,jdbcType=INTEGER}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.kkkitsch.coolalbum.entity.TFriendExample">
-    delete from friend
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.kkkitsch.coolalbum.entity.TFriend">
-    insert into friend (f_id, f_memberid, f_friendacct, 
-      f_friendid, f_namedfriend, f_isblack
-      )
-    values (#{fId,jdbcType=INTEGER}, #{fMemberid,jdbcType=INTEGER}, #{fFriendacct,jdbcType=VARCHAR}, 
-      #{fFriendid,jdbcType=INTEGER}, #{fNamedfriend,jdbcType=VARCHAR}, #{fIsblack,jdbcType=CHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.kkkitsch.coolalbum.entity.TFriend" keyProperty="fId">
-    insert into friend
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="fId != null">
-        f_id,
-      </if>
-      <if test="fMemberid != null">
-        f_memberid,
-      </if>
-      <if test="fFriendacct != null">
-        f_friendacct,
-      </if>
-      <if test="fFriendid != null">
-        f_friendid,
-      </if>
-      <if test="fNamedfriend != null">
-        f_namedfriend,
-      </if>
-      <if test="fIsblack != null">
-        f_isblack,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="fId != null">
-        #{fId,jdbcType=INTEGER},
-      </if>
-      <if test="fMemberid != null">
-        #{fMemberid,jdbcType=INTEGER},
-      </if>
-      <if test="fFriendacct != null">
-        #{fFriendacct,jdbcType=VARCHAR},
-      </if>
-      <if test="fFriendid != null">
-        #{fFriendid,jdbcType=INTEGER},
-      </if>
-      <if test="fNamedfriend != null">
-        #{fNamedfriend,jdbcType=VARCHAR},
-      </if>
-      <if test="fIsblack != null">
-        #{fIsblack,jdbcType=CHAR},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.kkkitsch.coolalbum.entity.TFriendExample" resultType="java.lang.Long">
-    select count(*) from friend
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update friend
-    <set>
-      <if test="record.fId != null">
-        f_id = #{record.fId,jdbcType=INTEGER},
-      </if>
-      <if test="record.fMemberid != null">
-        f_memberid = #{record.fMemberid,jdbcType=INTEGER},
-      </if>
-      <if test="record.fFriendacct != null">
-        f_friendacct = #{record.fFriendacct,jdbcType=VARCHAR},
-      </if>
-      <if test="record.fFriendid != null">
-        f_friendid = #{record.fFriendid,jdbcType=INTEGER},
-      </if>
-      <if test="record.fNamedfriend != null">
-        f_namedfriend = #{record.fNamedfriend,jdbcType=VARCHAR},
-      </if>
-      <if test="record.fIsblack != null">
-        f_isblack = #{record.fIsblack,jdbcType=CHAR},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update friend
-    set f_id = #{record.fId,jdbcType=INTEGER},
-      f_memberid = #{record.fMemberid,jdbcType=INTEGER},
-      f_friendacct = #{record.fFriendacct,jdbcType=VARCHAR},
-      f_friendid = #{record.fFriendid,jdbcType=INTEGER},
-      f_namedfriend = #{record.fNamedfriend,jdbcType=VARCHAR},
-      f_isblack = #{record.fIsblack,jdbcType=CHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.kkkitsch.coolalbum.entity.TFriend">
-    update friend
-    <set>
-      <if test="fMemberid != null">
-        f_memberid = #{fMemberid,jdbcType=INTEGER},
-      </if>
-      <if test="fFriendacct != null">
-        f_friendacct = #{fFriendacct,jdbcType=VARCHAR},
-      </if>
-      <if test="fFriendid != null">
-        f_friendid = #{fFriendid,jdbcType=INTEGER},
-      </if>
-      <if test="fNamedfriend != null">
-        f_namedfriend = #{fNamedfriend,jdbcType=VARCHAR},
-      </if>
-      <if test="fIsblack != null">
-        f_isblack = #{fIsblack,jdbcType=CHAR},
-      </if>
-    </set>
-    where f_id = #{fId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.kkkitsch.coolalbum.entity.TFriend">
-    update friend
-    set f_memberid = #{fMemberid,jdbcType=INTEGER},
-      f_friendacct = #{fFriendacct,jdbcType=VARCHAR},
-      f_friendid = #{fFriendid,jdbcType=INTEGER},
-      f_namedfriend = #{fNamedfriend,jdbcType=VARCHAR},
-      f_isblack = #{fIsblack,jdbcType=CHAR}
-    where f_id = #{fId,jdbcType=INTEGER}
-  </update>
+	<resultMap id="BaseResultMap" type="com.kkkitsch.coolalbum.entity.TFriend">
+		<id column="f_id" jdbcType="INTEGER" property="fId" />
+		<result column="f_memberid" jdbcType="INTEGER" property="fMemberid" />
+		<result column="f_friendacct" jdbcType="VARCHAR" property="fFriendacct" />
+		<result column="f_friendid" jdbcType="INTEGER" property="fFriendid" />
+		<result column="f_namedfriend" jdbcType="VARCHAR" property="fNamedfriend" />
+		<result column="f_isblack" jdbcType="CHAR" property="fIsblack" />
+	</resultMap>
+	<sql id="Example_Where_Clause">
+		<where>
+			<foreach collection="oredCriteria" item="criteria" separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Example_Where_Clause">
+		<where>
+			<foreach collection="example.oredCriteria" item="criteria"
+				separator="or">
+				<if test="criteria.valid">
+					<trim prefix="(" prefixOverrides="and" suffix=")">
+						<foreach collection="criteria.criteria" item="criterion">
+							<choose>
+								<when test="criterion.noValue">
+									and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue">
+									and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue">
+									and ${criterion.condition} #{criterion.value} and
+									#{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue">
+									and ${criterion.condition}
+									<foreach close=")" collection="criterion.value" item="listItem"
+										open="(" separator=",">
+										#{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Base_Column_List">
+		f_id, f_memberid, f_friendacct, f_friendid, f_namedfriend, f_isblack
+	</sql>
+	<select id="selectByExample" parameterType="com.kkkitsch.coolalbum.entity.TFriendExample"
+		resultMap="BaseResultMap">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from friend
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from friend
+		where f_id = #{fId,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from friend
+		where f_id = #{fId,jdbcType=INTEGER}
+	</delete>
+	<delete id="deleteByExample" parameterType="com.kkkitsch.coolalbum.entity.TFriendExample">
+		delete from friend
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</delete>
+	<insert id="insert" parameterType="com.kkkitsch.coolalbum.entity.TFriend">
+		insert into friend (f_id, f_memberid, f_friendacct,
+		f_friendid, f_namedfriend, f_isblack
+		)
+		values (#{fId,jdbcType=INTEGER}, #{fMemberid,jdbcType=INTEGER},
+		#{fFriendacct,jdbcType=VARCHAR},
+		#{fFriendid,jdbcType=INTEGER}, #{fNamedfriend,jdbcType=VARCHAR}, #{fIsblack,jdbcType=CHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.kkkitsch.coolalbum.entity.TFriend"
+		keyProperty="fId">
+		insert into friend
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="fId != null">
+				f_id,
+			</if>
+			<if test="fMemberid != null">
+				f_memberid,
+			</if>
+			<if test="fFriendacct != null">
+				f_friendacct,
+			</if>
+			<if test="fFriendid != null">
+				f_friendid,
+			</if>
+			<if test="fNamedfriend != null">
+				f_namedfriend,
+			</if>
+			<if test="fIsblack != null">
+				f_isblack,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="fId != null">
+				#{fId,jdbcType=INTEGER},
+			</if>
+			<if test="fMemberid != null">
+				#{fMemberid,jdbcType=INTEGER},
+			</if>
+			<if test="fFriendacct != null">
+				#{fFriendacct,jdbcType=VARCHAR},
+			</if>
+			<if test="fFriendid != null">
+				#{fFriendid,jdbcType=INTEGER},
+			</if>
+			<if test="fNamedfriend != null">
+				#{fNamedfriend,jdbcType=VARCHAR},
+			</if>
+			<if test="fIsblack != null">
+				#{fIsblack,jdbcType=CHAR},
+			</if>
+		</trim>
+	</insert>
+	<select id="countByExample" parameterType="com.kkkitsch.coolalbum.entity.TFriendExample"
+		resultType="java.lang.Long">
+		select count(*) from friend
+		<if test="_parameter != null">
+			<include refid="Example_Where_Clause" />
+		</if>
+	</select>
+	<update id="updateByExampleSelective" parameterType="map">
+		update friend
+		<set>
+			<if test="record.fId != null">
+				f_id = #{record.fId,jdbcType=INTEGER},
+			</if>
+			<if test="record.fMemberid != null">
+				f_memberid = #{record.fMemberid,jdbcType=INTEGER},
+			</if>
+			<if test="record.fFriendacct != null">
+				f_friendacct = #{record.fFriendacct,jdbcType=VARCHAR},
+			</if>
+			<if test="record.fFriendid != null">
+				f_friendid = #{record.fFriendid,jdbcType=INTEGER},
+			</if>
+			<if test="record.fNamedfriend != null">
+				f_namedfriend = #{record.fNamedfriend,jdbcType=VARCHAR},
+			</if>
+			<if test="record.fIsblack != null">
+				f_isblack = #{record.fIsblack,jdbcType=CHAR},
+			</if>
+		</set>
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByExample" parameterType="map">
+		update friend
+		set f_id = #{record.fId,jdbcType=INTEGER},
+		f_memberid = #{record.fMemberid,jdbcType=INTEGER},
+		f_friendacct = #{record.fFriendacct,jdbcType=VARCHAR},
+		f_friendid = #{record.fFriendid,jdbcType=INTEGER},
+		f_namedfriend = #{record.fNamedfriend,jdbcType=VARCHAR},
+		f_isblack = #{record.fIsblack,jdbcType=CHAR}
+		<if test="_parameter != null">
+			<include refid="Update_By_Example_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.kkkitsch.coolalbum.entity.TFriend">
+		update friend
+		<set>
+			<if test="fMemberid != null">
+				f_memberid = #{fMemberid,jdbcType=INTEGER},
+			</if>
+			<if test="fFriendacct != null">
+				f_friendacct = #{fFriendacct,jdbcType=VARCHAR},
+			</if>
+			<if test="fFriendid != null">
+				f_friendid = #{fFriendid,jdbcType=INTEGER},
+			</if>
+			<if test="fNamedfriend != null">
+				f_namedfriend = #{fNamedfriend,jdbcType=VARCHAR},
+			</if>
+			<if test="fIsblack != null">
+				f_isblack = #{fIsblack,jdbcType=CHAR},
+			</if>
+		</set>
+		where f_id = #{fId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.kkkitsch.coolalbum.entity.TFriend">
+		update friend
+		set f_memberid = #{fMemberid,jdbcType=INTEGER},
+		f_friendacct = #{fFriendacct,jdbcType=VARCHAR},
+		f_friendid = #{fFriendid,jdbcType=INTEGER},
+		f_namedfriend = #{fNamedfriend,jdbcType=VARCHAR},
+		f_isblack = #{fIsblack,jdbcType=CHAR}
+		where f_id = #{fId,jdbcType=INTEGER}
+	</update>
 </mapper>

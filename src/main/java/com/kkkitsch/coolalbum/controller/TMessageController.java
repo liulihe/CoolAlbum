@@ -13,12 +13,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kkkitsch.coolalbum.entity.TMember;
 import com.kkkitsch.coolalbum.entity.TMessage;
+import com.kkkitsch.coolalbum.entity.TMessageReply;
 import com.kkkitsch.coolalbum.service.TMessageService;
 import com.kkkitsch.coolalbum.util.MyMsg;
 
 @Controller
 @RequestMapping("message")
-public class MessageController {
+public class TMessageController {
 
 	@Autowired
 	TMessageService messageService;
@@ -44,13 +45,12 @@ public class MessageController {
 	public MyMsg<String> messageDelete(String mId) {
 		return messageService.messageDelete(mId);
 	}
-	
+
 	@RequestMapping("messagereply")
 	@ResponseBody
-	public MyMsg<String> messageReply(String mMessageReceiverId,HttpSession session) {
+	public MyMsg<TMessageReply> messageReply(HttpSession session, String replyMessage, String mSponsor,String mId) {
 		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
 		String accountname = member.getmAccountname();
-		return messageService.messageReply(mMessageReceiverId,accountname);
+		return messageService.replyMessage(mSponsor, accountname, replyMessage,mId);
 	}
-
 }

@@ -170,7 +170,7 @@ body {background-color: #C7EDCC;}
 				
 				<div id="friendDiv">
 					<div class="input-group col-md-4 col-md-offset-8">
-						<input type="text" class="form-control" id="searchText" placeholder="输入账号直接添加" /> 
+						<input type="text" class="form-control" id="searchText" placeholder="输入账号直接添加"/> 
 						<span class="input-group-addon" id="searchButton"> 
 							<a href="#">搜索</a>
 						</span>
@@ -984,7 +984,8 @@ body {background-color: #C7EDCC;}
 					var friendacct=$("<strong>"+this.mSponsor+"</strong>");
 					var message=$("<p>"+this.mContent+"</p>");
 					var createtime=$("<p align='right'>"+getdate(this.mCreatetime)+"</p>");
-					var ope=$("<a href='#' mId='"+this.mId+"' class='messagedelete'  style='color: red;'>删除</a>");
+					
+					var ope=$("<a href='#' mSponsor='"+this.mSponsor+"' mId='"+this.mId+"' class='messagereply'>回复 </a><a href='#' mId='"+this.mId+"' class='messagedelete'  style='color: red;'>删除</a>");
 					var hr=$("<hr></hr>");
 					$("#mymessageDiv").append(messagediv.append(friendacct).append("给你留言：").append("<br>").append(message).append(createtime).append(ope).append(hr));
 				});
@@ -1293,6 +1294,7 @@ body {background-color: #C7EDCC;}
 		});
 	});
 	
+	/* 留言删除 */
 	$("body").on("click", ".messagedelete", function() {
 		var cur=$(this);
 		$.ajax({
@@ -1306,5 +1308,49 @@ body {background-color: #C7EDCC;}
 		});
 	});
 	
+	/* 点击留言回复 */
+	var replyeditor=null;
+	var curReply=null;
+	$("body").on("click", ".messagereply", function() {
+		
+		curReply=$(this);
+		
+		/* 让当前回复按钮和删除按钮隐藏，富文本框显示，并让其他留言的回复按钮和删除按钮显示，富文本框隐藏 */
+		$(this).hide().next().hide().parent().siblings().children("a").show();
+		$(this).hide().next().hide().parent().siblings().children("div").remove();
+		$("#replytext").empty();
+		
+		var replyDiv=$("<div id='replytext'></div>");
+		var replyMultiDiv=$("<div id='replyMultiDiv'></div>");
+		var replyButton=$("<br><a id='replyCancleButton' href='#'class='btn btn-default'>取消</a> <a id='replyButton' href='#' mId='"+curReply.attr("mId")+"' class='btn btn-primary'>提交 </a>");
+		replyDiv.append(replyMultiDiv).append(replyButton).insertBefore(this);
+		
+		var E = window.wangEditor;
+		replyeditor = new E('#replyMultiDiv');
+		replyeditor.create();
+	});
+	
+	
+	/* 点击取消留言 */
+	$("body").on("click", "#replyCancleButton", function() {
+		$(this).parent().hide().siblings().show();
+	});
+	
+	/* 点击提交回复留言 */
+	$("body").on("click", "#replyButton", function() {
+		var curReplyButton=$(this);
+		$.ajax({
+			url:"${appPath}/message/messagereply",
+			data:{"mSponsor":curReply.attr("mSponsor"),"replyMessage":replyeditor.txt.text(),"mId":curReplyButton.attr("mId")},
+			success:function(result){
+				if(result.code==1){
+					curReplyButton.parent().hide().nextAll().show();
+					jqueryAlert({'content' : result.msg,'closeTime' : 1500});
+				}else{
+					alert(result.msg);
+				}
+			}
+		});
+	});
 </script>
 </html>

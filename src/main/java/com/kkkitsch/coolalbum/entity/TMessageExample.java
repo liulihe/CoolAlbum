@@ -434,66 +434,6 @@ public class TMessageExample {
             addCriterion("m_createtime not between", value1, value2, "mCreatetime");
             return (Criteria) this;
         }
-
-        public Criteria andMIfhasReplyIdIsNull() {
-            addCriterion("m_ifhas_reply_id is null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMIfhasReplyIdIsNotNull() {
-            addCriterion("m_ifhas_reply_id is not null");
-            return (Criteria) this;
-        }
-
-        public Criteria andMIfhasReplyIdEqualTo(Integer value) {
-            addCriterion("m_ifhas_reply_id =", value, "mIfhasReplyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMIfhasReplyIdNotEqualTo(Integer value) {
-            addCriterion("m_ifhas_reply_id <>", value, "mIfhasReplyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMIfhasReplyIdGreaterThan(Integer value) {
-            addCriterion("m_ifhas_reply_id >", value, "mIfhasReplyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMIfhasReplyIdGreaterThanOrEqualTo(Integer value) {
-            addCriterion("m_ifhas_reply_id >=", value, "mIfhasReplyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMIfhasReplyIdLessThan(Integer value) {
-            addCriterion("m_ifhas_reply_id <", value, "mIfhasReplyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMIfhasReplyIdLessThanOrEqualTo(Integer value) {
-            addCriterion("m_ifhas_reply_id <=", value, "mIfhasReplyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMIfhasReplyIdIn(List<Integer> values) {
-            addCriterion("m_ifhas_reply_id in", values, "mIfhasReplyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMIfhasReplyIdNotIn(List<Integer> values) {
-            addCriterion("m_ifhas_reply_id not in", values, "mIfhasReplyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMIfhasReplyIdBetween(Integer value1, Integer value2) {
-            addCriterion("m_ifhas_reply_id between", value1, value2, "mIfhasReplyId");
-            return (Criteria) this;
-        }
-
-        public Criteria andMIfhasReplyIdNotBetween(Integer value1, Integer value2) {
-            addCriterion("m_ifhas_reply_id not between", value1, value2, "mIfhasReplyId");
-            return (Criteria) this;
-        }
     }
 
     public static class Criteria extends GeneratedCriteria {

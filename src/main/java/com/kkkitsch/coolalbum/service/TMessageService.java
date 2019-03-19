@@ -3,6 +3,7 @@ package com.kkkitsch.coolalbum.service;
 import java.util.List;
 
 import com.kkkitsch.coolalbum.entity.TMessage;
+import com.kkkitsch.coolalbum.entity.TMessageReply;
 import com.kkkitsch.coolalbum.util.MyMsg;
 
 public interface TMessageService {
@@ -13,6 +14,7 @@ public interface TMessageService {
 
 	MyMsg<String> messageDelete(String mId);
 
-	MyMsg<String> messageReply(String mMessageReceiverId, String accountname);
+	MyMsg<TMessageReply> replyMessage(String mSponsor, String accountname, String replyMessage,String mId);
+
 
 }

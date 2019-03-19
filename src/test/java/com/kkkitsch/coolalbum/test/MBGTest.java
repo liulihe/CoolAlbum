@@ -24,5 +24,4 @@ public class MBGTest {
 		myBatisGenerator.generate(null);
 		System.out.println("ok");
 	}
-
 }
