@@ -2,7 +2,6 @@ package com.kkkitsch.coolalbum.service.imp;
 
 import java.sql.Timestamp;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -52,27 +51,8 @@ public class TMessageServiceImpl implements TMessageService {
 		criteria.andMMessageReceiverIdEqualTo(curMemId);
 		List<TMessage> messageList = messageMapper.selectByExample(example);
 
-		for (TMessage tMessage : messageList) {
-			System.out.println("当前message" + tMessage);
-		}
-
 		// 对留言排序
-		Collections.sort(messageList, new Comparator<TMessage>() {
-			/*
-			 * int compare(Student o1, Student o2) 返回一个基本类型的整型， 返回负数表示：o1 小于o2，
-			 * 返回0 表示：o1和o2相等， 返回正数表示：o1大于o2。
-			 */
-			@Override
-			public int compare(TMessage o1, TMessage o2) {
-				if (o1.getmCreatetime().before(o2.getmCreatetime())) {
-					return 1;
-				}
-				if (o1.getmCreatetime().after(o2.getmCreatetime())) {
-					return -1;
-				}
-				return 0;
-			}
-		});
+		Collections.sort(messageList);
 
 		if (messageList.isEmpty()) {
 			return MyMsg.fail("没有任何留言", null, null);

@@ -2,7 +2,7 @@ package com.kkkitsch.coolalbum.entity;
 
 import java.util.Date;
 
-public class TMessage{
+public class TMessage implements Comparable<TMessage> {
 	private String mId;
 
 	private Integer mMessageReceiverId;
@@ -57,5 +57,15 @@ public class TMessage{
 	public String toString() {
 		return "TMessage [mId=" + mId + ", mMessageReceiverId=" + mMessageReceiverId + ", mSponsor=" + mSponsor
 				+ ", mContent=" + mContent + ", mCreatetime=" + mCreatetime + "]";
+	}
+
+	@Override
+	public int compareTo(TMessage o) {
+		if (this.getmCreatetime().before(o.getmCreatetime())) {
+			return 1;
+		} else if (this.getmCreatetime().after(o.getmCreatetime())) {
+			return -1;
+		}
+		return 0;
 	}
 }
