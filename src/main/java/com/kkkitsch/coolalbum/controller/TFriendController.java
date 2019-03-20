@@ -115,7 +115,7 @@ public class TFriendController {
 
 	@RequestMapping("access")
 	@ResponseBody
-	public MyMsg accessFriend(@RequestParam(value = "pn", defaultValue = "1") int pn,
+	public MyMsg<Object> accessFriend(@RequestParam(value = "pn", defaultValue = "1") int pn,
 			@RequestParam(value = "ps", defaultValue = "10") int ps, String friendId,
 			@RequestParam(value = "phototypeid", defaultValue = "0") String ptid) {
 		// 在查询之前引入分页插件，设置查询页码，每页大小

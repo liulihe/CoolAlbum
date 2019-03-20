@@ -48,9 +48,9 @@ public class TMessageController {
 
 	@RequestMapping("messagereply")
 	@ResponseBody
-	public MyMsg<TMessageReply> messageReply(HttpSession session, String replyMessage, String mSponsor,String mId) {
+	public MyMsg<TMessageReply> messageReply(HttpSession session, String replyMessage, String mSponsor, String mId) {
 		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
 		String accountname = member.getmAccountname();
-		return messageService.replyMessage(mSponsor, accountname, replyMessage,mId);
+		return messageService.replyMessage(mSponsor, accountname, replyMessage, mId);
 	}
 }

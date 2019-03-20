@@ -1283,12 +1283,8 @@ body {background-color: #C7EDCC;}
 			url:"${appPath}/message/givenmessage",type:"POST",
 			data:{"friendId":$(this).attr("friendId"),"message":editor.txt.html()},
 			success:function(result){
-				if(result.code==1){
-					jqueryAlert({'content' : '留言成功','closeTime' : 1500});
-					editor.txt.html("");
-				}else{
-					jqueryAlert({'content' : '留言失败','closeTime' : 1500});
-				}
+				jqueryAlert({'content' : result.msg,'closeTime' : 1500});
+				editor.txt.html("");
 			},
 			error:function(XMLHttpRequest,textStatus){alert('留言失败');}
 		});

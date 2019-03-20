@@ -3,18 +3,30 @@ package com.kkkitsch.coolalbum.test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+
+import javax.net.ssl.SSLContext;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.ssl.TrustStrategy;
 import org.apache.http.util.EntityUtils;
 import org.junit.Test;
 
@@ -121,7 +133,7 @@ public class HttpClientTest {
 
 		URIBuilder uriBuilder = new URIBuilder().setScheme("http").setHost("route.showapi.com/9-2")
 				.setPath("/HistoryToday/LookUp");
-		
+
 		uriBuilder.setParameter("", "");
 		uriBuilder.setParameter("", "");
 		uriBuilder.setParameter("", "");
@@ -131,8 +143,7 @@ public class HttpClientTest {
 		uriBuilder.setParameter("", "");
 		uriBuilder.setParameter("", "");
 		uriBuilder.setParameter("", "");
-		
-		
+
 		URI uri = uriBuilder.build();
 
 		System.out.println("uriBuilder=" + uriBuilder);
@@ -198,6 +209,57 @@ public class HttpClientTest {
 				}
 			}
 
+		} finally {
+			response.close();
+		}
+	}
+
+	/**
+	 * HttpPost模拟表单提交
+	 */
+	@Test
+	public void testPostRequest() throws Exception {
+		// 客户端对象
+		CloseableHttpClient httpclient = null;
+		try {
+			SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
+
+				public boolean isTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+					return true;
+				}
+			}).build();
+			SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext);
+
+			// 创建一个可以访问https的请求对象
+			httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// 创建请求uri，表单提交总不能请求uri中带着参数吧 https://aip.baidubce.com/oauth/2.0/token?
+		URIBuilder uriBuilder = new URIBuilder().setScheme("https").setHost("aip.baidubce.com")
+				.setPath("/oauth/2.0/token");
+		URI uri = uriBuilder.build();
+
+		HttpPost httpPost = new HttpPost();
+		httpPost.setURI(uri);
+
+		List<BasicNameValuePair> nameValuePairlist = new ArrayList<BasicNameValuePair>();
+		nameValuePairlist.add(new BasicNameValuePair("grant_type", "client_credentials"));
+		nameValuePairlist.add(new BasicNameValuePair("client_id", "vRGoLWLXpmYtohLaDzks7nzx"));
+		nameValuePairlist.add(new BasicNameValuePair("client_secret", "DKAhZiLfGK7Z0DrkwOU9z0wdb4sPOTF7"));
+		HttpEntity httpEntity = new UrlEncodedFormEntity(nameValuePairlist);
+
+		httpPost.setEntity(httpEntity);
+
+		CloseableHttpResponse response = httpclient.execute(httpPost);
+		try {
+			HttpEntity entity = response.getEntity();
+			InputStream content = entity.getContent();
+			byte[] b = new byte[1024];
+			int read = content.read(b);
+			String str = new String(b);
+			System.out.println(read + " ============ " + str);
 		} finally {
 			response.close();
 		}

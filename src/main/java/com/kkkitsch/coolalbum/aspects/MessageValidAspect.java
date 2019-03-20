@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 import com.kkkitsch.coolalbum.entity.TMessage;
+import com.kkkitsch.coolalbum.util.HttpClientUtil;
 import com.kkkitsch.coolalbum.util.MyMsg;
 
 @Aspect
@@ -17,23 +18,23 @@ public class MessageValidAspect {
 	public void pointcut() {
 	}
 
+	@SuppressWarnings("unchecked")
 	@Around(value = "pointcut()")
-	public MyMsg<TMessage> putMessageOpe(ProceedingJoinPoint point) {
+	public MyMsg<TMessage> putMessageOpe(ProceedingJoinPoint point) throws Exception {
 		// 获取形参
 		Object[] args = point.getArgs();
-
 		// 如果要发送的数据中包含不良信息就屏蔽
-		for (int i = 0; i < args.length; i++) {
-			if (args[i].toString().contains("傻逼")) {
-				args[i] = args[i].toString().replace("傻逼", "**");
-			}
+		boolean validContent = HttpClientUtil.validContent(args[args.length - 1].toString());
+
+		// 如果有不当信息
+		if (!validContent) {
+			return MyMsg.fail("留言失败，检测到不当信息，请重新留言", null, null);
 		}
 		try {
 			// 执行目标方法
 			return (MyMsg<TMessage>) point.proceed(args);
 		} catch (Throwable e) {
-			e.printStackTrace();
-			return null;
+			return MyMsg.fail("发生错误，请重试", null, null);
 		}
 	}
 

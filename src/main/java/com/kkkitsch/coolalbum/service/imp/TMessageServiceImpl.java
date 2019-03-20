@@ -39,7 +39,6 @@ public class TMessageServiceImpl implements TMessageService {
 			record.setmContent(message);
 			record.setmCreatetime(new Timestamp(new Date().getTime()));
 			int affectNum = messageMapper.insertSelective(record);
-			System.out.println("留言后的message:" + record);
 			return affectNum == 1 ? MyMsg.success("留言成功", record, null) : MyMsg.fail("留言失败", null, null);
 		}
 	}

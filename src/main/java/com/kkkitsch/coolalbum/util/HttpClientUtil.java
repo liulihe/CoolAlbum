@@ -2,19 +2,33 @@ package com.kkkitsch.coolalbum.util;
 
 import java.io.InputStream;
 import java.net.URI;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.net.ssl.SSLContext;
+
 import java.util.Set;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.apache.http.ssl.TrustStrategy;
+
+import com.alibaba.fastjson.JSON;
 
 public class HttpClientUtil {
 
@@ -22,7 +36,6 @@ public class HttpClientUtil {
 		// 客户端对象
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		// 创建请求uri
-		// 历史上的今天接口：http://api.avatardata.cn/HistoryToday/LookUp?key=938b6f475f67483fa0b6d434a0deade5&yue=1&ri=1&type=1&page=1&rows=5
 		URIBuilder uriBuilder = new URIBuilder().setScheme("http").setHost("api.avatardata.cn")
 				.setPath("/HistoryToday/LookUp").setParameter("key", "938b6f475f67483fa0b6d434a0deade5");
 
@@ -84,4 +97,53 @@ public class HttpClientUtil {
 		return null;
 	}
 
+	public static boolean validContent(String validContent) throws Exception {
+
+		// 客户端对象
+		CloseableHttpClient httpclient = null;
+		try {
+			SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
+				public boolean isTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+					return true;
+				}
+			}).build();
+			SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext);
+			// 创建一个可以访问https的请求对象
+			httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		// 创建请求uri，表单提交总不能请求uri中带着参数吧
+		URIBuilder uriBuilder = new URIBuilder().setScheme("https").setHost("aip.baidubce.com")
+				.setPath("/rest/2.0/antispam/v2/spam");
+		URI uri = uriBuilder.build();
+		HttpPost httpPost = new HttpPost();
+		httpPost.setURI(uri);
+
+		List<BasicNameValuePair> nameValuePairlist = new ArrayList<BasicNameValuePair>();
+		nameValuePairlist.add(new BasicNameValuePair("access_token",
+				"24.0c290515f30e8f696400ac125aebec74.2592000.1555658597.282335-15803646"));
+		nameValuePairlist.add(new BasicNameValuePair("command_no", "500071"));
+		nameValuePairlist.add(new BasicNameValuePair("content", validContent));
+		HttpEntity httpEntity = new UrlEncodedFormEntity(nameValuePairlist);
+
+		httpPost.setEntity(httpEntity);
+
+		CloseableHttpResponse response = httpclient.execute(httpPost);
+		HttpEntity entity = response.getEntity();
+		InputStream content = entity.getContent();
+		byte[] b = new byte[1024];
+		content.read(b);
+		String str = new String(b);
+		String jsonString = JSON.toJSONString(str);
+		String substring = jsonString.substring(jsonString.indexOf("spam"), jsonString.indexOf("spam") + 10);
+
+		if (substring.contains("0")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
