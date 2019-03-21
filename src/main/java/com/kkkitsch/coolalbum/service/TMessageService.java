@@ -16,5 +16,7 @@ public interface TMessageService {
 
 	MyMsg<TMessageReply> replyMessage(String mSponsor, String accountname, String replyMessage,String mId);
 
+	MyMsg<List<TMessageReply>> getReplyMessage(String mId);
+
 
 }

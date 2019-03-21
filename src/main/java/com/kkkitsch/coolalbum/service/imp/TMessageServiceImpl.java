@@ -14,6 +14,7 @@ import com.kkkitsch.coolalbum.entity.TMessage;
 import com.kkkitsch.coolalbum.entity.TMessageExample;
 import com.kkkitsch.coolalbum.entity.TMessageExample.Criteria;
 import com.kkkitsch.coolalbum.entity.TMessageReply;
+import com.kkkitsch.coolalbum.entity.TMessageReplyExample;
 import com.kkkitsch.coolalbum.service.TMessageService;
 import com.kkkitsch.coolalbum.util.MyMsg;
 import com.kkkitsch.coolalbum.util.UUIDUtils;
@@ -81,5 +82,18 @@ public class TMessageServiceImpl implements TMessageService {
 		record.setmReplyTime(new Timestamp(new Date().getTime()));
 		int affectNum = messageReplyMapper.insertSelective(record);
 		return affectNum == 1 ? MyMsg.success("回复成功", record, null) : MyMsg.fail("回复留言失败", null, null);
+	}
+
+	@Override
+	public MyMsg<List<TMessageReply>> getReplyMessage(String mId) {
+		TMessageReplyExample example = new TMessageReplyExample();
+		com.kkkitsch.coolalbum.entity.TMessageReplyExample.Criteria criteria = example.createCriteria();
+		criteria.andMReplyRefertoEqualTo(mId);
+		List<TMessageReply> messageReplyList = messageReplyMapper.selectByExample(example);
+		for (TMessageReply tMessageReply : messageReplyList) {
+			System.out.println("回复列表" + tMessageReply + "=========================");
+		}
+		return !messageReplyList.isEmpty() ? MyMsg.success("获取回复成功", messageReplyList, null)
+				: MyMsg.fail("获取回复失败", null, null);
 	}
 }

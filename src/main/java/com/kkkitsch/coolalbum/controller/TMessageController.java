@@ -53,4 +53,12 @@ public class TMessageController {
 		String accountname = member.getmAccountname();
 		return messageService.replyMessage(mSponsor, accountname, replyMessage, mId);
 	}
+
+	@RequestMapping("getreplymessage")
+	@ResponseBody
+	public MyMsg<List<TMessageReply>> getReplyMessage(String mId) {
+		System.out.println(mId + "this is mId");
+		return messageService.getReplyMessage(mId);
+//		return MyMsg.success("ok", null, null);
+	}
 }

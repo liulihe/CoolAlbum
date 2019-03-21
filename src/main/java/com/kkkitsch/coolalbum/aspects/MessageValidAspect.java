@@ -37,5 +37,4 @@ public class MessageValidAspect {
 			return MyMsg.fail("发生错误，请重试", null, null);
 		}
 	}
-
 }

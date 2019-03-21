@@ -971,6 +971,28 @@ body {background-color: #C7EDCC;}
 		});
 	});
 	
+	
+	/* 获取留言回复 */
+	function getReplyMessage(mId){
+		$.ajax({
+			url:"${appPath}/message/getreplymessage",
+			type:"get",
+			data:{"mId":mId},
+			success:function(result){
+				if(result.code==1){
+					console.log(result.content);
+					var a="#"+result.content[0].mReplyReferto;
+					/* console.log(result.content[0].mId); */
+					$(a).children("a:first").before("<br><br>&emsp;&emsp;我的回复：");
+					$.each(result.content,function(index,element){
+						var replyDiv=$("<p><br>&emsp;&emsp;&emsp;&emsp;"+this.mReplyContent+"</p>");
+						$(a).children("a:first").before(replyDiv);
+					});
+				}
+			}
+		});
+	}
+	
 	/* 点击留言管理 */
 	$("#messageManage").click(function(){
 		$("#mymessageDiv").show().siblings().hide();
@@ -978,17 +1000,17 @@ body {background-color: #C7EDCC;}
 			url:"${appPath}/message/getmymessage",
 			type:"get",
 			success:function(result){
+				console.log(result);
 				$.each(result.content,function(){
-					console.log(this);
-					var messagediv=$("<div></div>");
+					var messagediv=$("<div id='"+this.mId+"'></div>");
 					var friendacct=$("<strong>"+this.mSponsor+"</strong>");
-					var message=$("<p>"+this.mContent+"</p>");
-					var createtime=$("<p align='right'>"+getdate(this.mCreatetime)+"</p>");
-					
-					var ope=$("<a href='#' mSponsor='"+this.mSponsor+"' mId='"+this.mId+"' class='messagereply'>回复 </a><a href='#' mId='"+this.mId+"' class='messagedelete'  style='color: red;'>删除</a>");
+					var createtime=$("<div align='right'>"+getdate(this.mCreatetime)+"</div>");
+					var ope=$("<br><a href='#' mSponsor='"+this.mSponsor+"' mId='"+this.mId+"' class='messagereply'>回复 </a><a href='#' mId='"+this.mId+"' class='messagedelete'  style='color: red;'>删除</a>");
 					var hr=$("<hr></hr>");
-					$("#mymessageDiv").append(messagediv.append(friendacct).append("给你留言：").append("<br>").append(message).append(createtime).append(ope).append(hr));
-				});
+					$("#mymessageDiv").append(messagediv.append(createtime).append(friendacct).append("对你说：").append(this.mContent).append(ope).append(hr));
+					/* 是否有留言回复 */
+					getReplyMessage(this.mId); 
+				}); 
 			},
 			error:function(XMLHttpRequest, textStatus){
 				alert(textStatus);
@@ -1281,10 +1303,10 @@ body {background-color: #C7EDCC;}
 	$("#messageSubmit").click(function(){
 		$.ajax({
 			url:"${appPath}/message/givenmessage",type:"POST",
-			data:{"friendId":$(this).attr("friendId"),"message":editor.txt.html()},
+			data:{"friendId":$(this).attr("friendId"),"message":editor.txt.text()},
 			success:function(result){
 				jqueryAlert({'content' : result.msg,'closeTime' : 1500});
-				editor.txt.html("");
+				editor.txt.text("");
 			},
 			error:function(XMLHttpRequest,textStatus){alert('留言失败');}
 		});
