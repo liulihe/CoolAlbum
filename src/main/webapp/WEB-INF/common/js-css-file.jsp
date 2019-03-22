@@ -7,3 +7,6 @@
 <script src="${appPath}/plugin/alert/js/alert.min.js"></script>
 <script src="${appPath}/plugin/jqueryValidation/jquery.validate.min.js"></script>
 <script src="${appPath}/plugin/wangEditor/wangEditor.min.js"></script>
+
+<script src="${appPath}/plugin/layui/layui.js"></script>
+<link rel="stylesheet" type="text/css" href="${appPath}/plugin/layui/css/layui.css" />

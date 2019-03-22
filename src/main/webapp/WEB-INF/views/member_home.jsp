@@ -980,18 +980,37 @@ body {background-color: #C7EDCC;}
 			data:{"mId":mId},
 			success:function(result){
 				if(result.code==1){
-					console.log(result.content);
-					var a="#"+result.content[0].mReplyReferto;
-					/* console.log(result.content[0].mId); */
-					$(a).children("a:first").before("<br><br>&emsp;&emsp;我的回复：");
+					console.log(result);
+					var replyDetail="";
 					$.each(result.content,function(index,element){
-						var replyDiv=$("<p><br>&emsp;&emsp;&emsp;&emsp;"+this.mReplyContent+"</p>");
-						$(a).children("a:first").before(replyDiv);
+						replyDetail=replyDetail+getdate(this.mReplyTime)+"，我回复说："+this.mReplyContent+"<br><br>";
 					});
+					layui.use('layer', function(){
+						  var layer = layui.layer;
+						  layer.msg('hello',{
+							  title :'我的回复',
+							  closeBtn :1,
+							  skin: 'demo-class',
+							  content:replyDetail, 
+							  time: 60000 
+						  });
+					});   
+				}else{
+					layui.use('layer', function(){
+						  var layer = layui.layer;
+						  layer.msg('没有回复消息',{
+							  skin: 'demo-class'
+						  });
+					});  
 				}
 			}
 		});
 	}
+	
+	/* 点击查看我的回复 */
+	$("body").on("click", ".messagereplyed", function() {
+		getReplyMessage($(this).attr("mId"));
+	});
 	
 	/* 点击留言管理 */
 	$("#messageManage").click(function(){
@@ -1005,11 +1024,9 @@ body {background-color: #C7EDCC;}
 					var messagediv=$("<div id='"+this.mId+"'></div>");
 					var friendacct=$("<strong>"+this.mSponsor+"</strong>");
 					var createtime=$("<div align='right'>"+getdate(this.mCreatetime)+"</div>");
-					var ope=$("<br><a href='#' mSponsor='"+this.mSponsor+"' mId='"+this.mId+"' class='messagereply'>回复 </a><a href='#' mId='"+this.mId+"' class='messagedelete'  style='color: red;'>删除</a>");
-					var hr=$("<hr></hr>");
-					$("#mymessageDiv").append(messagediv.append(createtime).append(friendacct).append("对你说：").append(this.mContent).append(ope).append(hr));
-					/* 是否有留言回复 */
-					getReplyMessage(this.mId); 
+					var ope=$("<br>&nbsp;&nbsp;<a href='#' mSponsor='"+this.mSponsor+"' mId='"+this.mId+"' class='messagereply'>回复 </a><a href='#' mId='"+this.mId+"' class='messagedelete'  style='color: red;'>删除</a>");
+					var openReply=$("<br><p align='right'><a href='#' mId='"+this.mId+"' class='messagereplyed'>查看我的回复 </a></p><hr>");
+					$("#mymessageDiv").append(messagediv.append(createtime).append(friendacct).append("对你说：").append(this.mContent).append(ope).append(openReply));
 				}); 
 			},
 			error:function(XMLHttpRequest, textStatus){
