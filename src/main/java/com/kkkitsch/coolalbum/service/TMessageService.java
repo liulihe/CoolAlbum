@@ -18,5 +18,7 @@ public interface TMessageService {
 
 	MyMsg<List<TMessageReply>> getReplyMessage(String mId);
 
+	MyMsg<List<TMessageReply>> getMyReplyMessage(String accountname);
+
 
 }

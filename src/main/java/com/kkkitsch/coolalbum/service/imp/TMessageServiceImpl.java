@@ -2,6 +2,7 @@ package com.kkkitsch.coolalbum.service.imp;
 
 import java.sql.Timestamp;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -90,10 +91,35 @@ public class TMessageServiceImpl implements TMessageService {
 		com.kkkitsch.coolalbum.entity.TMessageReplyExample.Criteria criteria = example.createCriteria();
 		criteria.andMReplyRefertoEqualTo(mId);
 		List<TMessageReply> messageReplyList = messageReplyMapper.selectByExample(example);
-		for (TMessageReply tMessageReply : messageReplyList) {
-			System.out.println("回复列表" + tMessageReply + "=========================");
+
+		if (!messageReplyList.isEmpty()) {
+			Collections.sort(messageReplyList, new Comparator<TMessageReply>() {
+				@Override
+				public int compare(TMessageReply o1, TMessageReply o2) {
+					if (o1.getmReplyTime().before(o2.getmReplyTime())) {
+						return 1;
+					} else if (o1.getmReplyTime().after(o2.getmReplyTime())) {
+						return -1;
+					}
+					return 0;
+				}
+			});
+			return MyMsg.success("获取回复成功", messageReplyList, null);
+		} else {
+			return MyMsg.fail("暂无回复", null, null);
 		}
-		return !messageReplyList.isEmpty() ? MyMsg.success("获取回复成功", messageReplyList, null)
-				: MyMsg.fail("获取回复失败", null, null);
+	}
+
+	@Override
+	public MyMsg<List<TMessageReply>> getMyReplyMessage(String accountname) {
+		TMessageReplyExample example = new TMessageReplyExample();
+		com.kkkitsch.coolalbum.entity.TMessageReplyExample.Criteria criteria = example.createCriteria();
+		criteria.andMReceiverAcctEqualTo(accountname);
+		List<TMessageReply> replyList = messageReplyMapper.selectByExample(example);
+		if (replyList.isEmpty()) {
+			return MyMsg.fail("没有收到回复呦 赶快给好友留言吧", null, null);
+		} else {
+			return MyMsg.success("获取成功", replyList, null);
+		}
 	}
 }

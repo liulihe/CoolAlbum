@@ -193,7 +193,7 @@ body {background-color: #C7EDCC;}
 				</div>
 				
 				<div id="mymessageDiv">
-					
+					<p align="right"><button class="layui-btn i-get-reply">查看我收到的回复</button></p><br>
 				</div>
 				
 			</div>
@@ -970,9 +970,41 @@ body {background-color: #C7EDCC;}
 			}
 		});
 	});
+	/* 获取我收到的留言回复 */
+	$(".i-get-reply").click(function(){
+		$.ajax({
+			url:"${appPath}/message/getmyreplymessage",
+			type:"get",
+			success:function(result){
+				if(result.code==1){
+					var myReplyDetail="";
+					$.each(result.content,function(index,element){
+						var acct=this.mSponsorAcct;
+						myReplyDetail=myReplyDetail+getdate(this.mReplyTime)+"，<strong>"+acct+"</strong>回复我说："+this.mReplyContent+"<br><br>";
+					});
+					layui.use('layer', function(){
+						  var layer = layui.layer;
+						  layer.msg('hello',{
+							  title :'我收到的回复',
+							  closeBtn :1,
+							  skin: 'demo-class',
+							  content:myReplyDetail, 
+							  time: 60000 
+						  });
+					});   
+				}else{
+					layui.use('layer', function(){
+						  var layer = layui.layer;
+						  layer.msg(result.msg,{
+							  skin: 'demo-class'
+						  });
+					});  
+				}
+			}
+		});
+	});
 	
-	
-	/* 获取留言回复 */
+	/* 获取我回复的留言 */
 	function getReplyMessage(mId){
 		$.ajax({
 			url:"${appPath}/message/getreplymessage",
@@ -980,7 +1012,6 @@ body {background-color: #C7EDCC;}
 			data:{"mId":mId},
 			success:function(result){
 				if(result.code==1){
-					console.log(result);
 					var replyDetail="";
 					$.each(result.content,function(index,element){
 						replyDetail=replyDetail+getdate(this.mReplyTime)+"，我回复说："+this.mReplyContent+"<br><br>";
@@ -1019,7 +1050,6 @@ body {background-color: #C7EDCC;}
 			url:"${appPath}/message/getmymessage",
 			type:"get",
 			success:function(result){
-				console.log(result);
 				$.each(result.content,function(){
 					var messagediv=$("<div id='"+this.mId+"'></div>");
 					var friendacct=$("<strong>"+this.mSponsor+"</strong>");

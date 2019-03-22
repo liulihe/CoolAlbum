@@ -14,6 +14,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import com.kkkitsch.coolalbum.common.MD5;
+import com.kkkitsch.coolalbum.common.MyAcctAndId;
 import com.kkkitsch.coolalbum.entity.TMember;
 import com.kkkitsch.coolalbum.service.TMemberService;
 import com.kkkitsch.coolalbum.util.MyMsg;
@@ -42,9 +43,6 @@ public class TMemberController {
 	 */
 	@RequestMapping("/login")
 	public String memberLogin(TMember member, Model model, HttpSession session) {
-
-		System.out.println(member);
-
 		// 如果不为空
 		if (null != member) {
 
@@ -55,8 +53,6 @@ public class TMemberController {
 			if (myMsg.getCode() == 1) {
 
 				myMsg.getContent().setmPassword("");
-
-				System.out.println("登录成功：" + myMsg.getContent());
 				session.setAttribute(CUR_MEMBER, myMsg.getContent());
 				return "redirect:/member_home.html";
 			} else {
@@ -126,6 +122,7 @@ public class TMemberController {
 	public String logout(HttpSession session) {
 		// 移除session
 		session.removeAttribute(CUR_MEMBER);
+		MyAcctAndId.invalid();
 		return "redirect:/index.jsp";
 	}
 
@@ -258,7 +255,6 @@ public class TMemberController {
 	@RequestMapping("/findfriend")
 	@ResponseBody
 	public MyMsg<TMember> findFriend(String friendAcct) {
-		System.out.println("===" + friendAcct);
 		List<TMember> list = tMemberServiceImpl.findFriend(friendAcct);
 		if (list == null) {
 			return MyMsg.fail("没有此账号", null, null);

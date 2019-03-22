@@ -1,7 +1,5 @@
 package com.kkkitsch.coolalbum.controller;
 
-import static com.kkkitsch.coolalbum.common.MyConstant.CUR_MEMBER;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,12 +7,13 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.kkkitsch.coolalbum.common.MyAcctAndId;
 import com.kkkitsch.coolalbum.entity.TFriend;
 import com.kkkitsch.coolalbum.entity.TMember;
 import com.kkkitsch.coolalbum.entity.TPhoto;
@@ -25,8 +24,8 @@ import com.kkkitsch.coolalbum.service.TPhotoService;
 import com.kkkitsch.coolalbum.service.TPhototypeService;
 import com.kkkitsch.coolalbum.util.MyMsg;
 
-@Controller
 @RequestMapping("/friend")
+@RestController
 public class TFriendController {
 
 	@Autowired
@@ -45,66 +44,49 @@ public class TFriendController {
 	 * 添加好友
 	 */
 	@RequestMapping("/confirmadd")
-	@ResponseBody
 	public MyMsg<TMember> confirmAdd(String friendId, String friendAcct, HttpSession session) {
-		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
-		Integer curMemId = member.getmId();
-		String curMemAcct = member.getmAccountname();
-		return tFriendServiceImpl.confirmAdd(curMemId, curMemAcct, friendId, friendAcct);
+		return tFriendServiceImpl.confirmAdd(MyAcctAndId.getMyId(session), MyAcctAndId.getMyAcct(session), friendId,
+				friendAcct);
 	}
 
 	/**
 	 * 查找好友
 	 */
 	@RequestMapping("/getfriend")
-	@ResponseBody
 	public MyMsg<List<TFriend>> getFriend(HttpSession session) {
-		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
-		return tFriendServiceImpl.getFriend(member.getmId());
+		return tFriendServiceImpl.getFriend(MyAcctAndId.getMyId(session));
 	}
 
 	/**
 	 * 加入黑名单
 	 */
 	@RequestMapping("/black")
-	@ResponseBody
 	public MyMsg<TFriend> black(String friendId, HttpSession session) {
-		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
-		Integer curMemId = member.getmId();
-		return tFriendServiceImpl.blackFriend(curMemId, friendId);
+		return tFriendServiceImpl.blackFriend(MyAcctAndId.getMyId(session), friendId);
 	}
 
 	/**
 	 * 删除好友
 	 */
 	@RequestMapping("/deletefriend")
-	@ResponseBody
 	public MyMsg<TFriend> deleteFriend(String friendId, HttpSession session) {
-		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
-		Integer curMemId = member.getmId();
-		return tFriendServiceImpl.deleteFriend(curMemId, friendId);
+		return tFriendServiceImpl.deleteFriend(MyAcctAndId.getMyId(session), friendId);
 	}
 
 	/**
 	 * 备注好友
 	 */
 	@RequestMapping("/namedfriend")
-	@ResponseBody
 	public MyMsg<TFriend> namedFriend(String name, String friendId, HttpSession session) {
-		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
-		Integer curMemId = member.getmId();
-		return tFriendServiceImpl.namedFriend(curMemId, friendId, name);
+		return tFriendServiceImpl.namedFriend(MyAcctAndId.getMyId(session), friendId, name);
 	}
 
 	/**
 	 * 访问验证
 	 */
 	@RequestMapping("trytoaccess")
-	@ResponseBody
 	public MyMsg<List<TPhoto>> accessValidate(String friendId, HttpSession session) {
-		TMember member = (TMember) session.getAttribute(CUR_MEMBER);
-		Integer curMemId = member.getmId();
-		boolean access = tFriendServiceImpl.accessValidate(curMemId, friendId);
+		boolean access = tFriendServiceImpl.accessValidate(MyAcctAndId.getMyId(session), friendId);
 		if (!access) {
 			// 如果好友列表没有你
 			return MyMsg.fail("没有访问权限", null, null);
@@ -114,7 +96,6 @@ public class TFriendController {
 	}
 
 	@RequestMapping("access")
-	@ResponseBody
 	public MyMsg<Object> accessFriend(@RequestParam(value = "pn", defaultValue = "1") int pn,
 			@RequestParam(value = "ps", defaultValue = "10") int ps, String friendId,
 			@RequestParam(value = "phototypeid", defaultValue = "0") String ptid) {

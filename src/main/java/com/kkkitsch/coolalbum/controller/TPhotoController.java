@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kkkitsch.coolalbum.common.MyAcctAndId;
 import com.kkkitsch.coolalbum.common.MyConstant;
 import com.kkkitsch.coolalbum.common.TimeFormat;
 import com.kkkitsch.coolalbum.entity.TMember;
@@ -141,9 +142,7 @@ public class TPhotoController {
 	@RequestMapping("/getAllPhoto")
 	@ResponseBody
 	public MyMsg<List<TPhoto>> getAllPhoto(HttpSession session) {
-		// 获取当前用户id
-		Integer mId = ((TMember) session.getAttribute(MyConstant.CUR_MEMBER)).getmId();
-		List<TPhoto> photoList = photoServiceImpl.getAllPhoto(mId);
+		List<TPhoto> photoList = photoServiceImpl.getAllPhoto(MyAcctAndId.getMyId(session));
 		if (!photoList.isEmpty()) {
 			return MyMsg.success("查询成功", photoList, null);
 		} else {
@@ -158,8 +157,7 @@ public class TPhotoController {
 	 */
 	@RequestMapping("/getDelicatedPhoto")
 	@ResponseBody
-	public MyMsg<TPhoto> getDelicatedPhoto(HttpSession session,String pId) {
-		
+	public MyMsg<TPhoto> getDelicatedPhoto(String pId) {
 		TPhoto photo = photoServiceImpl.getDelicatedPhoto(pId);
 		if (photo!=null) {
 			return MyMsg.success("查询成功", photo, null);
@@ -175,13 +173,8 @@ public class TPhotoController {
 	@RequestMapping("/clicklike")
 	@ResponseBody
 	public MyMsg<TPhoto> ifClickLike(TPhoto photo, HttpSession session) {
-
-		// 获取当前用户id
-		Integer mId = ((TMember) session.getAttribute(MyConstant.CUR_MEMBER)).getmId();
-		System.out.println("图片信息：" + photo);
-
 		// 更新点赞数
-		boolean flag = photoServiceImpl.updateClickNum(photo,mId);
+		boolean flag = photoServiceImpl.updateClickNum(photo,MyAcctAndId.getMyId(session));
 		if (flag) {
 			return MyMsg.success("点赞成功", null, null);
 		} else {
@@ -192,7 +185,6 @@ public class TPhotoController {
 	@RequestMapping("/singledelete")
 	@ResponseBody
 	public MyMsg<TPhoto> singleDelete(String pId) {
-
 		boolean flag = photoServiceImpl.singleDelete(pId);
 		if (flag) {
 			return MyMsg.success("删除成功", null, null);
