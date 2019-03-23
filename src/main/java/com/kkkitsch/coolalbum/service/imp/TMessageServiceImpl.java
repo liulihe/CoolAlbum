@@ -51,10 +51,8 @@ public class TMessageServiceImpl implements TMessageService {
 		Criteria criteria = example.createCriteria();
 		criteria.andMMessageReceiverIdEqualTo(curMemId);
 		List<TMessage> messageList = messageMapper.selectByExample(example);
-
 		// 对留言排序
 		Collections.sort(messageList);
-
 		if (messageList.isEmpty()) {
 			return MyMsg.fail("没有任何留言", null, null);
 		} else {

@@ -36,6 +36,7 @@ public class HttpClientUtil {
 		// 客户端对象
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		// 创建请求uri
+
 		URIBuilder uriBuilder = new URIBuilder().setScheme("http").setHost("api.avatardata.cn")
 				.setPath("/HistoryToday/LookUp").setParameter("key", "938b6f475f67483fa0b6d434a0deade5");
 
@@ -124,13 +125,10 @@ public class HttpClientUtil {
 
 		List<BasicNameValuePair> nameValuePairlist = new ArrayList<BasicNameValuePair>();
 		nameValuePairlist.add(new BasicNameValuePair("access_token",
-				"24.0c290515f30e8f696400ac125aebec74.2592000.1555658597.282335-15803646"));
-		nameValuePairlist.add(new BasicNameValuePair("command_no", "500071"));
+				"24.c935ef960becdfdaf387ec47c2c5f817.2592000.1555923456.282335-15803646"));
 		nameValuePairlist.add(new BasicNameValuePair("content", validContent));
 		HttpEntity httpEntity = new UrlEncodedFormEntity(nameValuePairlist);
-
 		httpPost.setEntity(httpEntity);
-
 		CloseableHttpResponse response = httpclient.execute(httpPost);
 		HttpEntity entity = response.getEntity();
 		InputStream content = entity.getContent();
@@ -139,7 +137,6 @@ public class HttpClientUtil {
 		String str = new String(b);
 		String jsonString = JSON.toJSONString(str);
 		String substring = jsonString.substring(jsonString.indexOf("spam"), jsonString.indexOf("spam") + 10);
-
 		if (substring.contains("0")) {
 			return true;
 		} else {

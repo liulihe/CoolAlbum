@@ -25,7 +25,6 @@ public class MessageValidAspect {
 		Object[] args = point.getArgs();
 		// 如果要发送的数据中包含不良信息就屏蔽
 		boolean validContent = HttpClientUtil.validContent(args[args.length - 1].toString());
-
 		// 如果有不当信息
 		if (!validContent) {
 			return MyMsg.fail("留言失败，检测到不当信息，请重新留言", null, null);

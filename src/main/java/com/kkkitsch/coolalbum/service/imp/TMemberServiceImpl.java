@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.kkkitsch.coolalbum.common.MD5;
 import com.kkkitsch.coolalbum.common.TimeFormat;
 import com.kkkitsch.coolalbum.dao.TMemberMapper;
-import com.kkkitsch.coolalbum.entity.TFriend;
 import com.kkkitsch.coolalbum.entity.TMember;
 import com.kkkitsch.coolalbum.entity.TMemberExample;
 import com.kkkitsch.coolalbum.entity.TMemberExample.Criteria;
@@ -37,11 +36,6 @@ public class TMemberServiceImpl implements TMemberService {
 		criteria.andMPasswordEqualTo(MD5.md5(member.getmAccountname(), member.getmPassword()));
 		// 查询
 		List<TMember> list = tMemberMapper.selectByExample(example);
-
-		System.out.println("查询结果：" + list);
-		System.out.println("list.isEmpty()：" + list.isEmpty());
-		System.out.println("list==null：" + list == null);
-
 		// 如果有查询结果返回true，否则返回false
 		if (!list.isEmpty() && list.size() == 1) {
 			return MyMsg.success("登录成功", list.get(0), null);
@@ -111,7 +105,6 @@ public class TMemberServiceImpl implements TMemberService {
 		int affectNum = -1;
 		try {
 			affectNum = tMemberMapper.updateByPrimaryKeySelective(member);
-
 			return affectNum == 1 ? true : false;
 		} catch (Exception e) {
 			return false;

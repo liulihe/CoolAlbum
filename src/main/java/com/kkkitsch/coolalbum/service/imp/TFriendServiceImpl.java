@@ -1,15 +1,12 @@
 package com.kkkitsch.coolalbum.service.imp;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.kkkitsch.coolalbum.dao.TFriendMapper;
 import com.kkkitsch.coolalbum.entity.TFriend;
 import com.kkkitsch.coolalbum.entity.TFriendExample;
 import com.kkkitsch.coolalbum.entity.TMember;
-import com.kkkitsch.coolalbum.entity.TPhoto;
 import com.kkkitsch.coolalbum.entity.TFriendExample.Criteria;
 import com.kkkitsch.coolalbum.service.TFriendService;
 import com.kkkitsch.coolalbum.service.TPhotoService;
@@ -20,7 +17,7 @@ public class TFriendServiceImpl implements TFriendService {
 
 	@Autowired
 	TFriendMapper tFriendMapper;
-	
+
 	@Autowired
 	TPhotoService photoServiceImpl;
 
@@ -47,18 +44,10 @@ public class TFriendServiceImpl implements TFriendService {
 			return MyMsg.fail("不能添加自己为好友", null, null);
 		} else {
 			try {
-				// 我有好友
 				friend.setfMemberid(curMemId);
 				friend.setfFriendacct(friendAcct);
 				friend.setfFriendid(Integer.parseInt(friendId));
 				tFriendMapper.insertSelective(friend);
-
-				// 好友有我
-//				friend.setfId(null);
-//				friend.setfFriendacct(curMemAcct);
-//				friend.setfMemberid(Integer.parseInt(friendId));
-//				friend.setfFriendid(curMemId);
-//				tFriendMapper.insertSelective(friend);
 				return MyMsg.success("添加好友成功", null, null);
 			} catch (Exception e) {
 				return MyMsg.fail("添加失败，发生未知错误", null, null);
@@ -82,7 +71,6 @@ public class TFriendServiceImpl implements TFriendService {
 		} else {
 			return MyMsg.success("查询成功", friendList, null);
 		}
-
 	}
 
 	/**
@@ -165,13 +153,13 @@ public class TFriendServiceImpl implements TFriendService {
 		criteria.andFMemberidEqualTo(Integer.parseInt(friendId));
 		List<TFriend> getFriend = tFriendMapper.selectByExample(example);
 		if (getFriend.isEmpty()) {
-			//如果好友列表没有你
+			// 如果好友列表没有你
 			return false;
 		} else if (getFriend.get(0).getfIsblack().equals("1")) {
-			//如果好友将你加入黑名单
+			// 如果好友将你加入黑名单
 			return false;
-		}else{
-			//可以访问
+		} else {
+			// 可以访问
 			return true;
 		}
 	}

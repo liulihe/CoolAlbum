@@ -121,9 +121,8 @@ public class TFriendController {
 			// 有图片 填充图片信息
 			msgMap.put("pageInfoMsg", pageInfo);
 		}
-
 		// 获取图片类型
-		List<TPhototype> phototype = phototypeServiceImpl.getPhototype(Integer.parseInt(friendId));
+		List<TPhototype> phototype = phototypeServiceImpl.getPhototype(Integer.parseInt(friendId)).getContent();
 		if (phototype.isEmpty()) {
 			msgMap.put("phototype", "nothing");
 		} else {
