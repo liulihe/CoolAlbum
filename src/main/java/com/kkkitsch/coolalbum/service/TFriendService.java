@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kkkitsch.coolalbum.entity.TFriend;
 import com.kkkitsch.coolalbum.entity.TMember;
+import com.kkkitsch.coolalbum.entity.TPhoto;
 import com.kkkitsch.coolalbum.util.MyMsg;
 
 public interface TFriendService {
@@ -18,6 +19,8 @@ public interface TFriendService {
 
 	public MyMsg<TFriend> namedFriend(Integer curMemId, String friendId, String name);
 
-	public boolean accessValidate(Integer curMemId, String friendId);
+	public MyMsg<List<TPhoto>> accessValidate(Integer curMemId, String friendId);
+
+	public MyMsg<Object> getPhoto(int pn, int ps, String friendId, String ptid);
 
 }

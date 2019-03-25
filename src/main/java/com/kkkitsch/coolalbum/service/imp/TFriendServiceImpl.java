@@ -1,15 +1,24 @@
 package com.kkkitsch.coolalbum.service.imp;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.kkkitsch.coolalbum.dao.TFriendMapper;
 import com.kkkitsch.coolalbum.entity.TFriend;
 import com.kkkitsch.coolalbum.entity.TFriendExample;
 import com.kkkitsch.coolalbum.entity.TMember;
+import com.kkkitsch.coolalbum.entity.TPhoto;
+import com.kkkitsch.coolalbum.entity.TPhototype;
 import com.kkkitsch.coolalbum.entity.TFriendExample.Criteria;
 import com.kkkitsch.coolalbum.service.TFriendService;
 import com.kkkitsch.coolalbum.service.TPhotoService;
+import com.kkkitsch.coolalbum.service.TPhototypeService;
 import com.kkkitsch.coolalbum.util.MyMsg;
 
 @Service
@@ -20,6 +29,9 @@ public class TFriendServiceImpl implements TFriendService {
 
 	@Autowired
 	TPhotoService photoServiceImpl;
+
+	@Autowired
+	TPhototypeService phototypeServiceImpl;
 
 	/**
 	 * 添加好友
@@ -146,22 +158,55 @@ public class TFriendServiceImpl implements TFriendService {
 	}
 
 	@Override
-	public boolean accessValidate(Integer curMemId, String friendId) {
+	public MyMsg<List<TPhoto>> accessValidate(Integer curMemId, String friendId) {
 		TFriendExample example = new TFriendExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andFFriendidEqualTo(curMemId);
 		criteria.andFMemberidEqualTo(Integer.parseInt(friendId));
 		List<TFriend> getFriend = tFriendMapper.selectByExample(example);
-		if (getFriend.isEmpty()) {
-			// 如果好友列表没有你
-			return false;
-		} else if (getFriend.get(0).getfIsblack().equals("1")) {
-			// 如果好友将你加入黑名单
-			return false;
+		// 如果好友列表没有你或者好友将你加入黑名单
+		if (getFriend.isEmpty() || getFriend.get(0).getfIsblack().equals("1")) {
+			return MyMsg.fail("没有访问权限", null, null);
 		} else {
 			// 可以访问
-			return true;
+			return MyMsg.success("允许访问", null, null);
 		}
+	}
+
+	@Override
+	public MyMsg<Object> getPhoto(int pn, int ps, String friendId, String ptid) {
+
+		// 在查询之前引入分页插件，设置查询页码，每页大小
+		PageHelper.startPage(pn, ps);
+		List<TPhoto> photos = null;
+		if (ptid.equals("0")) {
+			photos = photoServiceImpl.getAllPhoto(Integer.parseInt(friendId)).getContent();
+		} else {
+			photos = photoServiceImpl.getSelectPhoto(Integer.parseInt(friendId), ptid);
+		}
+
+		// 使用PageInfo包装查询的结果，最终只需将PageInfo交给要显示的页面，
+		PageInfo<TPhoto> pageInfo = new PageInfo<TPhoto>(photos, 5);
+		MyMsg<Object> myMsg = new MyMsg<Object>();
+		Map<String, Object> msgMap = new HashMap<String, Object>();
+
+		msgMap.put("friendId", friendId);
+		if (photos.isEmpty()) {
+			// 没有图片
+			msgMap.put("pageInfoMsg", "nothing");
+		} else {
+			// 有图片 填充图片信息
+			msgMap.put("pageInfoMsg", pageInfo);
+		}
+		// 获取图片类型
+		List<TPhototype> phototype = phototypeServiceImpl.getPhototype(Integer.parseInt(friendId)).getContent();
+		if (phototype.isEmpty()) {
+			msgMap.put("phototype", "nothing");
+		} else {
+			msgMap.put("phototype", phototype);
+		}
+		myMsg.setExt(msgMap);
+		return myMsg;
 	}
 
 }

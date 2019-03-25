@@ -19,13 +19,6 @@ import com.kkkitsch.coolalbum.entity.TMember;
 import com.kkkitsch.coolalbum.service.TMemberService;
 import com.kkkitsch.coolalbum.util.MyMsg;
 
-/**
- * @ClassName TMemberController
- * @Description TODO(会员视图跳转的控制器)
- * @author Administrator
- * @Date 2018年11月21日 下午6:13:21
- * @version 1.0.0
- */
 @Controller
 @RequestMapping("/member")
 public class TMemberController {
@@ -96,7 +89,7 @@ public class TMemberController {
 	@RequestMapping("/myinfo")
 	@ResponseBody
 	public MyMsg<TMember> myInfo(TMember member, HttpSession session) {
-		member.setmId(((TMember) session.getAttribute(CUR_MEMBER)).getmId());
+		member.setmId(MyAcctAndId.getMyId(session));
 		boolean flag = false;
 		if (member != null) {
 			flag = tMemberServiceImpl.updateMyInfo(member);
@@ -180,9 +173,9 @@ public class TMemberController {
 			return MyMsg.fail("验证码不正确", null, null);
 		}
 
-		Integer mId = ((TMember) (session.getAttribute(CUR_MEMBER))).getmId();
+		Integer mId = MyAcctAndId.getMyId(session);
 		TMember tMember = tMemberServiceImpl.selectById(mId);
-		String accountName = ((TMember) (session.getAttribute(CUR_MEMBER))).getmAccountname();
+		String accountName = MyAcctAndId.getMyAcct(session);
 
 		if (tMember != null) {
 			if (!MD5.md5(accountName, oldPassword).equals(tMember.getmPassword())) {
@@ -214,12 +207,7 @@ public class TMemberController {
 	@RequestMapping("/findfriend")
 	@ResponseBody
 	public MyMsg<TMember> findFriend(String friendAcct) {
-		List<TMember> list = tMemberServiceImpl.findFriend(friendAcct);
-		if (list == null) {
-			return MyMsg.fail("没有此账号", null, null);
-		} else {
-			return MyMsg.success("查找成功", list.get(0), null);
-		}
+		return tMemberServiceImpl.findFriend(friendAcct);
 	}
 
 }

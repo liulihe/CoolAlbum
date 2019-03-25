@@ -17,7 +17,7 @@ public interface TMemberService {
 
 	public TMember selectById(Integer mId);
 
-	public List<TMember> findFriend(String friendAcct);
+	public MyMsg<TMember> findFriend(String friendAcct);
 
 	public List<TMember> getFriend(List<Integer> friendIdList);
 

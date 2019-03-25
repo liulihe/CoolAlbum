@@ -1,0 +1,14 @@
+1.处理器的形参,用于接收表单元素所提交参数的处理器方法的形参类型为MultipartFile[]数组，
+	并且必须使用注解@RequestParam修饰为什么单个文件上传时不需要@RequestParam注
+	解修饰，而上传多个文件时就需要用@RequestParam修饰呢？
+	因为在上传多个文件时，每个表单中的文件对象均会被spring
+	mvc框架将其转换为MultipartFile类型，这个与单个文件上传一样，不需要@RequestParam修饰。
+	但是上传多个文件时，处理器方法需要的不是MultipartFile类型，而是MultipartFile[]数组类型，
+	默认情况下，框架会将表单中的表单元素一个个转换为文件对象，但并不会将多个文件对象创建为一个数组对象。
+	此时就需要用@RequestParam注解修饰这个数组参数，需要框架调用相应的转换器将请求参数转换为方法参数类型。
+	所以上传多个文件，处理器方法的MultipartFile[]数组必须使用@RequestParam注解修饰。
+	
+2.未选择上传文件,即使没有选择任何文件，MultipartFile[]数组也不为null。不仅不为null，其length值
+	也大于0.因为系统会为每个file表单元素创建一个file对象。只不过没有选择上传文件的这个file将不会被赋予
+	真正的文件，只是一个为empty的File。所以对于没有选择任何要上传的文件的情况的处理，只能逐个对文件表单
+	元素进行判断，判断文件是否为empty。

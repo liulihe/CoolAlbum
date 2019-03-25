@@ -408,15 +408,6 @@ body {background-color: #C7EDCC;}
 		}
 	});
 	
-	/* 页面加载完成 */
-	$.ajax({
-		url:"${appPath}/historytoday",
-		type:"GET",
-		success:function(result){
-			console.log(result);
-		}
-	});
-	
 	/* 填充到上传图片表单 */
 	function fillToUploadForm(result){
 		/* 每次填充前先清空 */

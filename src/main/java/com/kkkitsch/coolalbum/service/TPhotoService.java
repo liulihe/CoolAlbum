@@ -9,14 +9,14 @@ public interface TPhotoService {
 
 	MyMsg<TPhoto> uploadFile(TPhoto photo);
 
-	List<TPhoto> getAllPhoto(Integer mId);
+	MyMsg<List<TPhoto>> getAllPhoto(Integer mId);
 	
-	boolean updateClickNum(TPhoto photo,Integer mId);
+	MyMsg<TPhoto> updateClickNum(TPhoto photo,Integer mId);
 
-	boolean singleDelete(String pId);
+	MyMsg<TPhoto> singleDelete(String pId);
 	
 	List<TPhoto> getSelectPhoto(Integer mId,String ptid);
 
-	TPhoto getDelicatedPhoto(String pId);
+	MyMsg<TPhoto> getDelicatedPhoto(String pId);
 	
 }

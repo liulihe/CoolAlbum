@@ -31,7 +31,7 @@ public class TPhotoServiceImpl implements TPhotoService {
 	}
 
 	@Override
-	public List<TPhoto> getAllPhoto(Integer mId) {
+	public MyMsg<List<TPhoto>> getAllPhoto(Integer mId) {
 		TPhotoExample example = new TPhotoExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andPMemberIdEqualTo(mId);
@@ -42,7 +42,12 @@ public class TPhotoServiceImpl implements TPhotoService {
 		} catch (Exception e) {
 			return null;
 		}
-		return photoList;
+
+		if (!photoList.isEmpty()) {
+			return MyMsg.success("查询成功", photoList, null);
+		} else {
+			return MyMsg.fail("查询无果", null, null);
+		}
 	}
 
 	@Override
@@ -65,48 +70,41 @@ public class TPhotoServiceImpl implements TPhotoService {
 	 * 更新点赞数
 	 */
 	@Override
-	public boolean updateClickNum(TPhoto photo, Integer mId) {
-
+	public MyMsg<TPhoto> updateClickNum(TPhoto photo, Integer mId) {
 		// 更新前先查出来
 		TPhoto tPhoto = photoMapper.selectByPrimaryKey(photo.getpId());
-
 		// 查询不为空
 		if (tPhoto != null) {
 			// 获取点赞数量和点赞人的id
 			Integer likenum = tPhoto.getpLikenum();
 			String clicklikeMemberids = tPhoto.getpClicklikeMemberid();
-			System.out.println("点赞人id=" + clicklikeMemberids);
-
 			// 如果已经有点赞的人
 			if (clicklikeMemberids != null) {
 				boolean contains = clicklikeMemberids.contains(mId.toString());
 				// 如果本人已经点过赞了
 				if (contains) {
-					return false;
+					return MyMsg.fail("已点赞", null, null);
 				} else {
 					// 点赞
 					photo.setpLikenum(++likenum);
 					photo.setpClicklikeMemberid(clicklikeMemberids + mId + ",");
-					System.out.println("要更新了哈哈哈：" + photo);
 					photoMapper.updateByPrimaryKeySelective(photo);
-					return true;
+					return MyMsg.success("点赞成功", null, null);
 				}
 			} else {
 				// 没有点赞的直接开始点赞
 				photo.setpLikenum(++likenum);
 				photo.setpClicklikeMemberid(mId + ",");
-				System.out.println("要更新了：" + photo);
 				photoMapper.updateByPrimaryKeySelective(photo);
-				return true;
+				return MyMsg.success("点赞成功", null, null);
 			}
 		} else {
-			return false;
+			return MyMsg.fail("点赞失败", null, null);
 		}
 	}
 
 	@Override
-	public boolean singleDelete(String pId) {
-
+	public MyMsg<TPhoto> singleDelete(String pId) {
 		int affectNum = -1;
 		try {
 			affectNum = photoMapper.deleteByPrimaryKey(Integer.parseInt(pId));
@@ -114,13 +112,17 @@ public class TPhotoServiceImpl implements TPhotoService {
 			System.out.println("删除失败");
 			e.printStackTrace();
 		}
-
-		return affectNum == 1 ? true : false;
+		return affectNum == 1 ? MyMsg.success("删除成功", null, null) : MyMsg.fail("删除失败", null, null);
 	}
 
 	@Override
-	public TPhoto getDelicatedPhoto(String pId) {
-		return photoMapper.selectByPrimaryKey(Integer.parseInt(pId));
+	public MyMsg<TPhoto> getDelicatedPhoto(String pId) {
+		TPhoto photo = photoMapper.selectByPrimaryKey(Integer.parseInt(pId));
+		if (photo != null) {
+			return MyMsg.success("查询成功", photo, null);
+		} else {
+			return MyMsg.fail("查询无果", null, null);
+		}
 	}
 
 }

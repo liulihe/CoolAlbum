@@ -129,15 +129,15 @@ public class TMemberServiceImpl implements TMemberService {
 	}
 
 	@Override
-	public List<TMember> findFriend(String friendAcct) {
+	public MyMsg<TMember> findFriend(String friendAcct) {
 		TMemberExample example = new TMemberExample();
 		Criteria criteria = example.createCriteria();
 		criteria.andMAccountnameEqualTo(friendAcct);
 		List<TMember> list = tMemberMapper.selectByExample(example);
 		if (list != null && list.size() == 1) {
-			return list;
+			return MyMsg.success("查找成功", list.get(0), null);
 		} else {
-			return null;
+			return MyMsg.fail("没有此账号", null, null);
 		}
 	}
 
