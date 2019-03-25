@@ -330,7 +330,6 @@ body {background-color: #C7EDCC;}
 				<div class="modal-body">
 					<!-- 修改密码表单 -->
 					<form id="update_password_form" action="${appPath}/member/comfirmUpdatePassword" method="post">
-					
 						<span id="update_password_span" style="color: red;"></span>
 					
 						<div class="form-group">
@@ -1004,6 +1003,7 @@ body {background-color: #C7EDCC;}
 			success:function(result){
 				if(result.code==1){
 					var replyDetail="";
+					
 					$.each(result.content,function(index,element){
 						replyDetail=replyDetail+getdate(this.mReplyTime)+"，我回复说："+this.mReplyContent+"<br><br>";
 					});
@@ -1041,6 +1041,7 @@ body {background-color: #C7EDCC;}
 			url:"${appPath}/message/getmymessage",
 			type:"get",
 			success:function(result){
+				$("#mymessageDiv").children("div").empty();
 				$.each(result.content,function(){
 					var messagediv=$("<div id='"+this.mId+"'></div>");
 					var friendacct=$("<strong>"+this.mSponsor+"</strong>");
@@ -1054,12 +1055,6 @@ body {background-color: #C7EDCC;}
 				alert(textStatus);
 			}
 		});
-	});
-
-	/* 点击添加更多 */
-	$("#ifAddMore").click(function(){
-		alert("添加更多");
-		window.location.href="${appPath}/photo/mulupload";
 	});
 	
 	/* 点击类型管理 */
@@ -1368,9 +1363,7 @@ body {background-color: #C7EDCC;}
 	var replyeditor=null;
 	var curReply=null;
 	$("body").on("click", ".messagereply", function() {
-		
 		curReply=$(this);
-		
 		/* 让当前回复按钮和删除按钮隐藏，富文本框显示，并让其他留言的回复按钮和删除按钮显示，富文本框隐藏 */
 		$(this).hide().next().hide().parent().siblings().children("a").show();
 		$(this).hide().next().hide().parent().siblings().children("div").remove();
