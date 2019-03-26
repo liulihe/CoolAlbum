@@ -25,7 +25,6 @@
 				});
 			</script>
 		</div>
-		
 		<div class="col-md-1"></div>
 		<div class="col-md-3">
 			<form id="loginForm" method="post" action="${appPath }/member/login">
