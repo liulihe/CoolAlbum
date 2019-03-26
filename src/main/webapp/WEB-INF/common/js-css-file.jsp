@@ -10,3 +10,4 @@
 
 <script src="${appPath}/plugin/layui/layui.js"></script>
 <link rel="stylesheet" type="text/css" href="${appPath}/plugin/layui/css/layui.css" />
+<script src="https://sdk.jinrishici.com/v2/browser/jinrishici.js" charset="utf-8"></script>

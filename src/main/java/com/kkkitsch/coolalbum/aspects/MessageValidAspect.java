@@ -18,7 +18,6 @@ public class MessageValidAspect {
 	public void pointcut() {
 	}
 
-	@SuppressWarnings("unchecked")
 	@Around(value = "pointcut()")
 	public MyMsg<TMessage> putMessageOpe(ProceedingJoinPoint point) throws Exception {
 		// 获取形参

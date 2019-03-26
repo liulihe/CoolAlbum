@@ -6,31 +6,32 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>登录页面</title>
-
+<title>欢迎来到电子相册</title>
 <%@include file="/WEB-INF/common/js-css-file.jsp" %>
-
 </head>
 
-<body>
+<body style="background-color: #C7EDCC">
+	<div class="row"><br><br><br>
+		<div class="col-md-3 col-md-offset-2">
 
-	<div class="jumbotron">
-		<div class="row">
-			<h1 class="col-md-offset-1" align="center">欢迎来到电子相册</h1>
-			<div class="col-md-4 col-md-offset-1">
-
-				<h2 align="left">从前慢</h2>
-				<h3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;木心</h3>
-
-				<p>
-					记得早先少年时 <br>大家诚诚恳恳 <br>说一句 是一句<br> 清早上火车站<br>
-					长街黑暗无行人<br> 卖豆浆的小店冒着热气 <br>从前的日色变得慢<br> 车，马，邮件都慢 <br>一生只够爱一个人<br>
-					从前的锁也好看 <br>钥匙精美有样子 <br>你锁了 人家就懂了
-				</p>
+			<div class="layui-card" >
+				<div class="layui-card-header"  style="background-color: #C7EDCC"></div>
+				<div class="layui-card-header poemauthor"  style="background-color: #C7EDCC"></div>
+				<div class="layui-card-body"  style="background-color: #C7EDCC">
+				</div>
 			</div>
-			<div class="col-md-3">
-				
-				<form id="loginForm" method="post" action="${appPath }/member/login">
+			<script type="text/javascript">
+				jinrishici.load(function(result) {
+					console.log(result);
+					$(".layui-card-header").text(result.data.origin.title);
+					$(".poemauthor").text(result.data.origin.dynasty+" "+result.data.origin.author);
+					$(".layui-card-body").text(result.data.content);
+				});
+			</script>
+		</div>
+		<div class="col-md-1"></div>
+		<div class="col-md-3">
+			<form id="loginForm" method="post" action="${appPath }/member/login">
 					<br> <br> <br> <br> <br>
 					
 					<!-- 如果有登录失败信息 -->
@@ -45,18 +46,10 @@
 						<label>密码</label> 
 						<input type="password" name="mPassword" value="${curMember.mPassword }" class="form-control" placeholder="请输入密码">
 					</div>
-					<div class="form-group">
-						<label>登录类型</label> 
-						<select id="loginType" name="loginType" class="form-control">
-							<option value="1">会员登录</option>
-							<option value="2">管理员登录</option>
-						</select>
-					</div>
 					<button id="loginButton" type="submit" class="btn btn-success">登录</button>
 					还没有账号？立即<a id="registerHref" href="#">注册</a>
 				</form>
-				
-				<form id="registerForm" action="${appPath }/member/register" method="post">
+			<form id="registerForm" action="${appPath }/member/register" method="post">
 					<br> <br> <br> 
 					
 					<!-- 如果有失败信息 -->
@@ -92,22 +85,9 @@
 					<button id="registerButton" type="submit" class="btn btn-success">注册</button>
 					已有账号？立即<a id="loginHref" href="#">登录</a>
 				</form>
-				
-			</div>
 		</div>
 	</div>
-	<div class="jumbotron">
-		<blockquote>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-				Integer posuere erat a ante.</p>
-			<footer>
-				Someone famous in <cite title="Source Title">Source Title</cite>
-			</footer>
-		</blockquote>
-	</div>
-
 	<script>
-	
 		/* 页面加载完成 */
 		$("#registerForm").hide();
 		
@@ -139,28 +119,12 @@
 		
 		/* 点击登录按钮 */
 		$("#loginButton").click(function() {
-			
-			var loginType = $("#loginType").val();
-	
-			if (loginType == 1) {
-				/* 会员登录 */
-				$("#loginForm")[0].submit();
-			} else if (loginType == 2) {
-				/* 管理员登录 */
-			}else{
-				/* 未知错误 */
-				jqueryAlert({
-					'icon' : '${appPath}/plugin/alert/img/error.png',
-					'content' : '错误，请重试',
-					'closeTime' : 2000,
-				});
-			}
+			$("#loginForm")[0].submit();
 			return false;
 		});
 		
 		/* 点击注册按钮 */
 		$("#registerButton").click(function(){
-			
 			var errorInfo=$(".errorInfo").text();
 			/* 如果表单无误 */
 			if(errorInfo==undefined|errorInfo.length<1){
