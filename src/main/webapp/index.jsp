@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,11 +8,9 @@
 <title>欢迎来到电子相册</title>
 <%@include file="/WEB-INF/common/js-css-file.jsp" %>
 </head>
-
 <body style="background-color: #C7EDCC">
 	<div class="row"><br><br><br>
 		<div class="col-md-3 col-md-offset-2">
-
 			<div class="layui-card" >
 				<div class="layui-card-header"  style="background-color: #C7EDCC"></div>
 				<div class="layui-card-header poemauthor"  style="background-color: #C7EDCC"></div>
@@ -22,7 +19,6 @@
 			</div>
 			<script type="text/javascript">
 				jinrishici.load(function(result) {
-					console.log(result);
 					$(".layui-card-header").text(result.data.origin.title);
 					$(".poemauthor").text(result.data.origin.dynasty+" "+result.data.origin.author);
 					$(".layui-card-body").text(result.data.content);
