@@ -5,7 +5,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-
 import com.kkkitsch.coolalbum.entity.TMessage;
 import com.kkkitsch.coolalbum.util.HttpClientUtil;
 import com.kkkitsch.coolalbum.util.MyMsg;
@@ -18,6 +17,7 @@ public class MessageValidAspect {
 	public void pointcut() {
 	}
 
+	@SuppressWarnings("unchecked")
 	@Around(value = "pointcut()")
 	public MyMsg<TMessage> putMessageOpe(ProceedingJoinPoint point) throws Exception {
 		// 获取形参

@@ -1,0 +1,45 @@
+/* 点击发送验证码 样式的处理真让人恶心 烦烦烦*/
+	$("#get_validate_code").click(function(){
+		
+		/* 发送请求 */
+		$.ajax({
+			url:"${appPath}/member/sendvalidate",
+			type:"GET",
+			success:function(result){
+				if(result.code==1){
+					jqueryAlert({'content' : '发送验证码成功','closeTime' : 2000});
+				}
+			},
+			error:function(XMLHttpRequest,textStatus){
+				alert(textStatus);
+			}
+		});
+		
+		/* 时间剩余显示 */
+		$("#time_show").show();
+		/* 发送验证码禁止点击 */
+		$("#get_validate_code").hide();
+		var time=60;
+		/* 定时任务 */
+		var setInt=setInterval(function(){
+			/* 如果没有时间剩余 */
+			if(time==0){
+				/* 移除禁止点击 */
+				$("#get_validate_code").text("重新发送验证码").show();
+				/* 时间清空 */
+				$("#left_time").text("").parent().hide();
+				/* 重新设定时间 */
+				time=60;
+				/* 清除定时任务 */
+				clearInterval(setInt);
+				/* 让验证码失效 */
+				$.get("${appPath}/member/removevalidate");
+				/* 必须要返回 false，否则执行下面设置时间代码 */
+				return false;
+			}
+			/* 每秒更新时间 */
+			$("#left_time").text(time--);
+		},1000);
+		/* 禁用默认提交 */
+		return false;
+	});

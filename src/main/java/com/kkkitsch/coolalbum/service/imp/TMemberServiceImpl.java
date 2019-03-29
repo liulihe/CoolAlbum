@@ -1,14 +1,19 @@
 package com.kkkitsch.coolalbum.service.imp;
 
+import static com.kkkitsch.coolalbum.common.MyConstant.CUR_MEMBER;
+
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kkkitsch.coolalbum.common.MD5;
+import com.kkkitsch.coolalbum.common.MyAcctAndId;
 import com.kkkitsch.coolalbum.common.TimeFormat;
 import com.kkkitsch.coolalbum.dao.TMemberMapper;
 import com.kkkitsch.coolalbum.entity.TMember;
@@ -22,6 +27,7 @@ public class TMemberServiceImpl implements TMemberService {
 
 	@Autowired
 	TMemberMapper tMemberMapper;
+	private TMember member2;
 
 	/**
 	 * 会员登录
@@ -67,13 +73,6 @@ public class TMemberServiceImpl implements TMemberService {
 			return MyMsg.fail("邮箱格式不正确", member, null);
 		}
 
-		Pattern patternPhone = Pattern.compile("0?(13|14|15|18|17)[0-9]{9}");
-		Matcher phoneMatcher = patternPhone.matcher(member.getmPhone());
-		// 如果手机号格式不正确
-		if (!phoneMatcher.matches()) {
-			return MyMsg.fail("手机号格式不正确", member, null);
-		}
-
 		// 设置默认信息
 		// 设置昵称默认和用户名相同
 		member.setmNickname(member.getmAccountname());
@@ -92,7 +91,7 @@ public class TMemberServiceImpl implements TMemberService {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return MyMsg.fail("注册失败，有可能是用户名或邮箱或手机号有冲突，请修改重试", member, null);
+			return MyMsg.fail("注册失败，用户名或邮箱有冲突，请修改重试", member, null);
 		}
 		return MyMsg.fail("注册失败，发生未知错误", member, null);
 	}
@@ -101,13 +100,22 @@ public class TMemberServiceImpl implements TMemberService {
 	 * 更新会员信息
 	 */
 	@Override
-	public boolean updateMyInfo(TMember member) {
-		int affectNum = -1;
-		try {
-			affectNum = tMemberMapper.updateByPrimaryKeySelective(member);
-			return affectNum == 1 ? true : false;
-		} catch (Exception e) {
-			return false;
+	public MyMsg<TMember> updateMyInfo(TMember member, HttpSession session) {
+		member2 = member;
+		if (member2 == null||"".equals(member2.getmNickname().trim())) {
+			return MyMsg.fail("更新失败，资料信息不能为空", null, null);
+		} else {
+			try {
+				member2.setmId(MyAcctAndId.getMyId(session));
+				tMemberMapper.updateByPrimaryKeySelective(member2);
+				TMember uMember = (TMember) session.getAttribute(CUR_MEMBER);
+				uMember.setmNickname(member2.getmNickname());
+				uMember.setmSignature(member2.getmSignature());
+				session.setAttribute(CUR_MEMBER, uMember);
+				return MyMsg.success("更新成功", uMember, null);
+			} catch (Exception e) {
+				return MyMsg.success("更新失败", null, null);
+			}
 		}
 	}
 

@@ -290,7 +290,8 @@ body {background-color: #C7EDCC;}
 						</div>
 						<div class="form-group">
 							<label class="control-label">邮箱</label>
-							<input type="email" id="myEmail" name="mEmail" class="form-control" placeholder="输入邮箱">
+							<p id="myEmail" class="form-control-static"></p>
+							<!-- <input type="email" id="myEmail" name="mEmail" class="form-control-static" placeholder="输入邮箱"> -->
 						</div>
 						<div class="form-group">
 							<label class="control-label">手机号</label>
@@ -346,13 +347,6 @@ body {background-color: #C7EDCC;}
 							<label>确认密码</label>
 							<input id="confirm_password"  name="comfirmPassword" type="password" class="form-control" placeholder="确认密码">
 							<span class="errorInfo" style="color: red;"></span>
-						</div>
-						<div class="form-group">
-							<label>输入验证码</label> 
-							<input id="validate_code"  name="validateCode" type="text" class="form-control" placeholder="请输入手机验证码">
-							<span class="errorInfo" style="color: red;"></span>
-							<a id="get_validate_code" class="btn btn-default" href="#">获取验证码</a>
-							<span id="time_show" style="display: none;">请在<strong id="left_time"></strong>秒内输入验证码</span>
 						</div>
 					</form>
 				</div>
@@ -1161,7 +1155,7 @@ body {background-color: #C7EDCC;}
 		/* 填充可以修改的数据到资料模态框 */
 		$("#myNickName").val("${curMember.mNickname}");
 		$("#mySignature").val("${curMember.mSignature}");
-		$("#myEmail").val("${curMember.mEmail}");
+		$("#myEmail").text("${curMember.mEmail}");
 		$("#myInfoModal").modal("show");
 	});
 	
@@ -1172,10 +1166,8 @@ body {background-color: #C7EDCC;}
 			type:"POST",
 			data:$("#myInfoForm").serialize(),
 			success:function(result){
-				if(result.code==1){
-					$("#myInfoModal").modal('hide');
-					jqueryAlert({'content' : result.msg,'closeTime' : 2000});
-				}
+				$("#myInfoModal").modal('hide');
+				jqueryAlert({'content' : result.msg,'closeTime' : 2000});
 			},
 			error:function(XMLHttpRequest,textStatus){
 				alert('更新失败');
@@ -1187,52 +1179,6 @@ body {background-color: #C7EDCC;}
 	/* 点击修改密码按钮 */
 	$("#updatePassword").click(function(){
 		$("#update_password_modal").modal("show");
-	});
-	
-	/* 点击发送验证码 样式的处理真让人恶心 烦烦烦*/
-	$("#get_validate_code").click(function(){
-		
-		/* 发送请求 */
-		$.ajax({
-			url:"${appPath}/member/sendvalidate",
-			type:"GET",
-			success:function(result){
-				if(result.code==1){
-					jqueryAlert({'content' : '发送验证码成功','closeTime' : 2000});
-				}
-			},
-			error:function(XMLHttpRequest,textStatus){
-				alert(textStatus);
-			}
-		});
-		
-		/* 时间剩余显示 */
-		$("#time_show").show();
-		/* 发送验证码禁止点击 */
-		$("#get_validate_code").hide();
-		var time=60;
-		/* 定时任务 */
-		var setInt=setInterval(function(){
-			/* 如果没有时间剩余 */
-			if(time==0){
-				/* 移除禁止点击 */
-				$("#get_validate_code").text("重新发送验证码").show();
-				/* 时间清空 */
-				$("#left_time").text("").parent().hide();
-				/* 重新设定时间 */
-				time=60;
-				/* 清除定时任务 */
-				clearInterval(setInt);
-				/* 让验证码失效 */
-				$.get("${appPath}/member/removevalidate");
-				/* 必须要返回 false，否则执行下面设置时间代码 */
-				return false;
-			}
-			/* 每秒更新时间 */
-			$("#left_time").text(time--);
-		},1000);
-		/* 禁用默认提交 */
-		return false;
 	});
 	
 	/* 点击确认修改密码 */
@@ -1284,19 +1230,6 @@ body {background-color: #C7EDCC;}
 		}
 		if($("#new_password").val()!=$("#confirm_password").val()){
 			$("#confirm_password").next().text("两次密码不一致");
-			return false;
-		}
-		
-		/* 如果验证码为空 */
-		if($("#validate_code").val().length==0){
-			$("#validate_code").next().text("验证码不能为空");
-			return false;
-		}
-		
-		/* 验证码格式 */
-		var regex = new RegExp('[0-9]{6}');
-		if(!regex.test($("#validate_code").val())){
-			$("#validate_code").next().text("验证码格式错误，只能为6位数字");
 			return false;
 		}
 		

@@ -9,24 +9,8 @@
 <%@include file="/WEB-INF/common/js-css-file.jsp" %>
 </head>
 <body style="background-color: #C7EDCC">
-	<div class="row"><br><br><br>
-		<div class="col-md-3 col-md-offset-2">
-			<div class="layui-card" >
-				<div class="layui-card-header"  style="background-color: #C7EDCC"></div>
-				<div class="layui-card-header poemauthor"  style="background-color: #C7EDCC"></div>
-				<div class="layui-card-body"  style="background-color: #C7EDCC">
-				</div>
-			</div>
-			<script type="text/javascript">
-				jinrishici.load(function(result) {
-					$(".layui-card-header").text(result.data.origin.title);
-					$(".poemauthor").text(result.data.origin.dynasty+" "+result.data.origin.author);
-					$(".layui-card-body").text(result.data.content);
-				});
-			</script>
-		</div>
-		<div class="col-md-1"></div>
-		<div class="col-md-3">
+	<div class="row">
+		<div class="col-md-3  col-md-offset-4">
 			<form id="loginForm" method="post" action="${appPath }/member/login">
 					<br> <br> <br> <br> <br>
 					
@@ -47,7 +31,6 @@
 				</form>
 			<form id="registerForm" action="${appPath }/member/register" method="post">
 					<br> <br> <br> 
-					
 					<!-- 如果有失败信息 -->
 					<span id="registerErrorMsgSpan" style="color: red;">
 						<c:if test="${not empty registerErrorMsg }">${registerErrorMsg }<c:remove var="registerErrorMsg"/></c:if>
@@ -73,14 +56,26 @@
 						<input type="email" id="email_input" name="mEmail" value="${curMember.mEmail }" class="form-control" placeholder="请输入邮箱">
 						<span id="email_span" style="color: red;" class="errorInfo"></span>
 					</div>
-					<div class="form-group">
-						<label>手机号</label> 
-						<input type="text" id="phone_input" name="mPhone" value="${curMember.mPhone }" class="form-control" placeholder="请输入手机号">
-						<span id="phone_span" style="color: red;" class="errorInfo"></span>
-					</div>
 					<button id="registerButton" type="submit" class="btn btn-success">注册</button>
 					已有账号？立即<a id="loginHref" href="#">登录</a>
 				</form>
+		</div>
+	</div>
+	<div class="row"><br><br><br><br><br><br><br><br><br>
+			<div class="col-md-3 col-md-offset-8">
+			<div class="layui-card" >
+				<div class="layui-card-header"  style="background-color: #C7EDCC"></div>
+				<div class="layui-card-header poemauthor"  style="background-color: #C7EDCC"></div>
+				<div class="layui-card-body"  style="background-color: #C7EDCC">
+				</div>
+			</div>
+			<script type="text/javascript">
+				jinrishici.load(function(result) {
+					$(".layui-card-header").text(result.data.origin.title);
+					$(".poemauthor").text(result.data.origin.author+" "+result.data.origin.dynasty);
+					$(".layui-card-body").text(result.data.content);
+				});
+			</script>
 		</div>
 	</div>
 	<script>
@@ -205,23 +200,6 @@
 				}
 			}
 		});
-
-		/* 离开手机号输入框 */
-		$("#phone_input").blur(function(){
-			var pattern = /0?(13|14|15|18|17)[0-9]{9}/;
-			var str = $(this).val();
-			if(!pattern.test(str)){
-				$(this).next().empty().text("手机号不正确");
-				$("#registerButton").attr("disabled","disabled");
-			}
-		});
-		
-		/* 聚焦到手机号输入框 */
-		$("#phone_input").focus(function(){
-			$(this).next().empty();
-			$("#registerButton").removeAttr("disabled");
-		});
-		
 	</script>
 </body>
 </html>

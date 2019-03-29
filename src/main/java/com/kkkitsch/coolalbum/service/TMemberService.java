@@ -2,6 +2,8 @@ package com.kkkitsch.coolalbum.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import com.kkkitsch.coolalbum.entity.TMember;
 import com.kkkitsch.coolalbum.util.MyMsg;
 
@@ -11,7 +13,7 @@ public interface TMemberService {
 
     public MyMsg<TMember> memberRegister(TMember member,String mRePassword);
 
-	public boolean updateMyInfo(TMember member);
+	public MyMsg<TMember> updateMyInfo(TMember member, HttpSession session);
 
 	public boolean updatePassword(TMember member);
 

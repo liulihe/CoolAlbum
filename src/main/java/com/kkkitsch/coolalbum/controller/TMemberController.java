@@ -84,40 +84,7 @@ public class TMemberController {
 	@RequestMapping("/myinfo")
 	@ResponseBody
 	public MyMsg<TMember> myInfo(TMember member, HttpSession session) {
-		member.setmId(MyAcctAndId.getMyId(session));
-		boolean flag = false;
-		if (member != null) {
-			flag = tMemberServiceImpl.updateMyInfo(member);
-		}
-		if (flag) {
-			TMember uMember = (TMember) session.getAttribute(CUR_MEMBER);
-			uMember.setmNickname(member.getmNickname());
-			uMember.setmSignature(member.getmSignature());
-			uMember.setmEmail(member.getmEmail());
-			session.setAttribute(CUR_MEMBER, uMember);
-			return MyMsg.success("更新成功", uMember, null);
-		} else {
-			return MyMsg.fail("更新失败", null, null);
-		}
-	}
-
-	/**
-	 * 发送验证码
-	 */
-	@RequestMapping("/sendvalidate")
-	@ResponseBody
-	public MyMsg<TMember> sendValidate(HttpSession session) {
-		// 假装发送了一个验证码
-		session.setAttribute("VALIDATE_CODE", 666666);
-		return MyMsg.success("发送验证码成功", null, null);
-	}
-
-	/**
-	 * 验证码失效
-	 */
-	@RequestMapping("/removevalidate")
-	public void removeValidate(HttpSession session) {
-		session.removeAttribute("VALIDATE_CODE");
+		return tMemberServiceImpl.updateMyInfo(member,session);
 	}
 
 	/**
@@ -126,8 +93,7 @@ public class TMemberController {
 	@RequestMapping("/comfirmUpdatePassword")
 	@ResponseBody
 	public MyMsg<TMember> comfirmUpdatePassword(HttpSession session, String oldPassword, String newPassword,
-			String comfirmPassword, String validateCode) {
-
+			String comfirmPassword) {
 		// 后端验证
 		if (oldPassword == null) {
 			return MyMsg.fail("旧密码不能为空", null, null);
@@ -157,16 +123,6 @@ public class TMemberController {
 		if (!newPassword.equals(comfirmPassword)) {
 			return MyMsg.fail("两次新的密码不一致", null, null);
 		}
-		if (validateCode == null || "".equals(validateCode.trim())) {
-			return MyMsg.fail("验证码不能为空", null, null);
-		}
-		if (!validateCode.matches("[0-9]{6}")) {
-			return MyMsg.fail("验证码格式错误，只能为6位纯数字", null, null);
-		}
-		// 验证码不正确
-		if (!(Integer.parseInt(validateCode) == (Integer) session.getAttribute("VALIDATE_CODE"))) {
-			return MyMsg.fail("验证码不正确", null, null);
-		}
 
 		Integer mId = MyAcctAndId.getMyId(session);
 		TMember tMember = tMemberServiceImpl.selectById(mId);
@@ -187,7 +143,6 @@ public class TMemberController {
 		// 如果修改成功
 		if (flag) {
 			// 移除域对象
-			session.removeAttribute("VALIDATE_CODE");
 			session.removeAttribute(CUR_MEMBER);
 			return MyMsg.success("更新密码成功", null, null);
 		} else {
